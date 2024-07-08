@@ -1,0 +1,7 @@
+{
+  "name": "GreenHaven",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
