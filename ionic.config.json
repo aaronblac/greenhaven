@@ -3,5 +3,16 @@
   "integrations": {
     "capacitor": {}
   },
-  "type": "react-vite"
+  "type": "react-vite",
+  "build": {
+    "env": {
+      "REACT_APP_FIREBASE_API_KEY": "@ionic/react REACT_APP_FIREBASE_API_KEY",
+      "REACT_APP_FIREBASE_AUTH_DOMAIN": "@ionic/react REACT_APP_FIREBASE_AUTH_DOMAIN",
+      "REACT_APP_FIREBASE_PROJECT_ID": "@ionic/react REACT_APP_FIREBASE_PROJECT_ID",
+      "REACT_APP_FIREBASE_STORAGE_BUCKET": "@ionic/react REACT_APP_FIREBASE_STORAGE_BUCKET",
+      "REACT_APP_FIREBASE_MESSAGING_SENDER_ID": "@ionic/react REACT_APP_FIREBASE_MESSAGING_SENDER_ID",
+      "REACT_APP_FIREBASE_APP_ID": "@ionic/react REACT_APP_FIREBASE_APP_ID",
+      "REACT_APP_FIREBASE_MEASUREMENT_ID": "@ionic/react REACT_APP_FIREBASE_MEASUREMENT_ID"
+    }
+  }
 }
