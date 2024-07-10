@@ -1,0 +1,80 @@
+// Global variables
+$primary: #4CAF50;
+$secondary: #3F51B5;
+$accent: #2196F3;
+$warning: #FFC107;
+$danger: #F44336;
+$success: #81C784;
+$black: #191919;
+$white: #FFFFFF;
+
+// Font-family
+$font-family-base: "Montserrat", Arial, "sans-serif";
+
+// Ionic reset
+:root {
+  --ion-color-primary: #{$primary};
+  --ion-color-primary-rgb: #{color-to-rgb($primary)};
+  --ion-color-primary-contrast: #{$white};
+  --ion-color-primary-contrast-rgb: #{color-to-rgb($white)};
+  --ion-color-primary-shade: #{shade-color($primary, 10%)};
+  --ion-color-primary-tint: #{tint-color($primary, 10%)};
+
+  --ion-color-secondary: #{$secondary};
+  --ion-color-secondary-rgb: #{color-to-rgb($secondary)};
+  --ion-color-secondary-contrast: #{$white};
+  --ion-color-secondary-contrast-rgb: #{color-to-rgb($white)};
+  --ion-color-secondary-shade: #{shade-color($secondary, 10%)};
+  --ion-color-secondary-tint: #{tint-color($secondary, 10%)};
+
+  --ion-color-success: #{$success};
+  --ion-color-success-rgb: #{color-to-rgb($success)};
+  --ion-color-success-contrast: #{$white};
+  --ion-color-success-contrast-rgb: #{color-to-rgb($white)};
+  --ion-color-success-shade: #{shade-color($success, 10%)};
+  --ion-color-success-tint: #{tint-color($success, 10%)};
+
+  --ion-color-warning: #{$warning};
+  --ion-color-warning-rgb: #{color-to-rgb($warning)};
+  --ion-color-warning-contrast: #{$black};
+  --ion-color-warning-contrast-rgb: #{color-to-rgb($black)};
+  --ion-color-warning-shade: #{shade-color($warning, 10%)};
+  --ion-color-warning-tint: #{tint-color($warning, 10%)};
+
+  --ion-color-danger: #{$danger};
+  --ion-color-danger-rgb: #{color-to-rgb($danger)};
+  --ion-color-danger-contrast: #{$white};
+  --ion-color-danger-contrast-rgb: #{color-to-rgb($white)};
+  --ion-color-danger-shade: #{shade-color($danger, 10%)};
+  --ion-color-danger-tint: #{tint-color($danger, 10%)};
+
+  --ion-color-dark: #{$black};
+  --ion-color-dark-rgb: #{color-to-rgb($black)};
+  --ion-color-dark-contrast: #{$white};
+  --ion-color-dark-contrast-rgb: #{color-to-rgb($white)};
+  --ion-color-dark-shade: #{shade-color($black, 10%)};
+  --ion-color-dark-tint: #{tint-color($black, 10%)};
+
+  --ion-color-light: #{$white};
+  --ion-color-light-rgb: #{color-to-rgb($white)};
+  --ion-color-light-contrast: #{$black};
+  --ion-color-light-contrast-rgb: #{color-to-rgb($black)};
+  --ion-color-light-shade: #{shade-color($white, 10%)};
+  --ion-color-light-tint: #{tint-color($white, 10%)};
+
+  --ion-font-family: #{$font-family-base};
+  --color-selected: #{$accent};
+}
+
+@function shade-color($color, $percent) {
+    @return mix(black, $color, $percent);
+}
+
+@function tint-color($color, $percent) {
+    @return mix(white, $color, $percent);
+}
+
+@function color-to-rgb($color) {
+    @return red($color), green($color), blue($color);
+}
+  

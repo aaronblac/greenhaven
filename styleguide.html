@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <style>
+        :root{
+            --primary:#4CAF50;
+            --secondary: #3F51B5;
+            --accent: #2196F3;
+            --warning:#FFC107;
+            --danger:#F44336;
+            --success: #81C784;
+        }
+
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        *:before, *:after {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        body {
+            line-height: 1.42857143;
+            background-color: #191919;
+            margin: 0;
+            color: #ffffff;
+            height:100dvh;
+            display:flex;
+            flex-direction: column;
+        }
+        main{
+            height:auto;
+            max-width:60rem;
+            margin:auto;
+        }
+        html {
+            font-size: 16px;
+            font-family: "Montserrat", Arial, "sans-serif";
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        h2 {
+            font-size: 1.75rem;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+        }
+        .bg-primary{
+            background-color:var(--primary);
+        }
+        .bg-secondary{
+            background-color:var(--secondary);
+        }
+        .bg-accent{
+            background-color:var(--accent);
+        }
+        .bg-warning{
+            background-color:var(--warning);
+        }
+        .bg-danger{
+            background-color:var(--danger);
+        }
+        .bg-success{
+            background-color:var(--success);
+        }
+        .warning {
+            background-color: var(--warning);
+            font-weight: bold;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .danger {
+            background-color: var(--danger);
+            font-weight: bold;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .success {
+            background-color: var(--success);
+            font-weight: bold;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        /* Button */
+        .button {
+            border-radius: 5px;
+            padding: .5rem 1rem;
+            font-weight: 500;
+            color: white;
+            cursor:pointer;
+        }
+        
+        .button-primary{
+            background-color: var(--primary);
+            border:none;
+        }
+        
+        .button-secondary{
+            background-color: var(--secondary);
+            border:none;
+        }
+        
+        .button-primary:hover,
+        .button-secondary:hover{
+            opacity:90%;
+        }
+        
+        .button-tertiary{
+            background-color: transparent;
+            color:var(--primary);
+            border:2px solid var(--primary);
+            padding:.375rem 1rem
+        }
+        
+        .button-tertiary:hover{
+            background-color: var(--primary);
+            color:white;
+        }
+        /* Form Elements */
+        input {
+            line-height: normal;
+        }
+        .input-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: .25rem;
+        }
+        
+        input.input-field,
+        textarea {
+            padding: .425rem;
+            border: 2px solid var(--primary);
+            border-radius:5px;
+        }
+        
+        input[type=text]:focus,
+        textarea:focus{
+            border: 2px solid var(--primary);
+            outline:none;
+        }
+        
+        input[type=radio],
+        input[type=checkbox]{
+            accent-color: var(--primary);
+        }
+        .header,
+        .footer{
+            height:4rem;
+            background-color: #191919;
+            color:var(--primary);
+            text-align: center;
+            padding: 2rem;
+            display:flex;
+            align-items: center;
+            justify-content:center;
+        }
+        div.box {
+            height: 100px;
+            width: 100px;
+            display: inline-block;
+            margin: 0 10px 0 10px;
+        }
+        .flex{
+            display:flex;
+        }
+        .flex-column{
+            flex-direction: column;
+        }
+        .gap-16{
+            gap:1rem;
+        }
+        hr{
+            margin: 2rem 0;
+        }
+    </style>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <header class="header">
+            <h1>GreenHaven App Style Guide</h1>
+        </header>
+        <main>
+            <div>
+                <h2>My Styles</h2>
+                <p>This page contains specific style guide information for GreenHaven's front end interface</p>
+            </div>
+            <hr/>
+            <!-- Font -->
+            <div>
+                <h2>Font</h2>
+                <p>GreenHaven application utilizes the "Montserrat", Arial, "sans-serif" font-family with black text.</p>
+            </div>
+            <hr/>
+            <!-- Color Theme -->
+            <div>
+                <h1>Color Theme</h1>
+                <div class="box bg-primary">&nbsp;Primary</div>
+                <div class="box bg-secondary">&nbsp;Secondary</div>
+                <div class="box bg-accent">&nbsp;Accent</div>
+            </div>
+            <hr/>
+            <!-- Headings -->
+            <div>
+                <h1>Headings</h1>
+                <p>The below font sizes and styles are used in the application for various content headings.</p>
+                <h1>Heading 1</h1>
+                <h2>Heading 2</h2>
+                <h3>Heading 3</h3>
+            </div>
+            <hr/>
+            <!-- End Headings -->
+
+            <!-- Buttons -->
+            <div>
+                <h1>Buttons</h1>
+                <p>The application will feature buttons that contain the below color and shape:</p>
+                <button class="button button-primary">Primary Button</button>
+                <button class="button button-secondary">Secondary Button</button>
+                <button class="button button-tertiary">Tertiary Button</button>
+            </div>
+            <!-- End Buttons -->
+            <hr/>
+            <!-- Form Elements -->
+            <div>
+                <h1>Form Elements</h1>
+                <p>For the varous forms that the application will contain, it will contain input fields and labels with the below styling:</p>
+                <form>
+                    <div class="flex gap-16">
+                        <!-- [Input] -->
+                        <div class="flex flex-column">
+                            <label for="textInput" class="input-label">TextInput</label>
+                            <input type="text" id="textInput" class="input-field" value="">
+                        </div>
+                        <!-- [Textarea]-->
+                        <div class="flex flex-column">
+                            <label for="textArea" class="input-label">Textarea</label>
+                            <textarea type="text" id="textArea"></textarea>
+                        </div>
+                        <!-- Radio Buttons -->
+                        <div class="flex flex-column">
+                            <label class="input-label">Radio Buttons</label>
+                            <!-- [Radio]-->
+                            <div>
+                                <input type="radio" id="radioInput1" name="radioInputs" checked>
+                                <label for="radioInput1" class="input-label">Radio 1</label>
+                            </div>
+                            <!-- [Radio]-->
+                            <div>
+                                <input type="radio" id="radioInput2" name="radioInputs">
+                                <label for="radioInput2" class="input-label">Radio 2</label>
+                            </div>
+                        </div>
+                        <!-- Checkbox -->
+                        <div class="flex flex-column">
+                            <label class="input-label">Checkbox</label>
+                            <!-- [Checkbox]-->
+                            <div>
+                                <input type="checkbox" id="checkboxInput1" name="checkboxInputs" checked>
+                                <label for="checkboxInput1" class="input-label">Checkbox 1</label>
+                            </div>
+                            <!-- [Checkbox]-->
+                            <div>
+                                <input type="checkbox" id="checkboxInput2" name="checkboxInputs">
+                                <label for="checkboxInput2" class="input-label">Checkbox 2</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- End Form Elements -->
+            <hr/>
+            <!-- User Messages -->
+            <div>
+                <h1>Messages</h1>
+                <p>For various completed tasks, application notifications will be presented to the user based.  The following contextual messages will be used.</p>
+                <p class="warning">Warning!</p>
+                <p class="danger">Danger!</p>
+                <p class="success">Success!</p>
+            <!-- End User Messages -->
+        </div>
+        </main>
+        <footer class="footer">
+            <strong>&copy;Blackverse Productions</strong>
+        </footer>
+        <script src="" async defer></script>
+    </body>
+</html>

@@ -1,0 +1,179 @@
+@use './theme/variables.scss' as *;
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+*:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+    line-height: 1.42857143;
+    background-color: $black;
+    margin: 0;
+    color: $white;
+    height:100dvh;
+    display:flex;
+    flex-direction: column;
+}
+main{
+    height:auto;
+    max-width:60rem;
+    margin:auto;
+}
+html {
+    font-size: 16px;
+    font-family: $font-family-base;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%
+}
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+}
+
+h2 {
+    font-size: 1.75rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+.bg{
+    &-primary{
+        background-color:$primary;
+    }
+    &-secondary{
+        background-color:$secondary;
+    }
+    &-accent{
+        background-color:$accent;
+    }
+    &-warning{
+        background-color:$warning;
+    }
+    &-danger{
+        background-color:$danger;
+    }
+    &-success{
+        background-color:$success;
+    }
+}
+.warning {
+    background-color: $warning;
+    font-weight: bold;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.danger {
+    background-color: $danger;
+    font-weight: bold;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.success {
+    background-color: $success;
+    font-weight: bold;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+/* Button */
+.button {
+    border-radius: 5px;
+    font-weight: 500;
+    color: white;
+    cursor:pointer;
+    &-primary{
+        background-color: $primary;
+        border:none;
+        &:hover{
+            opacity:90%;
+        }
+    }
+    &-secondary{
+        background-color: $secondary;
+        border:none;
+        &:hover{
+            opacity:90%;
+        }
+    }
+    &-tertiary{
+        background-color: transparent;
+        color:$primary;
+        border:2px solid $primary;
+        padding:.375rem 1rem;
+        &:hover{
+            background-color: $primary;
+            color:white;
+        }
+    }
+}
+
+
+/* Form Elements */
+input {
+    line-height: normal;
+}
+.input-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: .25rem;
+}
+
+input.input-field,
+textarea {
+    padding: .425rem;
+    border: 2px solid $primary;
+    border-radius:5px;
+}
+
+input[type=text]:focus,
+textarea:focus{
+    border: 2px solid $primary;
+    outline:none;
+}
+
+input[type=radio],
+input[type=checkbox]{
+    accent-color: $primary;
+}
+.header,
+.footer{
+    height:4rem;
+    background-color: $black;
+    color:$primary;
+    text-align: center;
+    padding: 2rem;
+    display:flex;
+    align-items: center;
+    justify-content:center;
+}
+div.box {
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+    margin: 0 10px 0 10px;
+}
+.flex{
+    display:flex;
+    &-column{
+        flex-direction: column;
+    }
+}
+
+.gap-16{
+    gap:1rem;
+}
+
+hr{
+    margin: 2rem 0;
+}
