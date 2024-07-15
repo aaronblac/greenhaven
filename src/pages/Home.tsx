@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonSearchbar, IonList, IonItem, IonLabel } from '@ionic/react';
 
 const Home: React.FC = () => {
-  const [searchText, setSearchText] = React.useState('');
+  const [searchText, setSearchText] = useState('');
 
   return (
     <IonPage>
@@ -27,3 +27,4 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+

@@ -5,10 +5,11 @@ import { registerUser } from '../services/authService';
 const Register: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
 
   const handleRegister = async () => {
     try {
-      const user = await registerUser(email, password);
+      const user = await registerUser(username, email, password);
       console.log('Registered user:', user);
     } catch (error) {
       console.error('Error registering:', error);
@@ -23,6 +24,12 @@ const Register: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <IonInput
+          placeholder="Username"
+          value={username}
+          onIonChange={(e) => setUsername(e.detail.value!)}
+          type="text"
+        />
         <IonInput
           placeholder="Email"
           value={email}

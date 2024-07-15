@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "staging": "greenhaven-d11b5"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}

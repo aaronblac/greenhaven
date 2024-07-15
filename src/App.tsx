@@ -1,4 +1,5 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import {
   IonApp,
   IonIcon,
@@ -50,17 +51,18 @@ import './theme/variables.scss';
 setupIonicReact();
 
 const App: React.FC = () => (
+  
   <IonApp>
     <IonReactRouter>
       <IonTabs className='ionic-padding'>
         <IonRouterOutlet>
-          <Route exact path="/home">
+          <Route exact path="/home" >
             <Home />
           </Route>
           <Route exact path="/Login">
             <Login />
           </Route>
-          <Route path="/register">
+          <Route exact path="/register">
             <Register />
           </Route>
           <Route exact path="/">
