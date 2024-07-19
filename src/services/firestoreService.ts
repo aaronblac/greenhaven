@@ -1,7 +1,7 @@
 import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
-const collectionName = 'yourCollectionName'; // Replace with your collection name
+const collectionName = 'users';
 
 export const addDocument = async (data: any) => {
   const docRef = await addDoc(collection(db, collectionName), data);

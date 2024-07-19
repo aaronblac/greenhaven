@@ -23,6 +23,8 @@ const Register: React.FC = () => {
           <IonTitle>Register</IonTitle>
         </IonToolbar>
       </IonHeader>
+    <form onSubmit={handleRegister}>
+
       <IonContent>
         <IonInput
           placeholder="Username"
@@ -44,6 +46,7 @@ const Register: React.FC = () => {
         />
         <IonButton className='button button-primary' onClick={handleRegister}>Register</IonButton>
       </IonContent>
+    </form>
     </IonPage>
   );
 };
