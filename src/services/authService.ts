@@ -6,6 +6,7 @@ export const registerUser = async (email: string, password: string, username: st
   try{
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
+    console.log("user", user)
     await setDoc(doc(db, 'users', user.uid), {
       email,
       username,

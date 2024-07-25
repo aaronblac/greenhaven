@@ -44,7 +44,7 @@ const Register: React.FC = () => {
           onIonChange={(e) => setPassword(e.detail.value!)}
           type="password"
         />
-        <IonButton className='button button-primary' onClick={handleRegister}>Register</IonButton>
+        <IonButton className='button button-primary' type='submit'>Register</IonButton>
       </IonContent>
     </form>
     </IonPage>
