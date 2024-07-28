@@ -3,12 +3,17 @@ import { Redirect } from 'react-router';
 import {
   IonApp,
   IonButtons,
+  IonCol,
+  IonGrid,
   IonHeader,
   IonIcon,
+  IonImg,
+  IonItem,
   IonLabel,
   IonMenu,
   IonMenuButton,
   IonRouterOutlet,
+  IonRow,
   IonTabBar,
   IonTabButton,
   IonTabs,
@@ -70,7 +75,14 @@ const App: React.FC = () => (
           <IonButtons slot="end">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>GreenHaven</IonTitle>
+          <IonGrid>
+            <IonRow className="ion-align-items-center">
+              <IonImg src='/images/forest-tree.png' alt='Tree' className="menu-tree"/>
+              <IonTitle className='ion-no-padding'>GreenHaven</IonTitle>
+            </IonRow>
+          
+          
+          </IonGrid>
         </IonToolbar>
       </IonHeader>
       <IonTabs className='ion-padding'>

@@ -57,7 +57,7 @@ const Home: React.FC = () => {
           </>
         ) : (
           <>
-            <IonImg src='/images/forest-tree.png' alt='Tree'/>
+            <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree"/>
             {isAuthenticated ?(
             <IonList>
               <IonItem>
@@ -74,12 +74,16 @@ const Home: React.FC = () => {
                   <h3>What is GreenHaven?</h3>
                   <p></p>
                 </IonText>
-                <Link to="/login">
-                  <IonButton className='button button-primary'>Login</IonButton>
-                </Link>
-                <Link to="/register">
-                  <IonButton className='button button-primary'>Create Account</IonButton>
-                </Link>
+                <IonItem>
+                  <Link to="/login">
+                    <IonButton expand="block" className='button button-primary'>Login</IonButton>
+                  </Link>
+                </IonItem>
+                <IonItem>
+                  <Link to="/register">
+                    <IonButton expand="block" className='button button-primary'>Create Account</IonButton>
+                  </Link>
+                </IonItem>
               </>
             )}
           </>
