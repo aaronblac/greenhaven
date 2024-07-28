@@ -2,12 +2,18 @@ import { Route } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import {
   IonApp,
+  IonButtons,
+  IonHeader,
   IonIcon,
   IonLabel,
+  IonMenu,
+  IonMenuButton,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonTitle,
+  IonToolbar,
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -16,6 +22,7 @@ import { ellipse, home, square, triangle } from 'ionicons/icons';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -47,6 +54,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.scss';
+import TopMenu from './components/TopMenu/top-menu';
 
 setupIonicReact();
 
@@ -54,8 +62,19 @@ const App: React.FC = () => (
   
   <IonApp>
     <IonReactRouter>
-      <IonTabs className='ionic-padding'>
-        <IonRouterOutlet>
+    <IonMenu side="end" contentId="main-content">
+        <TopMenu />
+      </IonMenu>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="end">
+            <IonMenuButton />
+          </IonButtons>
+          <IonTitle>GreenHaven</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonTabs className='ion-padding'>
+        <IonRouterOutlet id="main-content">
           <Route exact path="/home" >
             <Home />
           </Route>
@@ -64,6 +83,9 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/register">
             <Register />
+          </Route>
+          <Route exact path="/ForgotPassword">
+            <ForgotPassword />
           </Route>
           <Route exact path="/">
             <Redirect to="/home" />

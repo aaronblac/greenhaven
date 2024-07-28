@@ -1,18 +1,45 @@
 import React, { useState } from 'react';
-import { IonPage, IonHeader, IonContent, IonToolbar, IonTitle, IonInput, IonButton } from '@ionic/react';
+import { IonPage, IonHeader, IonContent, IonToolbar, IonTitle, IonInput, IonButton, IonToast } from '@ionic/react';
+import '../styles.scss';
+import { useHistory } from 'react-router';
 import { registerUser } from '../services/authService';
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
+  const [showToast, setShowToast] = useState(false);
+  const history = useHistory();
 
   const handleRegister = async () => {
+    if (!username || !email || !password || !confirmPassword) {
+      setToastMessage("All fields are required");
+      setShowToast(true);
+      return;
+    }
+  
+    if (password !== confirmPassword) {
+      setToastMessage("Passwords do not match, try again.");
+      setShowToast(true);
+      return;
+    }
+  
     try {
-      const user = await registerUser(username, email, password);
-      console.log('Registered user:', user);
-    } catch (error) {
-      console.error('Error registering:', error);
+      const user = registerUser(email,password,username);
+      console.log("Registered user:", user);
+      history.push({
+        pathname: "/home",
+      });
+    } catch (error: any) {
+      console.error("Error registering:", error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setToastMessage(error.response.data.message);
+      } else {
+        setToastMessage("Error registering user. Please try again.");
+      }
+      setShowToast(true);
     }
   };
 
@@ -20,12 +47,10 @@ const Register: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Register</IonTitle>
         </IonToolbar>
       </IonHeader>
-    <form onSubmit={handleRegister}>
-
-      <IonContent>
+      <IonContent className='ion-padding'>
+        <IonTitle className='ion-text-center'>Register</IonTitle>
         <IonInput
           placeholder="Username"
           value={username}
@@ -33,20 +58,36 @@ const Register: React.FC = () => {
           type="text"
         />
         <IonInput
+          
           placeholder="Email"
           value={email}
           onIonChange={(e) => setEmail(e.detail.value!)}
           type="email"
         />
         <IonInput
+          
           placeholder="Password"
           value={password}
           onIonChange={(e) => setPassword(e.detail.value!)}
           type="password"
         />
-        <IonButton className='button button-primary' type='submit'>Register</IonButton>
+        <IonInput
+          
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onIonChange={(e) => setConfirmPassword(e.detail.value!)}
+          type="password"
+        />
+        <IonToast
+          cssClass='toast-warning'
+          position='middle'
+          isOpen={showToast}
+          message={toastMessage}
+          duration={3000}
+          onDidDismiss={() => setShowToast(false)}
+        />
+        <IonButton expand='block' className='button button-primary' onClick={handleRegister}>Register</IonButton>
       </IonContent>
-    </form>
     </IonPage>
   );
 };

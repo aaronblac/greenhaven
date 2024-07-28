@@ -1,19 +1,37 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
+import express from "express";
+import cors from "cors";
+if (admin.apps.length === 0) {
+  admin.initializeApp();
+}
+import {registerUser, loginUser, logoutUser} from "./authFunctions";
+import {
+  addReview,
+  getReviewsByPlaceId,
+  getUserReviews,
+} from "./reviewFunctions";
+import {
+  getUserFavorites,
+  addUserFavorite,
+  getUserRecentSearches,
+} from "./userFunctions";
+import {searchByAddress, searchByLocation} from "./searchFunctions";
 
-import {onRequest} from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
+const app = express();
+app.use(cors({origin: true}));
+app.use(express.json());
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+app.post("/register", registerUser);
+app.post("/login", loginUser);
+app.post("/logout", logoutUser);
+app.post("/reviews", addReview);
+app.get("/reviews", getReviewsByPlaceId);
+app.get("/user-reviews", getUserReviews);
+app.get("/favorites", getUserFavorites);
+app.post("/favorites", addUserFavorite);
+app.get("/recent-searches", getUserRecentSearches);
+app.get("/search-address", searchByAddress);
+app.get("/search-location", searchByLocation);
 
-export const helloWorld = onRequest((request, response) => {
-  logger.info("Hello logs!", {structuredData: true, url: request});
-  response.send("Hello from Firebase!");
-});
+export const api = functions.https.onRequest(app);

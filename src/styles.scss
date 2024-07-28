@@ -146,6 +146,16 @@ input[type=radio],
 input[type=checkbox]{
     accent-color: $primary;
 }
+
+//Toast 
+.toast-warning .toast-wrapper{
+    background: $danger; 
+    padding: 0.675rem;
+    border-radius: 0.5rem;
+    color:$white;
+    bottom: 4rem;
+}
+
 .header,
 .footer{
     height:4rem;

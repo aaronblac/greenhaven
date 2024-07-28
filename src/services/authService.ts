@@ -1,35 +1,37 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth,db } from '../firebaseConfig';
-import { doc, setDoc } from 'firebase/firestore';
+import axios from 'axios';
+
+const baseUrl = "https://us-central1-greenhaven-d11b5.cloudfunctions.net/api"
 
 export const registerUser = async (email: string, password: string, username: string) => {
-  try{
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    console.log("user", user)
-    await setDoc(doc(db, 'users', user.uid), {
+  try {
+    const response = await axios.post(`${baseUrl}/register`, {
       email,
+      password,
       username,
-      createdAt: new Date(),
-      reviews: [],
-      favorites: [],
-      lastPlacesLookedAt: []
     });
-    return user;
+    return response.data;
   } catch (error) {
     throw error;
   }
 };
 
 export const loginUser = async (email: string, password: string) => {
-  try{
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
+  try {
+    const response = await axios.post(`${baseUrl}/login`, {
+      email,
+      password,
+    });
+    return response.data;
   } catch (error) {
     throw error;
   }
 };
 
 export const logoutUser = async () => {
-  await signOut(auth);
+  try {
+    const response = await axios.post(`${baseUrl}/logout`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
