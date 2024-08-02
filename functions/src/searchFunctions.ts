@@ -5,8 +5,17 @@ import axios from "axios";
 
 const GOOGLE_API_KEY = functions.config().google.api_key;
 
+export const getApiKey = functions.https.onRequest((req, res) => {
+  const GOOGLE_API_KEY = functions.config().google.api_key;
+  res.status(200).send({apiKey: GOOGLE_API_KEY});
+});
+
 export const searchByAddress = functions.https.onRequest(async (req, res) => {
-  const {address, radius, userId} = req.body;
+  const address = req.query.address as string;
+  const radius = parseFloat(req.query.radius as string);
+  const userId = req.query.userId as string;
+  const type = req.query.type as string;
+
 
   if (!address || !radius) {
     res.status(400).send("Address and radius are required");
@@ -34,6 +43,7 @@ export const searchByAddress = functions.https.onRequest(async (req, res) => {
       params: {
         location: `${lat},${lng}`,
         radius,
+        type,
         key: GOOGLE_API_KEY,
       },
     });
@@ -63,7 +73,12 @@ export const searchByAddress = functions.https.onRequest(async (req, res) => {
 });
 
 export const searchByLocation = functions.https.onRequest(async (req, res) => {
-  const {latitude, longitude, radius, userId} = req.body;
+  const latitude = parseFloat(req.query.latitude as string);
+  const longitude = parseFloat(req.query.longitude as string);
+  const radius = parseFloat(req.query.radius as string);
+  const userId = req.query.userId as string;
+  const type = req.query.type as string;
+
 
   if (!latitude || !longitude || !radius) {
     res.status(400).send("Latitude, longitude, and radius are required");
@@ -76,6 +91,7 @@ export const searchByLocation = functions.https.onRequest(async (req, res) => {
       params: {
         location: `${latitude},${longitude}`,
         radius,
+        type,
         key: GOOGLE_API_KEY,
       },
     });

@@ -86,7 +86,7 @@ const Register: React.FC = () => {
           duration={3000}
           onDidDismiss={() => setShowToast(false)}
         />
-        <IonButton expand='block' className='button button-primary' onClick={handleRegister}>Register</IonButton>
+        <IonButton expand='block' className='button primary' onClick={handleRegister}>Register</IonButton>
       </IonContent>
     </IonPage>
   );

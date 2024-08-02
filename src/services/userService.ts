@@ -1,5 +1,5 @@
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { db } from "../utility/firebaseConfig";
 
 export const getUserFavorites = async(userId: string) => {
     try{

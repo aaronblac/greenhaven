@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { auth } from '../../firebaseConfig';
+import { auth } from '../../utility/firebaseConfig';
 import { IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonTitle, IonToolbar } from "@ionic/react";
 import { Link, useHistory } from "react-router-dom";
 import {logoutUser} from "../../services/authService";

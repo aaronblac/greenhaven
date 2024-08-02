@@ -87,30 +87,45 @@ h3 {
     border-radius: 5px;
 }
 /* Button */
-.button {
-    border-radius: 5px;
+button,
+ion-button,
+IonButton,
+.button{
+    border-radius: 0.5rem;
     font-weight: 500;
+    display: inline-flex;
+    gap: 0.5rem;
     color: white;
+    --padding-top:0.375rem;
+    --padding-end:1rem;
+    --padding-bottom:0.375rem;
+    --padding-start:1rem;
     cursor:pointer;
-    &-primary{
+    .button-native,
+    .button-inner{
+        padding: 0rem;
+    }
+    &.primary{
         background-color: $primary;
+        --background: $primary;
         border:none;
         &:hover{
             opacity:90%;
         }
     }
-    &-secondary{
+    &.secondary{
         background-color: $secondary;
+        --background: $secondary;
         border:none;
         &:hover{
             opacity:90%;
         }
     }
-    &-tertiary{
+    &.tertiary{
         background-color: transparent;
+        --background: transparent;
         color:$primary;
         border:2px solid $primary;
-        padding:.375rem 1rem;
         &:hover{
             background-color: $primary;
             color:white;
@@ -129,11 +144,20 @@ input {
     margin-bottom: .25rem;
 }
 
-input.input-field,
-textarea {
+// Search 
+.searchbar-input.sc-ion-searchbar-md {
     padding: .425rem;
     border: 2px solid $primary;
     border-radius:5px;
+    padding-left: 1.75rem;;
+    input{
+    }
+}
+
+.searchbar-search-icon.sc-ion-searchbar-md{
+    top: 50%;
+    transform:translateY(-50%);
+    left:0.5rem;;
 }
 
 input[type=text]:focus,
@@ -195,4 +219,7 @@ hr{
 .menu-tree{
     max-width:1.75rem;
     margin:  0 0.5rem;
+}
+IonSelect{
+    width:4rem;
 }

@@ -16,7 +16,10 @@ import {
   addUserFavorite,
   getUserRecentSearches,
 } from "./userFunctions";
-import {searchByAddress, searchByLocation} from "./searchFunctions";
+import {
+  searchByAddress,
+  getApiKey,
+  searchByLocation} from "./searchFunctions";
 
 const app = express();
 app.use(cors({origin: true}));
@@ -33,5 +36,6 @@ app.post("/favorites", addUserFavorite);
 app.get("/recent-searches", getUserRecentSearches);
 app.get("/search-address", searchByAddress);
 app.get("/search-location", searchByLocation);
+app.get("/api-key", getApiKey);
 
 export const api = functions.https.onRequest(app);

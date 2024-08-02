@@ -68,7 +68,7 @@ const Login: React.FC = () => {
           duration={3000}
           onDidDismiss={() => setShowToast(false)}
         />
-        <IonButton expand='block' className='button button-primary' onClick={handleLogin}>Login</IonButton>
+        <IonButton expand='block' className='button primary' onClick={handleLogin}>Login</IonButton>
         <div className='ion-justify-content-between flex'>
           <div className='ion-text-start'>
             <IonButton fill='clear' color={'tertiary'} routerLink='/Register'>Create Account</IonButton>

@@ -1,5 +1,5 @@
 import { query, where, addDoc, collection, Timestamp, getDocs } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { db } from "../utility/firebaseConfig";
 
 export const submitReview = async (userId: string, placeId: string, rating: number, comment: string) => {
     try{

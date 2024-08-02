@@ -1,5 +1,5 @@
 import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { db } from '../utility/firebaseConfig';
 
 const collectionName = 'users';
 

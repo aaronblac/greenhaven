@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vite/client", "jest"],
+    "types": ["vite/client", "jest", "google.maps"],
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }],

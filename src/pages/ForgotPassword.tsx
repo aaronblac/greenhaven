@@ -90,7 +90,7 @@ const ForgotPasswordPage: React.FC = () => {
           </IonRow>
           <IonRow>
             <IonCol size='12'>
-              <IonButton shape='round' expand='block' onClick={handleForgotPassword}>Send Verification Email</IonButton>
+              <IonButton shape='round' expand='block' className='button primary' onClick={handleForgotPassword}>Send Verification Email</IonButton>
             </IonCol>
           </IonRow>
           <IonToast
