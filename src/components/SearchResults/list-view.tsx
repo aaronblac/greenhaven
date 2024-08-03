@@ -6,9 +6,9 @@ interface ListViewProps {
 }
 
 const ListView: React.FC<ListViewProps> = ({ places }) => (
-  <IonList>
+  <IonList className='scrolling-list'>
     {places.map((place) => (
-      <IonCard key={place.place_id} routerLink={`/place/${place.place_id}`}>
+      <IonCard className='ion-padding' key={place.place_id} routerLink={`/place/${place.place_id}`}>
         <IonLabel>
           <h2>{place.name}</h2>
           <p>{place.vicinity}</p>

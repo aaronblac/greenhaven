@@ -220,6 +220,18 @@ hr{
     max-width:1.75rem;
     margin:  0 0.5rem;
 }
-IonSelect{
-    width:4rem;
+ion-select{
+    width:8rem;
+}
+
+ion-list{
+    --ion-background-color: transparent;
+    --ion-item-background: transparent;
+}
+ion-card{
+    border: 1px solid $success
+}
+.scrolling-list{
+    overflow-y:auto;
+    max-height: calc(100% - 11rem);
 }

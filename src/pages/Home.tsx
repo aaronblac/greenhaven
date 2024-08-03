@@ -89,14 +89,13 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Home</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+        <IonHeader>
+          <IonToolbar></IonToolbar>
+        </IonHeader>
       <IonContent className='ion-padding'>
+        <IonTitle className='ion-text-center'>Search by Address, Zip Code, City/State, or GeoLocation</IonTitle>
         <IonSearchbar className='input-field' value={searchText} onIonChange={handleSearchInputChange}></IonSearchbar>
-        <div className='flex ion-justify-content-end'>
+        <div className='flex ion-justify-content-between ion-padding-horizontal'>
             <IonSelect aria-label="radius" placeholder='Select Radius' value={(radius / 1609.34)} onIonChange={e => handleRadiusChange(e.detail.value)}>
               <IonSelectOption value={1}>1mi</IonSelectOption>
               <IonSelectOption value={5}>5mi</IonSelectOption>

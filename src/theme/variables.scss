@@ -64,6 +64,7 @@ $font-family-base: "Montserrat", Arial, "sans-serif";
 
   --ion-font-family: #{$font-family-base};
   --color-selected: #{$accent};
+  --ion-item-background: transparent;
 }
 
 @function shade-color($color, $percent) {

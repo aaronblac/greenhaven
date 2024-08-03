@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { getApiKey } from '../../services/apiService';
+import { IonCard } from '@ionic/react';
 
 interface MapViewProps {
   places: any[];
@@ -77,7 +78,7 @@ const MapView: React.FC<MapViewProps> = ({ places }) => {
     initializeMap();
   }, [places]);
 
-  return <div ref={mapRef} style={{ width: '100%', height: 'calc(100% - 10rem)' }} />;
+  return <IonCard style={{height:'calc(100% - 13rem)'}}><div ref={mapRef} style={{ width: '100%', height: '100%' }} /></IonCard>;
 };
 
 export default MapView;
