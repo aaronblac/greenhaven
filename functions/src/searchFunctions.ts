@@ -1,9 +1,5 @@
 /* eslint-disable max-len */
 
-import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
-import axios from "axios";
-
 export interface Place {
     place_id: string;
     name: string;
@@ -14,6 +10,10 @@ export interface Place {
         photo_reference: string;
       }>;
   }
+
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
+import axios from "axios";
 
 const GOOGLE_API_KEY = functions.config().google.api_key;
 
