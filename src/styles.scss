@@ -136,6 +136,10 @@ IonButton,
 [expand="block"]{
     width:100%;
 }
+
+a{
+    text-decoration: none;
+}
 /* Form Elements */
 input {
     line-height: normal;
@@ -165,11 +169,6 @@ input {
     left:0.5rem;;
 }
 
-input[type=text]:focus,
-textarea:focus{
-    border: 2px solid $primary;
-    outline:none;
-}
 
 input[type=radio],
 input[type=checkbox]{

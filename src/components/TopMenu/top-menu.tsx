@@ -59,10 +59,10 @@ const TopMenu: React.FC = () => {
             </>) : (<>
                 <IonList>
                     <IonItem>
-                        <Link color="tertiary" to="/login">Login</Link>
+                        <Link color={`tertiary`} to="/login">Login</Link>
                     </IonItem>
                     <IonItem>
-                        <Link color="tertiary" to="/register">Create Account</Link>
+                        <Link color={`tertiary`} to="/register">Create Account</Link>
                     </IonItem>
                 </IonList>
             </>) }

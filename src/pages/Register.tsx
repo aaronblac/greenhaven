@@ -46,7 +46,7 @@ const Register: React.FC = () => {
   return (
     <IonPage className='page-container'>
       <IonContent className='ion-padding'>
-        <IonTitle className='ion-text-center'>Register</IonTitle>
+        <IonTitle className='text-center'>Register</IonTitle>
         <IonInput
           placeholder="Username"
           value={username}
@@ -54,7 +54,6 @@ const Register: React.FC = () => {
           type="text"
         />
         <IonInput
-          
           placeholder="Email"
           value={email}
           onIonChange={(e) => setEmail(e.detail.value!)}

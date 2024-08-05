@@ -41,7 +41,7 @@ const Login: React.FC = () => {
   return (
     <IonPage className='page-container'>
       <IonContent className='form ion-padding'>
-        <IonTitle className='ion-text-center'>Login</IonTitle>
+        <IonTitle className='text-center'>Login</IonTitle>
         <IonInput
           placeholder="Email"
           value={email}
