@@ -53,16 +53,16 @@ const TopMenu: React.FC = () => {
                         <Link to="/favorites">Favorites</Link>
                     </IonItem> */}
                     <IonItem button onClick={handleLogout}>
-                        <IonLabel>Logout</IonLabel>
+                        <IonLabel color="tertiary">Logout</IonLabel>
                     </IonItem>
                 </IonList>
             </>) : (<>
                 <IonList>
                     <IonItem>
-                        <Link to="/login">Login</Link>
+                        <Link color="tertiary" to="/login">Login</Link>
                     </IonItem>
                     <IonItem>
-                        <Link to="/register">Create Account</Link>
+                        <Link color="tertiary" to="/register">Create Account</Link>
                     </IonItem>
                 </IonList>
             </>) }

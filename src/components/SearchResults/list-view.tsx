@@ -1,21 +1,106 @@
-import React from 'react';
-import { IonList, IonItem, IonLabel, IonCard } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import { IonList, IonItem, IonLabel, IonCard, IonImg, IonIcon } from '@ionic/react';
+import { Place } from '../../../functions/src/searchFunctions';
+import { getApiKey } from '../../services/apiService';
+import { heartOutline, heart, star, starOutline } from 'ionicons/icons';
+import { addToFavorites, getUserFavorites, removeFromFavorites } from '../../services/userService';
+
 
 interface ListViewProps {
-  places: any[];
+  places: Place[];
+  isAuthenticated: boolean;
+  userId?:string;
 }
 
-const ListView: React.FC<ListViewProps> = ({ places }) => (
+const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId }) => {
+    
+    const [favorites, setFavorites] = useState<string[]>([]);
+    const [apiKey, setApiKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchApiKey = async () => {
+      try {
+        const key = await getApiKey();
+        setApiKey(key);
+      } catch (error) {
+        console.error('Error fetching API key:', error);
+      }
+    };
+
+    fetchApiKey();
+    if (isAuthenticated && userId) {
+        const fetchFavorites = async () => {
+          try {
+            const userFavorites = await getUserFavorites(userId);
+            setFavorites(userFavorites);
+          } catch (error) {
+            console.error('Error fetching user favorites:', error);
+          }
+        };
+  
+        fetchFavorites();
+      }
+  }, [isAuthenticated, userId]);
+
+  const getPhotoUrl = (photoReference: string, maxWidth: number, maxHeight: number) => {
+    if (!apiKey) return '/images/forest-tree.png';
+    return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${maxWidth}&maxheight=${maxHeight}&photoreference=${photoReference}&key=${apiKey}`;
+  };
+
+  const toggleFavorite = async (placeId: string) => {
+    if (!isAuthenticated || !userId) return;
+
+    const isFavorite = favorites.includes(placeId);
+    try {
+      if (isFavorite) {
+        await removeFromFavorites(userId, placeId);
+        setFavorites(favorites.filter(id => id !== placeId));
+      } else {
+        await addToFavorites(userId, placeId);
+        setFavorites([...favorites, placeId]);
+      }
+    } catch (error) {
+      console.error('Error updating favorite status:', error);
+    }
+  };
+
+
+return(
+
   <IonList className='scrolling-list'>
     {places.map((place) => (
-      <IonCard className='ion-padding' key={place.place_id} routerLink={`/place/${place.place_id}`}>
-        <IonLabel>
-          <h2>{place.name}</h2>
-          <p>{place.vicinity}</p>
-        </IonLabel>
+      <IonCard className='ion-padding flex' key={place.place_id} routerLink={`/place/${place.place_id}`}>
+        <div className="flex gap-16">
+            <IonImg className="list-item-img" src={place.photos && place.photos.length > 0 ? getPhotoUrl(place.photos[0].photo_reference, 50, 50)  : '/images/forest-tree.png'} alt={place.name} />
+            <IonLabel>
+                <h2>{place.name}</h2>
+                <p>{place.vicinity}</p>
+            </IonLabel>
+            <div className='flex flex-column items-end justify-between favorite-review'>
+                <div className='flex ion-align-items-center gap-4'>
+                    {place.rating ?(
+                        <>
+                            <span>{place.rating}</span>
+                            <IonIcon color='warning' icon={star} ios={star} md={star}/>
+                        </>
+                    ) : <IonIcon icon={starOutline}/>}
+                </div>
+                {isAuthenticated && (
+                <IonIcon
+                  style={{zIndex: 2}}
+                  icon={favorites.includes(place.place_id) ? heart : heartOutline}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(place.place_id);
+                  }}
+                />
+              )}
+            </div>
+        </div>
       </IonCard>
     ))}
   </IonList>
-);
+)
+};
 
 export default ListView;

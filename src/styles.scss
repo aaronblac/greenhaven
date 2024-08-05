@@ -146,12 +146,10 @@ input {
 
 // Search 
 .searchbar-input.sc-ion-searchbar-md {
-    padding: .425rem;
+    padding: .425rem 2rem;
     border: 2px solid $primary;
     border-radius:5px;
-    padding-left: 1.75rem;;
-    input{
-    }
+    
 }
 
 .searchbar-search-icon.sc-ion-searchbar-md{
@@ -203,13 +201,37 @@ div.box {
         flex-direction: column;
     }
 }
+.items-end{
+    align-items: end;
+}
+
+.justify-between{
+    justify-content: space-between;
+}
 
 .gap-16{
     gap:1rem;
 }
+.gap-8{
+    gap:0.5rem;
+}
+.gap-4{
+    gap:0.25rem;
+}
+.text-center{
+    text-align: center;
+}
 
 hr{
     margin: 2rem 0;
+}
+
+.my-16{
+    margin: 1rem 0;
+}
+
+.my-24{
+    margin: 1.5rem 0;
 }
 
 .main-home-tree{
@@ -234,4 +256,25 @@ ion-card{
 .scrolling-list{
     overflow-y:auto;
     max-height: calc(100% - 11rem);
+}
+ion-ripple-effect {
+    color: transparent;
+}
+.ion-searchbar-clear-button .searchbar-clear-button {
+    display: none !important;
+  }
+
+.list-item-img{
+    min-width: 5rem;
+    max-width: 5rem;
+}
+.page-container{
+    margin-top:5rem;
+    max-width: 40rem;
+    margin:5rem auto 0rem;
+    height: calc(100dvh - 10rem)
+}
+
+.favorite-review{
+    flex: 1 1 auto;
 }

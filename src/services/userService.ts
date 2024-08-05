@@ -1,42 +1,44 @@
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../utility/firebaseConfig";
 
-export const getUserFavorites = async(userId: string) => {
-    try{
-        const userDoc = await getDoc(doc(db,'users', userId));
-        if (userDoc.exists()){
-            return userDoc.data().favorites;
-        } else {
-            throw new Error('User not found'); 
-        }
-    } catch (error) {
-        throw error;
-    }
-}
+import axios from 'axios';
 
-export const addToFavorites = async(userId: string, placeId: string) => {
-    try{
-        const userRef = doc(db, 'users', userId);
-        await updateDoc(userRef, {
-            favorites: arrayUnion(placeId)
-        });
-    } catch (error) {
-        throw error;
-    }
-}
+const BASE_URL = 'https://us-central1-greenhaven-d11b5.cloudfunctions.net/api';
 
-export const getRecentSearches = async (userId: string) => {
-    try{
-        const userDoc = await getDoc(doc(db, 'users', userId ));
-        if (userDoc.exists()){
-            return userDoc.data().lastPlacesLookedAt
-        } else {
-            throw new Error('User not found');
-        }
+export const getUserFavorites = async (userId: string): Promise<string[]> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/getUserFavorites`, { params: { userId } });
+    return response.data.favorites || [];
+  } catch (error) {
+    throw new Error('Error fetching user favorites');
+  }
+};
+
+export const addToFavorites = async (userId: string, placeId: string) => {
+  try {
+    await axios.post(`${BASE_URL}/addToFavorites`, { userId, placeId });
+  } catch (error) {
+    throw new Error('Error adding to favorites');
+  }
+};
+
+export const removeFromFavorites = async (userId: string, placeId: string) => {
+  try {
+    await axios.post(`${BASE_URL}/removeFromFavorites`, { userId, placeId });
+  } catch (error) {
+    throw new Error('Error removing from favorites');
+  }
+};
+
+
+export const getRecentSearches = async (userId: string): Promise<string[]> => {
+    try {
+        const response = await axios.get(`${BASE_URL}/getRecentSearches`, { params: { userId } });
+        return response.data.recentSearches || [];
     } catch (error) {
-        throw error;
+        throw new Error('Error fetching recent searches');
     }
-}
+};
 
 export const addRecentSearch = async (userId: string, placeId: string) => {
     try{

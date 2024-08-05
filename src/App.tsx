@@ -60,6 +60,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.scss';
 import TopMenu from './components/TopMenu/top-menu';
+import PlaceDetail from './pages/PlaceDetails';
 
 setupIonicReact();
 
@@ -99,6 +100,9 @@ const App: React.FC = () => (
           <Route exact path="/ForgotPassword">
             <ForgotPassword />
           </Route>
+          <Route exact path="/place">
+            <PlaceDetail />
+          </Route>
           <Route exact path="/">
             <Redirect to="/home" />
           </Route>
@@ -107,14 +111,6 @@ const App: React.FC = () => (
           <IonTabButton tab="home" href="/home">
             <IonIcon aria-hidden="true" icon={home} />
             <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="Login" href="/Login">
-            <IonIcon aria-hidden="true" icon={ellipse} />
-            <IonLabel>Login</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="register" href="/register">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Register</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>

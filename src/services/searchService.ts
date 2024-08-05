@@ -12,7 +12,7 @@ export const searchByAddress = async (address: string, radius: number, userId: s
             type,
         }
     });
-    return response;
+    return response.data;
   } catch (error) {
     console.error('Error searching by address:', error);
     throw error;
@@ -30,7 +30,7 @@ export const searchByLocation = async (latitude: number, longitude: number, radi
             type,
         }
     });
-    return response;
+    return response.data;
   } catch (error) {
     console.error('Error searching by location:', error);
     throw error;

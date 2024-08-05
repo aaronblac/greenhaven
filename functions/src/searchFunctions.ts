@@ -1,4 +1,15 @@
 /* eslint-disable max-len */
+export interface Place {
+    place_id: string;
+    name: string;
+    vicinity: string;
+    description?: string;
+    rating?: string;
+    photos?: Array<{
+        photo_reference: string;
+      }>;
+  }
+
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import axios from "axios";
@@ -48,7 +59,26 @@ export const searchByAddress = functions.https.onRequest(async (req, res) => {
       },
     });
 
-    const places = placesResponse.data.results;
+    const places: Place[] = placesResponse.data.results;
+
+    // Fetch additional details for each place
+    for (const place of places) {
+      const detailsResponse = await axios.get("https://maps.googleapis.com/maps/api/place/details/json", {
+        params: {
+          place_id: place.place_id,
+          key: GOOGLE_API_KEY,
+        },
+      });
+      const details = detailsResponse.data.result;
+      place.description = details.description || details.formatted_address || "";
+      place.rating = details.reviews.rating;
+      place.photos = details.photos ?
+        details.photos.map((photo: unknown) => {
+          const photoObj = photo as { photo_reference: string };
+          return {photo_reference: photoObj.photo_reference};
+        }) :
+        [];
+    }
 
     // Update user's recent searches in Firestore
     if (userId) {
@@ -96,7 +126,26 @@ export const searchByLocation = functions.https.onRequest(async (req, res) => {
       },
     });
 
-    const places = placesResponse.data.results;
+    const places: Place[] = placesResponse.data.results;
+
+    // Fetch additional details for each place
+    for (const place of places) {
+      const detailsResponse = await axios.get("https://maps.googleapis.com/maps/api/place/details/json", {
+        params: {
+          place_id: place.place_id,
+          key: GOOGLE_API_KEY,
+        },
+      });
+      const details = detailsResponse.data.result;
+      place.description = details.description || details.formatted_address || "";
+      place.rating = details.reviews.rating;
+      place.photos = details.photos ?
+        details.photos.map((photo: unknown) => {
+          const photoObj = photo as { photo_reference: string };
+          return {photo_reference: photoObj.photo_reference};
+        }) :
+        [];
+    }
 
     // Update user's recent searches in Firestore
     if (userId) {
