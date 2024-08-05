@@ -1,18 +1,19 @@
 /* eslint-disable max-len */
+
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
+import axios from "axios";
+
 export interface Place {
     place_id: string;
     name: string;
     vicinity: string;
     description?: string;
-    rating?: string;
+    rating?: number;
     photos?: Array<{
         photo_reference: string;
       }>;
   }
-
-import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
-import axios from "axios";
 
 const GOOGLE_API_KEY = functions.config().google.api_key;
 
@@ -71,7 +72,7 @@ export const searchByAddress = functions.https.onRequest(async (req, res) => {
       });
       const details = detailsResponse.data.result;
       place.description = details.description || details.formatted_address || "";
-      place.rating = details.reviews.rating;
+      place.rating = details.rating;
       place.photos = details.photos ?
         details.photos.map((photo: unknown) => {
           const photoObj = photo as { photo_reference: string };
@@ -138,7 +139,7 @@ export const searchByLocation = functions.https.onRequest(async (req, res) => {
       });
       const details = detailsResponse.data.result;
       place.description = details.description || details.formatted_address || "";
-      place.rating = details.reviews.rating;
+      place.rating = details.rating;
       place.photos = details.photos ?
         details.photos.map((photo: unknown) => {
           const photoObj = photo as { photo_reference: string };

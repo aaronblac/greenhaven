@@ -80,7 +80,7 @@ return(
                 <div className='flex ion-align-items-center gap-4'>
                     {place.rating ?(
                         <>
-                            <span>{place.rating}</span>
+                            <span>{place.rating.toFixed(1)}</span>
                             <IonIcon color='warning' icon={star} ios={star} md={star}/>
                         </>
                     ) : <IonIcon icon={starOutline}/>}
