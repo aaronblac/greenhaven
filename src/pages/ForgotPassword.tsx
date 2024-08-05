@@ -58,30 +58,19 @@ const ForgotPasswordPage: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot='start'>
-            <IonButton size='large' slot='icon-only' fill='clear' routerLink='/'>
-              <IonIcon icon={arrowBack} />
-            </IonButton>
-          </IonButtons>
-          <IonTitle>Return to Login</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+    <IonPage className='page-container'>
       <IonContent className='ion-padding'>
         <IonGrid className='form'>
           <IonRow>
-            <IonCol size='12'>
-              <IonText className='ion-text-center'>Enter email below to reset password.</IonText>
+            <IonCol className='text-center' size='12'>
+              <IonText>Enter email below to reset password.</IonText>
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol size='12'>
               <IonInput
                 type='email'
-                labelPlacement='floating'
-                label='Email'
+                className='input-field'
                 placeholder='Enter Email Address'
                 value={emailVerification}
                 onIonChange={e => setEmailVerification(e.detail.value!)}
@@ -93,6 +82,9 @@ const ForgotPasswordPage: React.FC = () => {
               <IonButton shape='round' expand='block' className='button primary' onClick={handleForgotPassword}>Send Verification Email</IonButton>
             </IonCol>
           </IonRow>
+              <div className='ion-text-start'>
+                <IonButton fill='clear' color={'tertiary'} routerLink='/Login'>Back to Login</IonButton>
+              </div>
           <IonToast
             isOpen={invalid}
             onDidDismiss={() => setInvalid(false)}

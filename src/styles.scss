@@ -133,7 +133,9 @@ IonButton,
     }
 }
 
-
+[expand="block"]{
+    width:100%;
+}
 /* Form Elements */
 input {
     line-height: normal;
@@ -144,11 +146,16 @@ input {
     margin-bottom: .25rem;
 }
 
+.native-input .sc-ion-input-md{
+    padding: .425rem 2rem;
+    border: 2px solid $primary;
+    border-radius:0.5rem;
+}
 // Search 
 .searchbar-input.sc-ion-searchbar-md {
     padding: .425rem 2rem;
     border: 2px solid $primary;
-    border-radius:5px;
+    border-radius:0.5rem;
     
 }
 

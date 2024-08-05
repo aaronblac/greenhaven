@@ -39,11 +39,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-        </IonToolbar>
-      </IonHeader>
+    <IonPage className='page-container'>
       <IonContent className='form ion-padding'>
         <IonTitle className='ion-text-center'>Login</IonTitle>
         <IonInput

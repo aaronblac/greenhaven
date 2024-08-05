@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonPage, IonHeader, IonContent, IonToolbar, IonTitle, IonInput, IonButton, IonToast } from '@ionic/react';
+import { IonPage, IonHeader, IonContent, IonToolbar, IonTitle, IonInput, IonButton, IonToast, IonInputPasswordToggle } from '@ionic/react';
 import '../styles.scss';
 import { useHistory } from 'react-router';
 import { registerUser } from '../services/authService';
@@ -44,11 +44,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-        </IonToolbar>
-      </IonHeader>
+    <IonPage className='page-container'>
       <IonContent className='ion-padding'>
         <IonTitle className='ion-text-center'>Register</IonTitle>
         <IonInput
@@ -70,14 +66,18 @@ const Register: React.FC = () => {
           value={password}
           onIonChange={(e) => setPassword(e.detail.value!)}
           type="password"
-        />
+        >
+          <IonInputPasswordToggle color={'medium'} slot='end'/>
+        </IonInput>
         <IonInput
           
           placeholder="Confirm Password"
           value={confirmPassword}
           onIonChange={(e) => setConfirmPassword(e.detail.value!)}
           type="password"
-        />
+        >
+          <IonInputPasswordToggle color={'medium'} slot='end'/>
+        </IonInput>
         <IonToast
           cssClass='toast-warning'
           position='middle'

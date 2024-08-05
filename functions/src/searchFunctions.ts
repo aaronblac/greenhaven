@@ -17,12 +17,11 @@ export interface Place {
 
 const GOOGLE_API_KEY = functions.config().google.api_key;
 
-export const getApiKey = functions.https.onRequest((req, res) => {
-  const GOOGLE_API_KEY = functions.config().google.api_key;
+export const getApiKey = functions.https.onRequest((req: functions.https.Request, res: functions.Response) => {
   res.status(200).send({apiKey: GOOGLE_API_KEY});
 });
 
-export const searchByAddress = functions.https.onRequest(async (req, res) => {
+export const searchByAddress = functions.https.onRequest(async (req: functions.https.Request, res: functions.Response) => {
   const address = req.query.address as string;
   const radius = parseFloat(req.query.radius as string);
   const userId = req.query.userId as string;
@@ -103,7 +102,7 @@ export const searchByAddress = functions.https.onRequest(async (req, res) => {
   }
 });
 
-export const searchByLocation = functions.https.onRequest(async (req, res) => {
+export const searchByLocation = functions.https.onRequest(async (req: functions.https.Request, res: functions.Response) => {
   const latitude = parseFloat(req.query.latitude as string);
   const longitude = parseFloat(req.query.longitude as string);
   const radius = parseFloat(req.query.radius as string);
