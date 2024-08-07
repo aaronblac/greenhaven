@@ -1,6 +1,28 @@
 /* eslint-disable max-len */
 
+export interface Geometry {
+    location: {
+        lat: number;
+        lng: number;
+    };
+    viewport?: {
+        northeast: {
+            lat: number;
+            lng: number;
+        };
+        southwest: {
+            lat: number;
+            lng: number;
+        };
+    };
+}
+
 export interface Place {
+    formatted_phone_number: string | undefined;
+    geometry: Geometry;
+    website?: string;
+    url: string;
+    formatted_address: string | undefined;
     place_id: string;
     name: string;
     vicinity: string;
@@ -78,6 +100,9 @@ export const searchByAddress = functions.https.onRequest(async (req: functions.h
           return {photo_reference: photoObj.photo_reference};
         }) :
         [];
+      place.website = details.website;
+      place.url = details.url;
+      place.formatted_phone_number = details.formatted_phone_number;
     }
 
     // Update user's recent searches in Firestore
@@ -145,6 +170,9 @@ export const searchByLocation = functions.https.onRequest(async (req: functions.
           return {photo_reference: photoObj.photo_reference};
         }) :
         [];
+      place.website = details.website;
+      place.url = details.url;
+      place.formatted_phone_number = details.formatted_phone_number;
     }
 
     // Update user's recent searches in Firestore

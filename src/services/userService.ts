@@ -7,7 +7,7 @@ const BASE_URL = 'https://us-central1-greenhaven-d11b5.cloudfunctions.net/api';
 
 export const getUserFavorites = async (userId: string): Promise<string[]> => {
   try {
-    const response = await axios.get(`${BASE_URL}/getUserFavorites`, { params: { userId } });
+    const response = await axios.get(`${BASE_URL}/favorites`, { params: { userId } });
     return response.data.favorites || [];
   } catch (error) {
     throw new Error('Error fetching user favorites');
@@ -16,7 +16,7 @@ export const getUserFavorites = async (userId: string): Promise<string[]> => {
 
 export const addToFavorites = async (userId: string, placeId: string) => {
   try {
-    await axios.post(`${BASE_URL}/addToFavorites`, { userId, placeId });
+    await axios.post(`${BASE_URL}/favorites`, { userId, placeId });
   } catch (error) {
     throw new Error('Error adding to favorites');
   }

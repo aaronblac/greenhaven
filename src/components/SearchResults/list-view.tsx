@@ -4,6 +4,7 @@ import { Place } from '../../../functions/src/searchFunctions';
 import { getApiKey } from '../../services/apiService';
 import { heartOutline, heart, star, starOutline } from 'ionicons/icons';
 import { addToFavorites, getUserFavorites, removeFromFavorites } from '../../services/userService';
+import { useHistory } from 'react-router';
 
 
 interface ListViewProps {
@@ -16,9 +17,10 @@ const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId }) 
     
     const [favorites, setFavorites] = useState<string[]>([]);
     const [apiKey, setApiKey] = useState<string | null>(null);
+    const history = useHistory();
 
-  useEffect(() => {
-    const fetchApiKey = async () => {
+    useEffect(() => {
+        const fetchApiKey = async () => {
       try {
         const key = await getApiKey();
         setApiKey(key);
@@ -33,6 +35,7 @@ const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId }) 
           try {
             const userFavorites = await getUserFavorites(userId);
             setFavorites(userFavorites);
+            console.log(userFavorites);
           } catch (error) {
             console.error('Error fetching user favorites:', error);
           }
@@ -64,12 +67,16 @@ const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId }) 
     }
   };
 
+  const handleCardClick = (place: Place) => {
+    history.push(`/place/${place.place_id}`, { place });
+  };
+
 
 return(
 
   <IonList className='scrolling-list'>
     {places.map((place) => (
-      <IonCard className='ion-padding flex' key={place.place_id} routerLink={`/place/${place.place_id}`}>
+      <IonCard className='ion-padding flex' key={place.place_id} onClick={() => handleCardClick(place)}>
         <div className="flex gap-16">
             <IonImg className="list-item-img" src={place.photos && place.photos.length > 0 ? getPhotoUrl(place.photos[0].photo_reference, 50, 50)  : '/images/forest-tree.png'} alt={place.name} />
             <IonLabel>
@@ -88,7 +95,7 @@ return(
                 {isAuthenticated && (
                 <IonIcon
                   style={{zIndex: 2}}
-                  icon={favorites.includes(place.place_id) ? heart : heartOutline}
+                  icon={favorites.includes(place.place_id) ? heart : ""}
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleFavorite(place.place_id);

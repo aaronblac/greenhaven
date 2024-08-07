@@ -211,6 +211,10 @@ div.box {
     align-items: end;
 }
 
+.items-center{
+    align-items: center;
+}
+
 .justify-between{
     justify-content: space-between;
 }
@@ -283,4 +287,14 @@ ion-ripple-effect {
 
 .favorite-review{
     flex: 1 1 auto;
+}
+
+.c-tertiary{
+    color: $secondary;
+}
+.place-images{
+    display:grid;
+    grid-template-columns:auto auto;
+    justify-content:center;
+    gap: 0.25rem;
 }

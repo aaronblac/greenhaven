@@ -3,6 +3,7 @@ import { IonPage, IonHeader, IonContent, IonToolbar, IonTitle, IonInput, IonButt
 import { useHistory } from 'react-router';
 import axios from 'axios';
 import { loginUser } from '../services/authService';
+import { Link } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -65,12 +66,12 @@ const Login: React.FC = () => {
           onDidDismiss={() => setShowToast(false)}
         />
         <IonButton expand='block' className='button primary' onClick={handleLogin}>Login</IonButton>
-        <div className='ion-justify-content-between flex'>
+        <div className='justify-between flex'>
           <div className='ion-text-start'>
-            <IonButton fill='clear' color={'tertiary'} routerLink='/Register'>Create Account</IonButton>
+            <Link className="c-tertiary" to='/Register'>Create Account</Link>
           </div>
           <div className='ion-text-end'>
-            <IonButton fill='clear' color={'tertiary'} routerLink='/ForgotPassword'>Forgot Password</IonButton>
+            <Link className='c-tertiary' to='/ForgotPassword'>Forgot Password</Link>
           </div>
         </div>
       </IonContent>

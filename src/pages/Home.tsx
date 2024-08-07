@@ -9,14 +9,16 @@ import CustomSearchbar from '../components/SearchBar/search-bar';
 import { Place } from '../../functions/src/searchFunctions';
 import { getApiKey } from '../services/apiService';
 
+interface HomeProps {
+  isAuthenticated: boolean;
+  userId?: string;
+}
 
-const Home: React.FC = () => {
+const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
   const [searchText, setSearchText] = useState('');
   const [radius, setRadius] = useState(8046.72);//default meters (5mi)
   const [results, setResults] = useState<Place[]>([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-  const [user, setUser] = useState<any>(null);
   const [view, setView] = useState<string>('map');
   const [selectedType, setSelectedType] = useState<string>('');
   const [apiKey, setApiKey] = useState<string | null>(null);
@@ -34,19 +36,6 @@ const Home: React.FC = () => {
     fetchApiKey();
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        setIsAuthenticated(true);
-        setUser(user);
-      } else {
-        setIsAuthenticated(false);
-        setUser(null);
-      }
-    });
-    return () => unsubscribe();
-  }, []);
-
   const debounce = (func: Function, wait: number) => {
     let timeout: NodeJS.Timeout;
     return (...args: any[]) => {
@@ -62,9 +51,9 @@ const Home: React.FC = () => {
     }
   
     try {
-      const userId = isAuthenticated ? user.uid : '';
-      console.log("Searching with address:", searchText, "radius:", radius, "userId:", userId);
-      const response = await searchByAddress(searchText, radius, userId, selectedType);
+      const userIdParam = userId || '';
+      console.log("Searching with address:", searchText, "radius:", radius, "userId:", userIdParam);
+      const response = await searchByAddress(searchText, radius, userIdParam, selectedType);
       if (response) {
         setResults(response);
         setHasSearched(true);
@@ -76,7 +65,7 @@ const Home: React.FC = () => {
     }
   };
 
-  const debouncedHandleSearch = useCallback(debounce(handleSearch, 300), [searchText, radius, isAuthenticated, user]);
+  const debouncedHandleSearch = useCallback(debounce(handleSearch, 300), [searchText, radius, isAuthenticated, userId]);
 
   const handleSearchInputChange = (e: CustomEvent) => {
     setSearchText(e.detail.value!);
@@ -94,9 +83,9 @@ const Home: React.FC = () => {
         const { latitude, longitude } = position.coords;
         setSearchText(`${latitude},${longitude}`);
         try {
-          const userId = user ? user.uid : '';
-          console.log("Searching with geolocation:", latitude, longitude, "radius:", radius, "userId:", userId, "type:", selectedType);
-          const response = await searchByLocation(latitude, longitude, radius, userId, selectedType);
+          const userIdParam = userId || '';
+          console.log("Searching with geolocation:", latitude, longitude, "radius:", radius, "userId:", userIdParam, "type:", selectedType);
+          const response = await searchByLocation(latitude, longitude, radius, userIdParam, selectedType);
           if (response) {
             setResults(response);
             setHasSearched(true);
@@ -161,7 +150,7 @@ const Home: React.FC = () => {
                 {view === 'map' ? (
                   <MapView places={results} />
                 ) : (
-                  <ListView places={results} isAuthenticated={isAuthenticated} />
+                  <ListView places={results} isAuthenticated={isAuthenticated} userId={userId}/>
                 )}
               </>
             ) : (

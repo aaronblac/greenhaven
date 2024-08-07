@@ -8,7 +8,6 @@ import {
   IonHeader,
   IonIcon,
   IonImg,
-  IonItem,
   IonLabel,
   IonMenu,
   IonMenuButton,
@@ -22,7 +21,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, home, square, triangle } from 'ionicons/icons';
+import { home } from 'ionicons/icons';
 // Pages
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -61,61 +60,78 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.scss';
 import TopMenu from './components/TopMenu/top-menu';
 import PlaceDetail from './pages/PlaceDetails';
+import { useEffect, useState } from 'react';
+import { auth } from './utility/firebaseConfig';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  
-  <IonApp>
-    <IonReactRouter>
-    <IonMenu side="end" contentId="main-content">
-        <TopMenu />
-      </IonMenu>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="end">
-            <IonMenuButton />
-          </IonButtons>
-          <IonGrid>
-            <IonRow className="ion-align-items-center">
-              <IonImg src='/images/forest-tree.png' alt='Tree' className="menu-tree"/>
-              <IonTitle className='ion-no-padding'>GreenHaven</IonTitle>
-            </IonRow>
-          
-          
-          </IonGrid>
-        </IonToolbar>
-      </IonHeader>
-      <IonTabs className='ion-padding'>
-        <IonRouterOutlet id="main-content">
-          <Route exact path="/home" >
-            <Home />
-          </Route>
-          <Route exact path="/Login">
-            <Login />
-          </Route>
-          <Route exact path="/register">
-            <Register />
-          </Route>
-          <Route exact path="/ForgotPassword">
-            <ForgotPassword />
-          </Route>
-          <Route exact path="/place">
-            <PlaceDetail />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon aria-hidden="true" icon={home} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        setIsAuthenticated(true);
+        setUser(user);
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return(
+    <IonApp>
+      <IonReactRouter>
+        <IonMenu side="end" contentId="main-content">
+          <TopMenu />
+        </IonMenu>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="end">
+              <IonMenuButton />
+            </IonButtons>
+            <IonGrid>
+              <IonRow className="flex items-center gap-8">
+                <IonImg src='/images/forest-tree.png' alt='Tree' className="menu-tree"/>
+                <IonTitle className='ion-no-padding'>GreenHaven</IonTitle>
+              </IonRow>
+            </IonGrid>
+          </IonToolbar>
+        </IonHeader>
+        <IonTabs className='ion-padding'>
+          <IonRouterOutlet id="main-content">
+            <Route exact path="/home" >
+              <Home  isAuthenticated={isAuthenticated} userId={user?.uid}/>
+            </Route>
+            <Route exact path="/Login">
+              <Login />
+            </Route>
+            <Route exact path="/register">
+              <Register />
+            </Route>
+            <Route exact path="/ForgotPassword">
+              <ForgotPassword />
+            </Route>
+            <Route exact path="/place/:placeId">
+              <PlaceDetail  isAuthenticated={isAuthenticated} userId={user?.uid}/>
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="home" href="/home">
+              <IonIcon aria-hidden="true" icon={home} />
+              <IonLabel>Home</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 export default App;
