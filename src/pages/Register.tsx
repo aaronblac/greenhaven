@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonPage, IonHeader, IonContent, IonToolbar, IonTitle, IonInput, IonButton, IonToast, IonInputPasswordToggle } from '@ionic/react';
+import { IonPage, IonHeader, IonContent, IonToolbar, IonTitle, IonInput, IonButton, IonToast, IonInputPasswordToggle, IonGrid, IonRow } from '@ionic/react';
 import '../styles.scss';
 import { useHistory } from 'react-router';
 import { registerUser } from '../services/authService';
@@ -46,37 +46,50 @@ const Register: React.FC = () => {
   return (
     <IonPage className='page-container'>
       <IonContent className='ion-padding'>
-        <IonTitle className='text-center'>Register</IonTitle>
-        <IonInput
-          placeholder="Username"
-          value={username}
-          onIonChange={(e) => setUsername(e.detail.value!)}
-          type="text"
-        />
-        <IonInput
-          placeholder="Email"
-          value={email}
-          onIonChange={(e) => setEmail(e.detail.value!)}
-          type="email"
-        />
-        <IonInput
-          
-          placeholder="Password"
-          value={password}
-          onIonChange={(e) => setPassword(e.detail.value!)}
-          type="password"
-        >
-          <IonInputPasswordToggle color={'medium'} slot='end'/>
-        </IonInput>
-        <IonInput
-          
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onIonChange={(e) => setConfirmPassword(e.detail.value!)}
-          type="password"
-        >
-          <IonInputPasswordToggle color={'medium'} slot='end'/>
-        </IonInput>
+        <IonGrid className='flex flex-column gap-8'>
+          <IonRow>
+            <IonTitle className='text-center'>Register</IonTitle>
+          </IonRow>
+          <IonRow>
+            <IonInput
+              placeholder="Username"
+              value={username}
+              onIonChange={(e) => setUsername(e.detail.value!)}
+              type="text"
+            />
+          </IonRow>
+          <IonRow>
+            <IonInput
+              placeholder="Email"
+              value={email}
+              onIonChange={(e) => setEmail(e.detail.value!)}
+              type="email"
+            />
+          </IonRow>
+          <IonRow>
+            <IonInput
+              placeholder="Password"
+              value={password}
+              onIonChange={(e) => setPassword(e.detail.value!)}
+              type="password"
+            >
+              <IonInputPasswordToggle color={'medium'} slot='end'/>
+            </IonInput>
+          </IonRow>
+          <IonRow>
+            <IonInput
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onIonChange={(e) => setConfirmPassword(e.detail.value!)}
+              type="password"
+            >
+              <IonInputPasswordToggle color={'medium'} slot='end'/>
+            </IonInput>
+          </IonRow>
+          <IonRow>
+            <IonButton expand='block' className='button primary' onClick={handleRegister}>Register</IonButton>
+          </IonRow>
+        </IonGrid>
         <IonToast
           cssClass='toast-warning'
           position='middle'
@@ -85,7 +98,6 @@ const Register: React.FC = () => {
           duration={3000}
           onDidDismiss={() => setShowToast(false)}
         />
-        <IonButton expand='block' className='button primary' onClick={handleRegister}>Register</IonButton>
       </IonContent>
     </IonPage>
   );

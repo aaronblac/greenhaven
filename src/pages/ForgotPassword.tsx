@@ -82,9 +82,9 @@ const ForgotPasswordPage: React.FC = () => {
               <IonButton shape='round' expand='block' className='button primary' onClick={handleForgotPassword}>Send Verification Email</IonButton>
             </IonCol>
           </IonRow>
-              <div className='ion-text-start'>
-                <IonButton fill='clear' color={'tertiary'} routerLink='/Login'>Back to Login</IonButton>
-              </div>
+          <div className='ion-text-start'>
+            <IonButton fill='clear' color={'tertiary'} routerLink='/Login'>Back to Login</IonButton>
+          </div>
           <IonToast
             isOpen={invalid}
             onDidDismiss={() => setInvalid(false)}
@@ -94,7 +94,7 @@ const ForgotPasswordPage: React.FC = () => {
           <IonToast
             isOpen={success}
             onDidDismiss={() => setSuccess(false)}
-            message='Password reset email sent. Email may take 5-10 minutes. If you do not receive contact your Stock & Associates IT Admin.'
+            message='Password reset email sent. Email may take 5-10 minutes.'
             duration={5000}
           />
         </IonGrid>

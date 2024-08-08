@@ -62,6 +62,7 @@ import TopMenu from './components/TopMenu/top-menu';
 import PlaceDetail from './pages/PlaceDetails';
 import { useEffect, useState } from 'react';
 import { auth } from './utility/firebaseConfig';
+import WriteReview from './pages/WriteReview';
 
 setupIonicReact();
 
@@ -83,7 +84,7 @@ const App: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
-  return(
+  return (
     <IonApp>
       <IonReactRouter>
         <IonMenu side="end" contentId="main-content">
@@ -96,7 +97,7 @@ const App: React.FC = () => {
             </IonButtons>
             <IonGrid>
               <IonRow className="flex items-center gap-8">
-                <IonImg src='/images/forest-tree.png' alt='Tree' className="menu-tree"/>
+                <IonImg src='/images/forest-tree.png' alt='Tree' className="menu-tree" />
                 <IonTitle className='ion-no-padding'>GreenHaven</IonTitle>
               </IonRow>
             </IonGrid>
@@ -105,7 +106,7 @@ const App: React.FC = () => {
         <IonTabs className='ion-padding'>
           <IonRouterOutlet id="main-content">
             <Route exact path="/home" >
-              <Home  isAuthenticated={isAuthenticated} userId={user?.uid}/>
+              <Home isAuthenticated={isAuthenticated} userId={user?.uid} />
             </Route>
             <Route exact path="/Login">
               <Login />
@@ -117,7 +118,10 @@ const App: React.FC = () => {
               <ForgotPassword />
             </Route>
             <Route exact path="/place/:placeId">
-              <PlaceDetail  isAuthenticated={isAuthenticated} userId={user?.uid}/>
+              <PlaceDetail isAuthenticated={isAuthenticated} userId={user?.uid} />
+            </Route>
+            <Route exact path="/write-review/:placeId">
+              <WriteReview isAuthenticated={isAuthenticated} userId={user?.uid}/>
             </Route>
             <Route exact path="/">
               <Redirect to="/home" />

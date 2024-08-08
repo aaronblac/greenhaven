@@ -15,11 +15,13 @@ import {
   getUserFavorites,
   addUserFavorite,
   getUserRecentSearches,
+  removeUserFavorite,
 } from "./userFunctions";
 import {
   searchByAddress,
   getApiKey,
-  searchByLocation} from "./searchFunctions";
+  searchByLocation,
+  getPlaceDetails} from "./searchFunctions";
 
 const app = express();
 app.use(cors({origin: true}));
@@ -33,9 +35,11 @@ app.get("/reviews", getReviewsByPlaceId);
 app.get("/user-reviews", getUserReviews);
 app.get("/favorites", getUserFavorites);
 app.post("/favorites", addUserFavorite);
+app.post("/remove-favorite", removeUserFavorite);
 app.get("/recent-searches", getUserRecentSearches);
 app.get("/search-address", searchByAddress);
 app.get("/search-location", searchByLocation);
+app.get("/place-details", getPlaceDetails);
 app.get("/api-key", getApiKey);
 
 export const api = functions.https.onRequest(app);

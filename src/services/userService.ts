@@ -24,7 +24,7 @@ export const addToFavorites = async (userId: string, placeId: string) => {
 
 export const removeFromFavorites = async (userId: string, placeId: string) => {
   try {
-    await axios.post(`${BASE_URL}/removeFromFavorites`, { userId, placeId });
+    await axios.post(`${BASE_URL}/remove-favorite`, { userId, placeId });
   } catch (error) {
     throw new Error('Error removing from favorites');
   }

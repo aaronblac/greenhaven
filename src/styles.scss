@@ -43,6 +43,10 @@ h2 {
 h3 {
     font-size: 1.25rem;
 }
+
+.full{
+    width:100%;
+}
 .bg{
     &-primary{
         background-color:$primary;
@@ -150,11 +154,20 @@ input {
     margin-bottom: .25rem;
 }
 
-.native-input .sc-ion-input-md{
-    padding: .425rem 2rem;
+.sc-ion-input-md-h {
+    --padding-top: .425rem;
+    --padding-bottom: .425rem;
+    --padding-end: 2rem;
+    --padding-start: 2rem;
     border: 2px solid $primary;
     border-radius:0.5rem;
 }
+
+ion-input-password-toggle{
+    position:absolute;
+    right: -2rem;
+}
+
 // Search 
 .searchbar-input.sc-ion-searchbar-md {
     padding: .425rem 2rem;
@@ -213,6 +226,12 @@ div.box {
 
 .items-center{
     align-items: center;
+}
+.items-start{
+    align-items: start;
+}
+.items-baseline{
+    align-items: baseline;
 }
 
 .justify-between{
@@ -297,4 +316,12 @@ ion-ripple-effect {
     grid-template-columns:auto auto;
     justify-content:center;
     gap: 0.25rem;
+}
+
+.review{
+    padding: 0.5rem;
+}
+
+.mar-bottom-4{
+    margin-bottom: 0.25rem;
 }

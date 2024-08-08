@@ -35,11 +35,6 @@ const TopMenu: React.FC = () => {
         <>
         <IonHeader>
             <IonToolbar>
-                <IonButtons slot="start">
-                    <IonMenuButton>
-                        {/* <IonIcon icon={close} /> */}
-                    </IonMenuButton>
-                </IonButtons>
                 <IonTitle>Menu</IonTitle>
             </IonToolbar>
         </IonHeader>

@@ -1,40 +1,43 @@
-import { query, where, addDoc, collection, Timestamp, getDocs } from "firebase/firestore";
-import { db } from "../utility/firebaseConfig";
+import axios from 'axios';
 
-export const submitReview = async (userId: string, placeId: string, rating: number, comment: string) => {
-    try{
-        const review = {
+const BASE_URL = 'https://us-central1-greenhaven-d11b5.cloudfunctions.net/api';
+
+export const submitReview = async (userId: string,  placeId: string, rating: number, comment: string) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/reviews`, {
             userId,
             placeId,
-            rating,
-            comment, 
-            timestamp: Timestamp.fromDate(new Date())
-        };
-        const docRef = await addDoc(collection(db, 'reviews'), review);
-        return docRef.id;
+            userRating: rating,
+            comment,
+        });
+        return response.data;
     } catch (error) {
+        console.error('Error submitting review:', error);
         throw error;
     }
-}
+};
 
-export const getReviewForPlace = async(placeId: string) => {
+export const getReviewForPlace = async (placeId: string) => {
     try {
-        const q = query(collection(db, 'reviews'), where('placeId', '==', placeId));
-        const querySnapshot = await getDocs(q);
-        const reviews = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}));
-        return reviews;
+        const response = await axios.get(`${BASE_URL}/reviews`, {
+            params: { placeId }
+        });
+        return response.data;
     } catch (error) {
+        console.error('Error getting reviews for place:', error);
         throw error;
     }
-}
+};
 
 export const getUserReviews = async (userId: string) => {
-    try{
-        const q = query(collection(db, 'reviews'), where('userId', '==', userId));
-        const querySnapshot = await getDocs(q);
-        const reviews = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}));
-        return reviews;
+    try {
+        const response = await axios.get(`${BASE_URL}/user-reviews`, {
+            params: { userId }
+        });
+        return response.data;
     } catch (error) {
+        console.error('Error getting user reviews:', error);
         throw error;
     }
-} 
+};
+

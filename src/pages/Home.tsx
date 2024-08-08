@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage,  IonToolbar, IonLabel, IonImg, IonText, IonSelect, IonSelectOption, IonButton, IonSegment, IonSegmentButton} from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonToolbar, IonLabel, IonImg, IonText, IonSelect, IonSelectOption, IonButton, IonSegment, IonSegmentButton } from '@ionic/react';
 import { auth } from '../utility/firebaseConfig';
 import { Link } from 'react-router-dom';
 import { searchByAddress, searchByLocation } from '../services/searchService';
@@ -22,7 +22,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
   const [view, setView] = useState<string>('map');
   const [selectedType, setSelectedType] = useState<string>('');
   const [apiKey, setApiKey] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const fetchApiKey = async () => {
       try {
@@ -49,7 +49,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
       console.error("Address is required");
       return;
     }
-  
+
     try {
       const userIdParam = userId || '';
       console.log("Searching with address:", searchText, "radius:", radius, "userId:", userIdParam);
@@ -111,71 +111,71 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
 
   return (
     <IonPage>
-        <IonContent className='ion-padding'>
-          <div className='page-container'>
-            <IonText style={{fontSize:"0.85rem", display:"block", textAlign:"center"}} >Search by Address, Zip Code, City/State, or GeoLocation</IonText>
-            <CustomSearchbar value={searchText} onIonChange={handleSearchInputChange} onGeoClick={handleGeoSearch}/>
-            <div className='flex ion-justify-content-between ion-padding-horizontal'>
-                <IonSelect aria-label="radius" placeholder='Select Radius' value={(radius / 1609.34)} onIonChange={e => handleRadiusChange(e.detail.value)}>
-                  <IonSelectOption value={1}>1mi</IonSelectOption>
-                  <IonSelectOption value={5}>5mi</IonSelectOption>
-                  <IonSelectOption value={10}>10mi</IonSelectOption>
-                  <IonSelectOption value={15}>15mi</IonSelectOption>
-                  <IonSelectOption value={20}>20mi</IonSelectOption>
-                  <IonSelectOption value={25}>25mi</IonSelectOption>
-                  <IonSelectOption value={30}>30mi</IonSelectOption>
-                </IonSelect>
-                <IonSelect
-                  aria-label="type"
-                  placeholder="Select Type"
-                  value={selectedType}
-                  onIonChange={(e) => setSelectedType(e.detail.value)}
-                >
-                  <IonSelectOption value="park">Park</IonSelectOption>
-                  <IonSelectOption value="campground">Camping</IonSelectOption>
-                  <IonSelectOption value="natural_feature">Natural Area</IonSelectOption>
-                </IonSelect>
-              <IonButton className='button primary' onClick={handleSearch}>Search</IonButton>
-            </div>
-            {hasSearched ?(
-              <>
-                <IonSegment value={view} onIonChange={e => setView(String(e.detail.value))}>
-                  <IonSegmentButton value="map">
-                    <IonLabel>Map</IonLabel>
-                  </IonSegmentButton>
-                  <IonSegmentButton value="list">
-                    <IonLabel>List</IonLabel>
-                  </IonSegmentButton>
-                </IonSegment>
-                {view === 'map' ? (
-                  <MapView places={results} />
-                ) : (
-                  <ListView places={results} isAuthenticated={isAuthenticated} userId={userId}/>
-                )}
-              </>
-            ) : (
-              <>
-                {isAuthenticated ?(
-                <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree"/>
-                ) : (
-                  <>
-                    <IonText className='my-24'>
-                      <h3 className="text-center">What is GreenHaven?</h3>
-                      <p>Welcome to GreenHaven! Your gateway to discovering the best green spaces around you. Whether you're seeking tranquility in a serene park, the vibrant colors of a blooming garden, or the adventure of a scenic hiking trail, GreenHaven connects you to nature's finest spots. Our easy-to-use search feature lets you explore nearby green spaces by simply entering an address, zip code, or using your current location. Each place comes with rich details, user reviews, and stunning photos to help you choose your next outdoor adventure. Save your favorite spots and keep track of your recent searches to make planning your next visit a breeze. Dive in, explore, and let GreenHaven guide you to your perfect green escape.</p>
-                    </IonText>
-                      <Link to="/login">
-                        <IonButton expand="block" className='button primary'>Login</IonButton>
-                      </Link>
-                  
-                      <Link to="/register">
-                        <IonButton expand="block" className='button secondary'>Create Account</IonButton>
-                      </Link>
-                  </>
-                )}
-              </>
-            )}
+      <IonContent className='ion-padding'>
+        <div className='page-container'>
+          <IonText style={{ fontSize: "0.85rem", display: "block", textAlign: "center" }} >Search by Address, Zip Code, City/State, or GeoLocation</IonText>
+          <CustomSearchbar value={searchText} onIonChange={handleSearchInputChange} onGeoClick={handleGeoSearch} />
+          <div className='flex ion-justify-content-between ion-padding-horizontal'>
+            <IonSelect aria-label="radius" placeholder='Select Radius' value={(radius / 1609.34)} onIonChange={e => handleRadiusChange(e.detail.value)}>
+              <IonSelectOption value={1}>1mi</IonSelectOption>
+              <IonSelectOption value={5}>5mi</IonSelectOption>
+              <IonSelectOption value={10}>10mi</IonSelectOption>
+              <IonSelectOption value={15}>15mi</IonSelectOption>
+              <IonSelectOption value={20}>20mi</IonSelectOption>
+              <IonSelectOption value={25}>25mi</IonSelectOption>
+              <IonSelectOption value={30}>30mi</IonSelectOption>
+            </IonSelect>
+            <IonSelect
+              aria-label="type"
+              placeholder="Select Type"
+              value={selectedType}
+              onIonChange={(e) => setSelectedType(e.detail.value)}
+            >
+              <IonSelectOption value="park">Park</IonSelectOption>
+              <IonSelectOption value="campground">Camping</IonSelectOption>
+              <IonSelectOption value="natural_feature">Natural Area</IonSelectOption>
+            </IonSelect>
+            <IonButton className='button primary' onClick={handleSearch}>Search</IonButton>
           </div>
-        </IonContent>
+          {hasSearched ? (
+            <>
+              <IonSegment value={view} onIonChange={e => setView(String(e.detail.value))}>
+                <IonSegmentButton value="map">
+                  <IonLabel>Map</IonLabel>
+                </IonSegmentButton>
+                <IonSegmentButton value="list">
+                  <IonLabel>List</IonLabel>
+                </IonSegmentButton>
+              </IonSegment>
+              {view === 'map' ? (
+                <MapView places={results} />
+              ) : (
+                <ListView places={results} isAuthenticated={isAuthenticated} userId={userId} />
+              )}
+            </>
+          ) : (
+            <>
+              {isAuthenticated ? (
+                <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree" />
+              ) : (
+                <>
+                  <IonText className='my-24'>
+                    <h3 className="text-center">What is GreenHaven?</h3>
+                    <p>Welcome to GreenHaven! Your gateway to discovering the best green spaces around you. Whether you're seeking tranquility in a serene park, the vibrant colors of a blooming garden, or the adventure of a scenic hiking trail, GreenHaven connects you to nature's finest spots. Our easy-to-use search feature lets you explore nearby green spaces by simply entering an address, zip code, or using your current location. Each place comes with rich details, user reviews, and stunning photos to help you choose your next outdoor adventure. Save your favorite spots and keep track of your recent searches to make planning your next visit a breeze. Dive in, explore, and let GreenHaven guide you to your perfect green escape.</p>
+                  </IonText>
+                  <Link to="/login">
+                    <IonButton expand="block" className='button primary'>Login</IonButton>
+                  </Link>
+
+                  <Link to="/register">
+                    <IonButton expand="block" className='button secondary'>Create Account</IonButton>
+                  </Link>
+                </>
+              )}
+            </>
+          )}
+        </div>
+      </IonContent>
     </IonPage>
   );
 };

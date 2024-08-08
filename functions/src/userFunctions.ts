@@ -43,6 +43,21 @@ export const addUserFavorite = functions.https.onRequest(async (req, res) => {
   }
 });
 
+export const removeUserFavorite = functions.https.onRequest(async (req, res) => {
+  const {userId, placeId} = req.body;
+
+  try {
+    const userRef = admin.firestore().collection("users").doc(userId);
+    await userRef.update({
+      favorites: admin.firestore.FieldValue.arrayRemove(placeId),
+    });
+
+    res.status(200).send({message: "Favorite removed successfully"});
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 export const getUserRecentSearches = functions.https.onRequest(async (req, res) => {
   const userId = req.query.userId as string;
 

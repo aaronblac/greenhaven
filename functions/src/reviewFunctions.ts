@@ -3,12 +3,13 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 export const addReview = functions.https.onRequest(async (req, res)=> {
-  const {userId, placeId, userRating, comment} = req.body;
+  const {userId, username, placeId, userRating, comment} = req.body;
 
   try {
     const reviewRef = admin.firestore().collection("reviews").doc();
     await reviewRef.set({
       userId,
+      username,
       placeId,
       userRating,
       comment,

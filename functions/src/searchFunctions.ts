@@ -1,5 +1,9 @@
 /* eslint-disable max-len */
 
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
+import axios from "axios";
+
 export interface Geometry {
     location: {
         lat: number;
@@ -31,11 +35,13 @@ export interface Place {
     photos?: Array<{
         photo_reference: string;
       }>;
+    reviews?: Array<{
+        author_name: string;
+        rating: number;
+        text: string;
+        time: string;
+    }>;
   }
-
-import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
-import axios from "axios";
 
 const GOOGLE_API_KEY = functions.config().google.api_key;
 
@@ -100,9 +106,6 @@ export const searchByAddress = functions.https.onRequest(async (req: functions.h
           return {photo_reference: photoObj.photo_reference};
         }) :
         [];
-      place.website = details.website;
-      place.url = details.url;
-      place.formatted_phone_number = details.formatted_phone_number;
     }
 
     // Update user's recent searches in Firestore
@@ -170,9 +173,6 @@ export const searchByLocation = functions.https.onRequest(async (req: functions.
           return {photo_reference: photoObj.photo_reference};
         }) :
         [];
-      place.website = details.website;
-      place.url = details.url;
-      place.formatted_phone_number = details.formatted_phone_number;
     }
 
     // Update user's recent searches in Firestore
@@ -189,3 +189,27 @@ export const searchByLocation = functions.https.onRequest(async (req: functions.
     res.status(500).send("Internal Server Error");
   }
 });
+
+export const getPlaceDetails = functions.https.onRequest(async (req, res) => {
+  const placeId = req.query.placeId as string;
+
+  if (!placeId) {
+    res.status(400).send("placeId is required");
+    return;
+  }
+
+  try {
+    const response = await axios.get("https://maps.googleapis.com/maps/api/place/details/json", {
+      params: {
+        place_id: placeId,
+        key: GOOGLE_API_KEY,
+        fields: "formatted_address,formatted_phone_number,website,url,geometry,reviews",
+      },
+    });
+    res.status(200).send(response.data.result);
+  } catch (error) {
+    console.error("Error fetching place details:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
