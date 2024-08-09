@@ -188,6 +188,11 @@ input[type=checkbox]{
     accent-color: $primary;
 }
 
+// Text Area 
+.textarea-fill-outline.sc-ion-textarea-md-h{
+    --border-radius: 0.5rem;
+}
+
 //Toast 
 .toast-warning .toast-wrapper{
     background: $danger; 
@@ -272,7 +277,7 @@ hr{
     margin:  0 0.5rem;
 }
 ion-select{
-    width:8rem;
+    width:fit-content;
 }
 
 ion-list{
@@ -324,4 +329,11 @@ ion-ripple-effect {
 
 .mar-bottom-4{
     margin-bottom: 0.25rem;
+}
+
+ion-select.rating-select label.select-wrapper{
+    justify-content: end !important;
+}
+.button a{
+    color:inherit;
 }

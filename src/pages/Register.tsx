@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonPage, IonHeader, IonContent, IonToolbar, IonTitle, IonInput, IonButton, IonToast, IonInputPasswordToggle, IonGrid, IonRow } from '@ionic/react';
+import { IonPage, IonHeader, IonContent, IonToolbar, IonTitle, IonInput, IonButton, IonToast, IonInputPasswordToggle, IonGrid, IonRow, IonText } from '@ionic/react';
 import '../styles.scss';
 import { useHistory } from 'react-router';
 import { registerUser } from '../services/authService';
@@ -48,7 +48,9 @@ const Register: React.FC = () => {
       <IonContent className='ion-padding'>
         <IonGrid className='flex flex-column gap-8'>
           <IonRow>
-            <IonTitle className='text-center'>Register</IonTitle>
+            <IonText className='text-center full'>
+              <h3>Register</h3>
+            </IonText>
           </IonRow>
           <IonRow>
             <IonInput

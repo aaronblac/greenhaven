@@ -3,6 +3,16 @@ import { db } from '../utility/firebaseConfig';
 
 const collectionName = 'users';
 
+interface UserDocument {
+  id: string;
+  username: string;
+  email:string;
+  favorites: string[];
+  lastPlacesLookedAt:string[];
+  recentSearches: string[];
+  reviews:string[];
+}
+
 export const addDocument = async (data: any) => {
   const docRef = await addDoc(collection(db, collectionName), data);
   return docRef.id;
@@ -17,7 +27,8 @@ export const getDocument = async (id: string) => {
   const docRef = doc(db, collectionName, id);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    return { id: docSnap.id, ...docSnap.data() };
+    console.log("get doc data: ", docSnap.data())
+    return { id: docSnap.id, ...docSnap.data() } as UserDocument;
   } else {
     throw new Error('Document not found');
   }

@@ -22,11 +22,19 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { home } from 'ionicons/icons';
+import { useEffect, useState } from 'react';
+import { auth } from './utility/firebaseConfig';
+import { getDocument } from './services/firestoreService';
+import TopMenu from './components/TopMenu/top-menu';
+
 // Pages
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
+import PlaceDetail from './pages/PlaceDetails';
+import WriteReview from './pages/WriteReview';
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -58,26 +66,32 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.scss';
-import TopMenu from './components/TopMenu/top-menu';
-import PlaceDetail from './pages/PlaceDetails';
-import { useEffect, useState } from 'react';
-import { auth } from './utility/firebaseConfig';
-import WriteReview from './pages/WriteReview';
 
 setupIonicReact();
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setIsAuthenticated(true);
         setUser(user);
+        
+        try {
+          // Fetch the user's data from Firestore
+          const userData = await getDocument(user.uid);
+          setUsername(userData.username);
+        } catch (error) {
+          console.error("Error fetching user data: ", error);
+          setUsername(null);
+        }
       } else {
         setIsAuthenticated(false);
         setUser(null);
+        setUsername(null);
       }
     });
 
@@ -121,7 +135,7 @@ const App: React.FC = () => {
               <PlaceDetail isAuthenticated={isAuthenticated} userId={user?.uid} />
             </Route>
             <Route exact path="/write-review/:placeId">
-              <WriteReview isAuthenticated={isAuthenticated} userId={user?.uid}/>
+              <WriteReview isAuthenticated={isAuthenticated} userId={user?.uid} username={username || ''}/>
             </Route>
             <Route exact path="/">
               <Redirect to="/home" />

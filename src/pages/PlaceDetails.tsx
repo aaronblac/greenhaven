@@ -1,13 +1,14 @@
-import { IonButton, IonContent, IonGrid, IonIcon, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow, IonSegment, IonSegmentButton, IonText, IonTextarea } from "@ionic/react"
+import { IonButton, IonContent, IonGrid, IonIcon, IonImg, IonItem, IonLabel, IonList, IonPage, IonRow, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonText, IonTextarea, IonTitle } from "@ionic/react"
 import { Place } from "../../functions/src/searchFunctions";
 import { useEffect, useRef, useState } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { getApiKey } from "../services/apiService";
 import { addToFavorites, getUserFavorites, removeFromFavorites } from "../services/userService";
-import { arrowBack, ear, earth, earthOutline, heart, heartOutline, linkOutline, navigateOutline, shareSocialOutline, star } from "ionicons/icons";
+import { arrowBack, earthOutline, heart, heartOutline, navigateOutline, star } from "ionicons/icons";
 import ShareButton from "../components/Buttons/share-button";
 import { fetchPlaceDetails } from "../services/searchService";
 import { getReviewForPlace } from "../services/reviewService";
+import ReviewList from "../components/ReviewsList/reviews-list";
 
 interface PlaceDetailProps {
     isAuthenticated: boolean;
@@ -23,6 +24,8 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
     const [favorites, setFavorites] = useState<string[]>([]);
     const [activeTab, setActiveTab] = useState<string>('google');
     const [greenhavenReviews, setGreenhavenReviews] = useState<any[]>([]);
+    const scrollPosition = useRef<number>(0);
+
     const history = useHistory();
     const hasFetchedDetails = useRef(false);
 
@@ -82,13 +85,17 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
 
         fetchApiKey();
         fetchFavorites();
-            fetchDetails();
+        fetchDetails();
         fetchGreenhavenReviews();
+        // Scroll restoration
+        window.scrollTo(0, scrollPosition.current);
 
     }, [isAuthenticated, userId, placeId, place, location.state?.place]);
 
-
-
+    useEffect(() => {
+        console.log("Favorites updated: ", favorites);
+    }, [favorites]);
+    
     const toggleFavorite = async (placeId: string) => {
         if (!isAuthenticated || !userId) return;
 
@@ -96,10 +103,10 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
         try {
             if (isFavorite) {
                 await removeFromFavorites(userId, placeId);
-                setFavorites(favorites.filter(id => id !== placeId));
+                setFavorites(prevFavorites => favorites.filter(id => id !== placeId));
             } else {
                 await addToFavorites(userId, placeId);
-                setFavorites([...favorites, placeId])
+                setFavorites(prevFavorites => [...favorites, placeId])
             }
         } catch (error) {
             console.error("Error updating favorite status: ", error)
@@ -111,9 +118,9 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
         return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${maxWidth}&maxheight=${maxHeight}&photoreference=${photoReference}&key=${apiKey}`;
     };
 
-    const formatReviewTime = (timestamp: number | string) => {
-        const date = new Date(Number(timestamp) * 1000);
-        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    const handleReviewTypeChange = (value: string) => {
+        scrollPosition.current = window.scrollY;
+        setActiveTab(value);
     };
 
     if (!place) {
@@ -182,60 +189,44 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
                             <p>{place.formatted_phone_number}</p>
                         </IonText>
                     </IonRow>
-                    <IonSegment value={activeTab} onIonChange={e => setActiveTab(e.detail.value as string)}>
-                        <IonSegmentButton value="google">
-                            <IonLabel>Google<br></br>Reviews</IonLabel>
-                        </IonSegmentButton>
-                        <IonSegmentButton value="greenhaven">
-                            <IonLabel>GreenHaven<br></br>Reviews</IonLabel>
-                        </IonSegmentButton>
-                    </IonSegment>
-                    {activeTab === 'google' && place.reviews && (
-                        <IonRow>
-                            <IonList className="full">
-                                {place.reviews.map((review, index) => (
-                                    <IonItem key={index} className="review full">
-                                        <IonLabel className="full">
-                                            <div className="flex mar-bottom-4 justify-between items-start">
-                                                <div className="flex flex-column">
-                                                    <h2>{review.author_name}</h2>
-                                                    <small>{formatReviewTime(review.time)}</small>
-                                                </div>
-                                                <div className="flex items-center gap-4">
-                                                    <p>Rating: {review.rating} </p>
-                                                    <IonIcon color='warning' icon={star} ios={star} md={star} />
-                                                </div>
-                                            </div>
-                                            <p>{review.text}</p>
-                                        </IonLabel>
-                                    </IonItem>
-                                ))}
-                            </IonList>
-                        </IonRow>
-                    )}
-                    {activeTab === 'greenhaven' && (
-                        <IonRow>
-                            <IonList className="full">
-                                {greenhavenReviews.map((review, index) => (
-                                    <IonItem key={index} className="review">
-                                        <IonLabel className="full">
-                                            <div className="flex justify-between items-start mar-bottom-4">
-                                                <div className="flex flex-column">
-                                                    <h2>{review.author_name}</h2>
-                                                    <small>{}</small>
-                                                </div>
-                                                <div className="flex items-center gap-4">
-                                                    <p>Rating: {review.userRating} </p>
-                                                    <IonIcon color='warning' icon={star} ios={star} md={star} />
-                                                </div>
-                                            </div>
-                                            <p>{review.comment}</p>
-                                        </IonLabel>
-                                    </IonItem>
-                                ))}
-                            </IonList>
-                        </IonRow>
-                    )}
+                    <hr color="primary"></hr>
+                    <IonRow className="text-center">
+                        <IonTitle>Reviews</IonTitle>
+                    </IonRow>
+                    <IonRow className="flex justify-between items-center full ion-padding">
+                        <IonSelect value={activeTab} placeholder="Select Reviews" onIonChange={e => handleReviewTypeChange(e.detail.value)}>
+                            <IonSelectOption value="google">Google Reviews</IonSelectOption>
+                            <IonSelectOption value="greenhaven">GreenHaven Reviews</IonSelectOption>
+                        </IonSelect>
+                        {isAuthenticated ? (
+                            <IonButton className="button tertiary" >
+                                <Link to={{pathname: `/write-review/${place.place_id}`, state:{placeName: place.name}}}>Write Review</Link>
+                            </IonButton>
+                        ) : (
+                            <div className="flex items-center gap-4">
+                                <Link to="/Login">Login</Link>
+                                <span>to write a review</span>
+                            </div>
+                        )}
+                    </IonRow>
+                    <IonRow>
+                        {activeTab === 'google' && place.reviews && place.reviews.length > 0 ? (
+                            <ReviewList reviews={place.reviews} type="google" />
+                        ) : activeTab === 'google' && (
+                            <div className="text-center full ion-padding">
+                                <IonText>No Google Reviews Yet</IonText>
+                            </div>
+                        )}
+
+                        {activeTab === 'greenhaven' && greenhavenReviews && greenhavenReviews.length > 0 ? (
+                            <ReviewList reviews={greenhavenReviews} type="greenhaven" />
+                        ) : activeTab === 'greenhaven' && (
+                            <div className="flex flex-column items-center full ion-padding">
+                                <IonText>No GreenHaven reviews yet.</IonText>
+                                <Link to={{ pathname: `/write-review/${place.place_id}`, state: { placeName: place.name } }}>Write a Review</Link>
+                            </div>
+                        )}
+                    </IonRow>
                 </IonGrid>
             </IonContent>
         </IonPage>

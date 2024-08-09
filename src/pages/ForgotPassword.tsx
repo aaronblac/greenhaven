@@ -62,8 +62,8 @@ const ForgotPasswordPage: React.FC = () => {
       <IonContent className='ion-padding'>
         <IonGrid className='form'>
           <IonRow>
-            <IonCol className='text-center' size='12'>
-              <IonText>Enter email below to reset password.</IonText>
+            <IonCol className='text-center full' size='12'>
+              <IonText><h3>Enter email below to reset password.</h3></IonText>
             </IonCol>
           </IonRow>
           <IonRow>

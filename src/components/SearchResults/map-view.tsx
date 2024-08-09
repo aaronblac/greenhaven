@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { getApiKey } from '../../services/apiService';
 import { IonCard } from '@ionic/react';
+import { useHistory } from 'react-router';
 
 interface MapViewProps {
   places: any[];
 }
 
 const loadGoogleMapsScript = (apiKey: string): Promise<void> => {
+
   return new Promise((resolve, reject) => {
     if (typeof window.google === 'object' && typeof window.google.maps === 'object') {
       resolve();
@@ -38,6 +40,8 @@ const loadGoogleMapsScript = (apiKey: string): Promise<void> => {
 
 const MapView: React.FC<MapViewProps> = ({ places }) => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const history = useHistory();
+    
 
   useEffect(() => {
     const initializeMap = async () => {
@@ -63,12 +67,18 @@ const MapView: React.FC<MapViewProps> = ({ places }) => {
   
           places.forEach(place => {
             const position = new google.maps.LatLng(place.geometry.location.lat, place.geometry.location.lng);
-            new google.maps.marker.AdvancedMarkerElement({
+            const marker = new google.maps.marker.AdvancedMarkerElement({
               position,
               map,
               title: place.name,
             });
-          });
+            marker.addListener('click', () => {
+                history.push({
+                  pathname: `/place/${place.place_id}`,
+                  state: { place } 
+                });
+              });
+            });
         } catch (error) {
           console.error('Error loading Google Maps script:', error);
         }
@@ -76,7 +86,7 @@ const MapView: React.FC<MapViewProps> = ({ places }) => {
   
 
     initializeMap();
-  }, [places]);
+  }, [places, history]);
 
   return <IonCard style={{height:'calc(100% - 13rem)'}}><div ref={mapRef} style={{ width: '100%', height: '100%' }} /></IonCard>;
 };

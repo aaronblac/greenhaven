@@ -2,14 +2,17 @@ import axios from 'axios';
 
 const BASE_URL = 'https://us-central1-greenhaven-d11b5.cloudfunctions.net/api';
 
-export const submitReview = async (userId: string,  placeId: string, rating: number, comment: string) => {
+export const submitReview = async (userId: string,  placeId: string, rating: number, comment: string, username:string) => {
     try {
         const response = await axios.post(`${BASE_URL}/reviews`, {
             userId,
             placeId,
             userRating: rating,
             comment,
+            username,
+            createdAt: new Date().toISOString(),
         });
+        console.log("review sumbitted: ", response.data);
         return response.data;
     } catch (error) {
         console.error('Error submitting review:', error);

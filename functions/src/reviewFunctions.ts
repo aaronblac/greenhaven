@@ -13,7 +13,7 @@ export const addReview = functions.https.onRequest(async (req, res)=> {
       placeId,
       userRating,
       comment,
-      createdAd: new Date(),
+      createdAt: new Date(),
     });
 
     res.status(200).send({message: "Review added successfuly"});
