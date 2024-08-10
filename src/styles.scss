@@ -159,8 +159,7 @@ input {
     --padding-bottom: .425rem;
     --padding-end: 2rem;
     --padding-start: 2rem;
-    border: 2px solid $primary;
-    border-radius:0.5rem;
+    border-bottom: 1px solid $secondary;
 }
 
 ion-input-password-toggle{
@@ -336,4 +335,12 @@ ion-select.rating-select label.select-wrapper{
 }
 .button a{
     color:inherit;
+}
+
+ion-select-popover{
+    border:2px solid $primary;
+    border-radius: 0.5rem;
+    ion-list{
+        border-radius:0.5rem;
+    }
 }

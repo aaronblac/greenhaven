@@ -88,7 +88,7 @@ const Register: React.FC = () => {
               <IonInputPasswordToggle color={'medium'} slot='end'/>
             </IonInput>
           </IonRow>
-          <IonRow>
+          <IonRow className='ion-padding'>
             <IonButton expand='block' className='button primary' onClick={handleRegister}>Register</IonButton>
           </IonRow>
         </IonGrid>

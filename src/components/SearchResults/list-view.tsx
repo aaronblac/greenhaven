@@ -74,9 +74,9 @@ const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId }) 
 
 return(
 
-  <IonList className='scrolling-list'>
-    {places.map((place) => (
-      <IonCard className='ion-padding flex' key={place.place_id} onClick={() => handleCardClick(place)}>
+  <IonList className='scrolling-list full'>
+    {places.map((place, index) => (
+      <IonCard className='ion-padding flex' key={index} onClick={() => handleCardClick(place)}>
         <div className="flex gap-16 full">
             <IonImg className="list-item-img" src={place.photos && place.photos.length > 0 ? getPhotoUrl(place.photos[0].photo_reference, 50, 50)  : '/images/forest-tree.png'} alt={place.name} />
             <IonLabel>

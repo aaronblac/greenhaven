@@ -7,6 +7,7 @@ export const addReview = functions.https.onRequest(async (req, res)=> {
 
   try {
     const reviewRef = admin.firestore().collection("reviews").doc();
+    const reviewId = reviewRef.id;
     await reviewRef.set({
       userId,
       username,
@@ -14,6 +15,11 @@ export const addReview = functions.https.onRequest(async (req, res)=> {
       userRating,
       comment,
       createdAt: new Date(),
+    });
+
+    const userReviewRef = admin.firestore().collection("users").doc(userId);
+    await userReviewRef.update({
+      reviews: admin.firestore.FieldValue.arrayUnion(reviewId),
     });
 
     res.status(200).send({message: "Review added successfuly"});

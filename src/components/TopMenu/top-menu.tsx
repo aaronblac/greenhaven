@@ -43,10 +43,10 @@ const TopMenu: React.FC = () => {
                 <IonList>
                     {/* <IonItem> */}
                         {/* <a>Profile</a> */}
-                    {/* </IonItem>
-                    <IonItem>
-                        <Link to="/favorites">Favorites</Link>
-                    </IonItem> */}
+                    {/* </IonItem> */}
+                    <IonItem button>
+                        <Link color="tertiary" to="/favorites">Favorites</Link>
+                    </IonItem>
                     <IonItem button onClick={handleLogout}>
                         <IonLabel color="tertiary">Logout</IonLabel>
                     </IonItem>
@@ -54,10 +54,10 @@ const TopMenu: React.FC = () => {
             </>) : (<>
                 <IonList>
                     <IonItem>
-                        <Link color={`tertiary`} to="/login">Login</Link>
+                        <Link color="primary" to="/login">Login</Link>
                     </IonItem>
                     <IonItem>
-                        <Link color={`tertiary`} to="/register">Create Account</Link>
+                        <Link color="primary" to="/register">Create Account</Link>
                     </IonItem>
                 </IonList>
             </>) }

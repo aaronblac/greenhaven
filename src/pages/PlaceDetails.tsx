@@ -190,11 +190,13 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
                         </IonText>
                     </IonRow>
                     <hr color="primary"></hr>
-                    <IonRow className="text-center">
-                        <IonTitle>Reviews</IonTitle>
+                    <IonRow>
+                        <IonText className="text-center full">
+                            <h3>Reviews</h3>
+                        </IonText>
                     </IonRow>
                     <IonRow className="flex justify-between items-center full ion-padding">
-                        <IonSelect value={activeTab} placeholder="Select Reviews" onIonChange={e => handleReviewTypeChange(e.detail.value)}>
+                        <IonSelect value={activeTab} interface="popover" placeholder="Select Reviews" onIonChange={e => handleReviewTypeChange(e.detail.value)}>
                             <IonSelectOption value="google">Google Reviews</IonSelectOption>
                             <IonSelectOption value="greenhaven">GreenHaven Reviews</IonSelectOption>
                         </IonSelect>

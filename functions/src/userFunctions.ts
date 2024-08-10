@@ -16,7 +16,7 @@ export const getUserFavorites = functions.https.onRequest(async (req, res) => {
     if (userDoc.exists) {
       const userData = userDoc.data();
       if (userData) {
-        res.status(200).send(userData.favorites || []);
+        res.status(200).send({favorites: userData.favorites || []});
       } else {
         res.status(500).send({message: "User data is undefined"});
       }

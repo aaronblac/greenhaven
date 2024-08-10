@@ -66,7 +66,7 @@ const Login: React.FC = () => {
               <IonInputPasswordToggle color={'medium'} slot='end' />
             </IonInput>
           </IonRow>
-          <IonRow>
+          <IonRow className='ion-padding'>
             <IonButton expand='block' className='button primary' onClick={handleLogin}>Login</IonButton>
           </IonRow>
           <IonRow>

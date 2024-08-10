@@ -203,7 +203,7 @@ export const getPlaceDetails = functions.https.onRequest(async (req, res) => {
       params: {
         place_id: placeId,
         key: GOOGLE_API_KEY,
-        fields: "formatted_address,formatted_phone_number,website,url,geometry,reviews",
+        fields: "formatted_address,formatted_phone_number,website,url,geometry,reviews,rating,place_id,photos,vicinity,name",
       },
     });
     res.status(200).send(response.data.result);

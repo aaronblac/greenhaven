@@ -34,6 +34,7 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import PlaceDetail from './pages/PlaceDetails';
 import WriteReview from './pages/WriteReview';
+import Favorites from './pages/Favorites';
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -136,6 +137,9 @@ const App: React.FC = () => {
             </Route>
             <Route exact path="/write-review/:placeId">
               <WriteReview isAuthenticated={isAuthenticated} userId={user?.uid} username={username || ''}/>
+            </Route>
+            <Route exact path="/favorites" key={location.pathname}>
+              <Favorites isAuthenticated={isAuthenticated} userId={user?.uid}/>
             </Route>
             <Route exact path="/">
               <Redirect to="/home" />

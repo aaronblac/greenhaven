@@ -33,7 +33,7 @@ export const removeFromFavorites = async (userId: string, placeId: string) => {
 
 export const getRecentSearches = async (userId: string): Promise<string[]> => {
     try {
-        const response = await axios.get(`${BASE_URL}/ecent-searches`, { params: { userId } });
+        const response = await axios.get(`${BASE_URL}/recent-searches`, { params: { userId } });
         return response.data.recentSearches || [];
     } catch (error) {
         throw new Error('Error fetching recent searches');

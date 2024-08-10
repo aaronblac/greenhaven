@@ -3,17 +3,11 @@ import {
   IonButton,
   IonContent,
   IonInput,
-  IonItem,
   IonText,
   IonGrid,
   IonCol,
   IonRow,
   IonToast,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonIcon,
-  IonTitle,
   IonPage,
 } from '@ionic/react';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';

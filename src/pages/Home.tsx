@@ -116,7 +116,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
           <IonText style={{ fontSize: "0.85rem", display: "block", textAlign: "center" }} >Search by Address, Zip Code, City/State, or GeoLocation</IonText>
           <CustomSearchbar value={searchText} onIonChange={handleSearchInputChange} onGeoClick={handleGeoSearch} />
           <div className='flex ion-justify-content-between ion-padding-horizontal'>
-            <IonSelect aria-label="radius" placeholder='Select Radius' value={(radius / 1609.34)} onIonChange={e => handleRadiusChange(e.detail.value)}>
+            <IonSelect aria-label="radius" interface='popover' placeholder='Select Radius' value={(radius / 1609.34)} onIonChange={e => handleRadiusChange(e.detail.value)}>
               <IonSelectOption value={1}>1mi</IonSelectOption>
               <IonSelectOption value={5}>5mi</IonSelectOption>
               <IonSelectOption value={10}>10mi</IonSelectOption>
@@ -128,6 +128,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
             <IonSelect
               aria-label="type"
               placeholder="Select Type"
+              interface='popover'
               value={selectedType}
               onIonChange={(e) => setSelectedType(e.detail.value)}
             >
