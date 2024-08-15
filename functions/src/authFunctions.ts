@@ -1,16 +1,25 @@
+/* eslint-disable max-len */
 import * as functions from "firebase-functions";
 import {firestore, admin} from "./firebaseConfig";
 
+// Register User
 export const registerUser = functions.https.onRequest(async (req, res) => {
   const {email, password, username} = req.body;
 
+  if (!email || !password || !username) {
+    res.status(400).send({error: "Email, password, and username are required."});
+    return;
+  }
+
   try {
+    // Create the user in Firebase Authentication
     const userRecord = await admin.auth().createUser({
       email,
       password,
       displayName: username,
     });
 
+    // Save user data in Firestore
     await firestore.collection("users").doc(userRecord.uid).set({
       email,
       username,
@@ -20,35 +29,44 @@ export const registerUser = functions.https.onRequest(async (req, res) => {
       lastPlacesLookedAt: [],
     });
 
-    res.status(200).send(userRecord);
+    // Generate a custom token for the user
+    const token = await admin.auth().createCustomToken(userRecord.uid);
+
+    res.status(200).send({userRecord, token});
   } catch (error) {
+    console.error("Error registering user:", error);
+
     if (error instanceof Error) {
-      console.error("Error registering:", error);
       res.status(500).send({error: error.message});
     } else {
-      console.error("Unknown error registering:", error);
-      res.status(500).send({error: "Unknown error occurred"});
+      res.status(500).send({error: "Unknown error occurred during registration"});
     }
   }
 });
 
+// Login User
 export const loginUser = functions.https.onRequest(async (req, res) => {
   const {email} = req.body;
 
   try {
     const userRecord = await admin.auth().getUserByEmail(email);
-    res.status(200).send(userRecord);
+
+    // Generate a custom token for the user
+    const token = await admin.auth().createCustomToken(userRecord.uid);
+
+    res.status(200).send({userRecord, token});
   } catch (error) {
+    console.error("Error logging in:", error);
+
     if (error instanceof Error) {
-      console.error("Error logging in:", error);
       res.status(500).send({error: error.message});
     } else {
-      console.error("Unknown error logging in:", error);
-      res.status(500).send({error: "Unknown error occurred"});
+      res.status(500).send({error: "Unknown error occurred during login"});
     }
   }
 });
 
+// Logout User
 export const logoutUser = functions.https.onRequest((req, res) => {
   res.status(200).send({message: "User signed out successfully"});
 });

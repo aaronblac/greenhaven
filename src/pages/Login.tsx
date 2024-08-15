@@ -13,6 +13,11 @@ const Login: React.FC = () => {
   const history = useHistory();
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      setToastMessage('Please enter both email and password.');
+      setShowToast(true);
+      return;
+    }
 
     try {
       const user = await loginUser(email, password);
@@ -33,7 +38,7 @@ const Login: React.FC = () => {
           setToastMessage('Error logging in. Please try again.');
         }
       } else {
-        setToastMessage("Network error. Please check your connection.")
+        setToastMessage(error.code)
       }
       setShowToast(true);
     }

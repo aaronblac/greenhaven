@@ -156,13 +156,14 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
             </>
           ) : (
             <>
+              <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree" />
               {isAuthenticated ? (
-                <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree" />
+                <ListView places={[]} isAuthenticated={isAuthenticated}/>
               ) : (
                 <>
                   <IonText className='my-24'>
                     <h3 className="text-center">What is GreenHaven?</h3>
-                    <p>Welcome to GreenHaven! Your gateway to discovering the best green spaces around you. Whether you're seeking tranquility in a serene park, the vibrant colors of a blooming garden, or the adventure of a scenic hiking trail, GreenHaven connects you to nature's finest spots. Our easy-to-use search feature lets you explore nearby green spaces by simply entering an address, zip code, or using your current location. Each place comes with rich details, user reviews, and stunning photos to help you choose your next outdoor adventure. Save your favorite spots and keep track of your recent searches to make planning your next visit a breeze. Dive in, explore, and let GreenHaven guide you to your perfect green escape.</p>
+                    <p className='text-center'>Welcome to GreenHaven! Your gateway to discovering the best green spaces around you. Whether you're seeking tranquility in a serene park, the vibrant colors of a blooming garden, or the adventure of a scenic hiking trail, GreenHaven connects you to nature's finest spots.</p>
                   </IonText>
                   <Link to="/login">
                     <IonButton expand="block" className='button primary'>Login</IonButton>

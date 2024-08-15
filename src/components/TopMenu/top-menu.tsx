@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { auth } from '../../utility/firebaseConfig';
-import { IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
 import { Link, useHistory } from "react-router-dom";
 import {logoutUser} from "../../services/authService";
 
 const TopMenu: React.FC = () => {
     
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const history = useHistory()
+    const history = useHistory();
+    const router = useIonRouter();
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -25,11 +26,16 @@ const TopMenu: React.FC = () => {
         try{
             await logoutUser();
             setIsAuthenticated(false);
+            closeMenu();
             history.push("/");
         } catch (error) {
             console.error("Error logging out: ", error);
         }
       }
+
+    const closeMenu = () => {
+        router.goBack();
+    };
 
     return(
         <>
@@ -44,7 +50,7 @@ const TopMenu: React.FC = () => {
                     {/* <IonItem> */}
                         {/* <a>Profile</a> */}
                     {/* </IonItem> */}
-                    <IonItem button>
+                    <IonItem button onClick={(closeMenu)}>
                         <Link color="tertiary" to="/favorites">Favorites</Link>
                     </IonItem>
                     <IonItem button onClick={handleLogout}>
@@ -53,10 +59,10 @@ const TopMenu: React.FC = () => {
                 </IonList>
             </>) : (<>
                 <IonList>
-                    <IonItem>
+                    <IonItem button onClick={(closeMenu)}>
                         <Link color="primary" to="/login">Login</Link>
                     </IonItem>
-                    <IonItem>
+                    <IonItem button onClick={(closeMenu)}>
                         <Link color="primary" to="/register">Create Account</Link>
                     </IonItem>
                 </IonList>

@@ -1,40 +1,78 @@
 import axios from 'axios';
+import { auth, db } from '../utility/firebaseConfig';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
 
-const baseUrl = "https://us-central1-greenhaven-d11b5.cloudfunctions.net/api"
+const baseUrl = "https://us-central1-greenhaven-d11b5.cloudfunctions.net/api";
+
+// Create an Axios instance
+const api = axios.create({
+  baseURL: baseUrl,
+});
+
+// Add a request interceptor to attach the token automatically
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token'); // Or retrieve from cookies
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export const registerUser = async (email: string, password: string, username: string) => {
   try {
-    const response = await axios.post(`${baseUrl}/register`, {
+    // Create user with Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    console.log("User registered:", user);
+
+    // Create a Firestore document for the user
+    await setDoc(doc(db, "users", user.uid), {
       email,
-      password,
       username,
+      createdAt: new Date(),
+      reviews: [],
+      favorites: [],
+      lastPlacesLookedAt: [],
     });
-    console.log("user registered:", response.data);
-    return response.data;
+
+    return user;
   } catch (error) {
+    console.error("Error registering user:", error);
     throw error;
   }
 };
 
+// Login User
 export const loginUser = async (email: string, password: string) => {
   try {
-    const response = await axios.post(`${baseUrl}/login`, {
-      email,
-      password,
-    });
-    console.log("user logged in:", response.data);
-    return response.data;
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log("User logged in:", userCredential.user);
+    return userCredential.user;
   } catch (error) {
+    console.error("Error logging in user:", error);
     throw error;
   }
 };
 
 export const logoutUser = async () => {
   try {
-    const response = await axios.post(`${baseUrl}/logout`);
-    console.log("user logged out:", response.data);
+    const response = await api.post('/logout');
+    console.log("User logged out:", response.data);
+
+    // Remove the token from localStorage
+    localStorage.removeItem('token');
+
+    await auth.signOut();
+    console.log("User signed out from Firebase.");
+
     return response.data;
   } catch (error) {
+    console.error("Error logging out:", error);
     throw error;
   }
 };

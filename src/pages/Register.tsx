@@ -3,6 +3,7 @@ import { IonPage, IonHeader, IonContent, IonToolbar, IonTitle, IonInput, IonButt
 import '../styles.scss';
 import { useHistory } from 'react-router';
 import { registerUser } from '../services/authService';
+import { AxiosError } from 'axios';
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -27,18 +28,19 @@ const Register: React.FC = () => {
     }
   
     try {
-      const user = registerUser(email,password,username);
+      const user = await registerUser(email, password, username); 
       console.log("Registered user:", user);
-      history.push({
-        pathname: "/home",
-      });
-    } catch (error: any) {
+      history.push("/login"); // Redirect to login after successful registration
+    } catch (error) {
       console.error("Error registering:", error);
-      if (error.response && error.response.data && error.response.data.message) {
+      
+      // Handling error and setting appropriate message
+      if (error instanceof AxiosError && error.response && error.response.data && error.response.data.message) {
         setToastMessage(error.response.data.message);
       } else {
-        setToastMessage("Error registering user. Please try again.");
+        setToastMessage(`Error registering user. ${error}`);
       }
+      
       setShowToast(true);
     }
   };
