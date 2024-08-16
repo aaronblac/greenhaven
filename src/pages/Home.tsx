@@ -156,6 +156,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
             </>
           ) : (
             <>
+              <img src="/images/GHTextLogoGreen.png" alt="GreenHavenText" style={{marginTop:"2rem"}}/>
               <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree" />
               {isAuthenticated ? (
                 <ListView places={[]} isAuthenticated={isAuthenticated}/>

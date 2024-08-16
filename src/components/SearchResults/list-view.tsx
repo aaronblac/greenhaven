@@ -20,7 +20,7 @@ const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId }) 
     const history = useHistory();
 
     useEffect(() => {
-        const fetchApiKey = async () => {
+      const fetchApiKey = async () => {
       try {
         const key = await getApiKey();
         setApiKey(key);
@@ -68,7 +68,10 @@ const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId }) 
   };
 
   const handleCardClick = (place: Place) => {
-    history.push(`/place/${place.place_id}`, { place });
+    history.push({
+      pathname: `/place/${place.place_id}`,
+      state: { place } 
+    });
   };
 
 

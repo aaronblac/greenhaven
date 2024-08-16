@@ -50,8 +50,13 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
             if (isAuthenticated && userId) {
                 try {
                     const userFavorites = await getUserFavorites(userId);
-                    setFavorites(userFavorites);
-                    console.log("userFavorites/PlaceDetails: ", userFavorites)
+                    if(userFavorites){
+                        setFavorites(userFavorites);
+                        console.log("userFavorites/PlaceDetails: ", userFavorites)
+                    } else {
+                        console.log("User Favorites are empty")
+
+                    }
                 } catch (error) {
                     console.error("Error fetching user favorites: ", error)
                     setFavorites([]);
@@ -106,10 +111,13 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
                 setFavorites(prevFavorites => favorites.filter(id => id !== placeId));
             } else {
                 await addToFavorites(userId, placeId);
-                setFavorites(prevFavorites => [...favorites, placeId])
+                setFavorites(prevFavorites => [...prevFavorites, placeId])
             }
         } catch (error) {
             console.error("Error updating favorite status: ", error)
+            console.error("UserID: ", userId);
+            console.error("PlaceID: ", placeId);
+            console.error("IsFavorite: ", isFavorite);
         }
     }
 

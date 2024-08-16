@@ -22,7 +22,7 @@ export const addReview = functions.https.onRequest(async (req, res)=> {
       reviews: admin.firestore.FieldValue.arrayUnion(reviewId),
     });
 
-    res.status(200).send({message: "Review added successfuly"});
+    res.status(200).send({message: "Review added successfully", reviewId});
   } catch (error) {
     res.status(500).send(error);
   }

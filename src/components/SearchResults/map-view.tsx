@@ -88,7 +88,7 @@ const MapView: React.FC<MapViewProps> = ({ places }) => {
     initializeMap();
   }, [places, history]);
 
-  return <IonCard style={{height:'calc(100% - 13rem)'}}><div ref={mapRef} style={{ width: '100%', height: '100%' }} /></IonCard>;
+  return <IonCard style={{height:'calc(100dvh - 18rem)'}}><div ref={mapRef} style={{ width: '100%', height: '100%' }} /></IonCard>;
 };
 
 export default MapView;

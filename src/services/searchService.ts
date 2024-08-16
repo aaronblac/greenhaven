@@ -8,7 +8,6 @@ export const searchByAddress = async (address: string, radius: number, userId: s
             params: {
                 address,
                 radius: radius.toString(),
-                userId,
                 type,
             }
         });
@@ -26,7 +25,6 @@ export const searchByLocation = async (latitude: number, longitude: number, radi
                 latitude: latitude.toString(),
                 longitude: longitude.toString(),
                 radius: radius.toString(),
-                userId,
                 type,
             }
         });

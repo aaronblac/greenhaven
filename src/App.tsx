@@ -16,6 +16,7 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonText,
   IonTitle,
   IonToolbar,
   setupIonicReact
@@ -113,12 +114,12 @@ const App: React.FC = () => {
             <IonGrid>
               <IonRow className="flex items-center gap-8">
                 <IonImg src='/images/forest-tree.png' alt='Tree' className="menu-tree" />
-                <IonTitle className='ion-no-padding'>GreenHaven</IonTitle>
+                <IonText className='ion-no-padding'>GreenHaven</IonText>
               </IonRow>
             </IonGrid>
           </IonToolbar>
         </IonHeader>
-        <IonTabs className='ion-padding'>
+        {/* <IonTabs className='ion-padding'> */}
           <IonRouterOutlet id="main-content">
             <Route exact path="/home" >
               <Home isAuthenticated={isAuthenticated} userId={user?.uid} />
@@ -145,13 +146,13 @@ const App: React.FC = () => {
               <Redirect to="/home" />
             </Route>
           </IonRouterOutlet>
-          <IonTabBar slot="bottom">
+          {/* <IonTabBar slot="bottom">
             <IonTabButton tab="home" href="/home">
               <IonIcon aria-hidden="true" icon={home} />
               <IonLabel>Home</IonLabel>
             </IonTabButton>
           </IonTabBar>
-        </IonTabs>
+        </IonTabs> */}
       </IonReactRouter>
     </IonApp>
   );

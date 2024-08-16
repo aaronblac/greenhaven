@@ -288,7 +288,7 @@ ion-card{
 }
 .scrolling-list{
     overflow-y:auto;
-    max-height: calc(100% - 11rem);
+    max-height: calc(100% - 14rem);
 }
 ion-ripple-effect {
     color: transparent;
@@ -302,10 +302,9 @@ ion-ripple-effect {
     max-width: 5rem;
 }
 .page-container{
-    margin-top:5rem;
     max-width: 40rem;
-    margin:5rem auto 0rem;
-    height: calc(100dvh - 10rem)
+    margin:4rem auto 0rem;
+    height: calc(100dvh - 3rem)
 }
 
 .favorite-review{

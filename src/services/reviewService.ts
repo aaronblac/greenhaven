@@ -16,6 +16,7 @@ export const submitReview = async (userId: string,  placeId: string, rating: num
         return response.data;
     } catch (error) {
         console.error('Error submitting review:', error);
+        console.log("userID error catch: ", userId);
         throw error;
     }
 };

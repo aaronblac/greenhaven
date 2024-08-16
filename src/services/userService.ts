@@ -16,17 +16,25 @@ export const getUserFavorites = async (userId: string): Promise<string[]> => {
 
 export const addToFavorites = async (userId: string, placeId: string) => {
   try {
-    await axios.post(`${BASE_URL}/add-favorites`, { userId, placeId });
+    const response = await axios.post(`${BASE_URL}/add-favorites`, { userId, placeId });
+    if (response.status !== 200) {
+      throw new Error(`Failed to add to favorites: ${response.status} ${response.statusText}`);
+    }
   } catch (error) {
-    throw new Error('Error adding to favorites');
+    console.error('Error adding to favorites:', error);
+    throw error;
   }
 };
 
 export const removeFromFavorites = async (userId: string, placeId: string) => {
   try {
-    await axios.post(`${BASE_URL}/remove-favorite`, { userId, placeId });
+    const response = await axios.post(`${BASE_URL}/remove-favorite`, { userId, placeId });
+    if (response.status !== 200) {
+      throw new Error(`Failed to remove from favorites: ${response.status} ${response.statusText}`);
+    }
   } catch (error) {
-    throw new Error('Error removing from favorites');
+    console.error('Error removing from favorites:', error);
+    throw error;
   }
 };
 

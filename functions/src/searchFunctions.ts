@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 
 import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
 import axios from "axios";
 
 export interface Geometry {
@@ -52,7 +51,6 @@ export const getApiKey = functions.https.onRequest((req: functions.https.Request
 export const searchByAddress = functions.https.onRequest(async (req: functions.https.Request, res: functions.Response) => {
   const address = req.query.address as string;
   const radius = parseFloat(req.query.radius as string);
-  const userId = req.query.userId as string;
   const type = req.query.type as string;
 
 
@@ -107,22 +105,6 @@ export const searchByAddress = functions.https.onRequest(async (req: functions.h
         }) :
         [];
     }
-
-    // Update user's recent searches in Firestore
-    if (userId) {
-      const userRef = admin.firestore().collection("users").doc(userId);
-      const userDoc = await userRef.get();
-      const recentSearches = userDoc.data()?.recentSearches || [];
-
-      // Add new search and ensure only the latest 4 searches are kept
-      const updatedSearches = [{placeId: places[0].place_id, timestamp: new Date()}, ...recentSearches]
-        .slice(0, 4);
-
-      await userRef.update({
-        recentSearches: updatedSearches,
-      });
-    }
-
     res.status(200).send(places);
   } catch (error) {
     console.error("Error searching for places:", error);
@@ -134,7 +116,6 @@ export const searchByLocation = functions.https.onRequest(async (req: functions.
   const latitude = parseFloat(req.query.latitude as string);
   const longitude = parseFloat(req.query.longitude as string);
   const radius = parseFloat(req.query.radius as string);
-  const userId = req.query.userId as string;
   const type = req.query.type as string;
 
 
@@ -173,14 +154,6 @@ export const searchByLocation = functions.https.onRequest(async (req: functions.
           return {photo_reference: photoObj.photo_reference};
         }) :
         [];
-    }
-
-    // Update user's recent searches in Firestore
-    if (userId) {
-      const userRef = admin.firestore().collection("users").doc(userId);
-      await userRef.update({
-        recentSearches: admin.firestore.FieldValue.arrayUnion({type: "geolocation", latitude, longitude, radius, timestamp: new Date()}),
-      });
     }
 
     res.status(200).send(places);
