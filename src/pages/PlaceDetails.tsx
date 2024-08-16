@@ -213,7 +213,7 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
                                 <Link to={{pathname: `/write-review/${place.place_id}`, state:{placeName: place.name}}}>Write Review</Link>
                             </IonButton>
                         ) : (
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4" style={{fontSize: "0.75rem"}}>
                                 <Link to="/Login">Login</Link>
                                 <span>to write a review</span>
                             </div>
