@@ -10,18 +10,10 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const [isLoginAttempted, setIsLoginAttempted] = useState(false);
   const history = useHistory();
   const location = useLocation<{ from?: string; placeId?: string; place?: Place; searchText?: string; results?: Place[]; view?: string }>();
 
-  useEffect(() => {
-    if (isLoginAttempted) {
-      handleLogin();
-    }
-  }, [email, password]);
-
   const handleLogin = async () => {
-    setIsLoginAttempted(false);
     if (!email || !password) {
       setToastMessage('Please enter both email and password.');
       setShowToast(true);
@@ -64,10 +56,15 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: CustomEvent) => {
+    setter(e.detail.value!);
+  };
+
   const handleSubmit = (e: React.FormEvent)=> {
     e.preventDefault();
-    setIsLoginAttempted(true);
+    handleLogin();
   }
+
   return (
     <IonPage className='page-container'>
       <IonContent className='form ion-padding'>
@@ -82,7 +79,7 @@ const Login: React.FC = () => {
               <IonInput
                 placeholder="Email"
                 value={email}
-                onIonChange={(e) => setEmail(e.detail.value!)}
+                onIonChange={(e) => handleInputChange(setEmail)}
                 type="email"
               />
             </IonRow>
@@ -90,7 +87,7 @@ const Login: React.FC = () => {
               <IonInput
                 placeholder="Password"
                 value={password}
-                onIonChange={(e) => setPassword(e.detail.value!)}
+                onIonChange={(e) => handleInputChange(setPassword)}
                 type="password"
               >
                 <IonInputPasswordToggle color={'medium'} slot='end' />
