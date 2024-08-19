@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { getUserFavorites } from "../services/userService";
 import { fetchPlaceDetails } from "../services/searchService";
 import ListView from "../components/SearchResults/list-view";
-import { IonContent, IonGrid, IonIcon, IonPage, IonRow, IonText } from "@ionic/react";
+import { IonContent, IonGrid, IonImg, IonPage, IonRow, IonText } from "@ionic/react";
 import { Place } from "../../functions/src/searchFunctions";
 import { getApiKey } from "../services/apiService";
-import { arrowBack } from "ionicons/icons";
-import { useHistory } from "react-router";
 
 interface FavoritesProps {
     isAuthenticated: boolean;
@@ -16,8 +14,6 @@ interface FavoritesProps {
 const Favorites: React.FC<FavoritesProps> = ({ isAuthenticated, userId }) => {
     const [favorites, setFavorites] = useState<Place[]>([]);
     const [apiKey, setApiKey] = useState<string | null>(null);
-
-    const history = useHistory();
 
     useEffect(() => {
         
@@ -64,22 +60,17 @@ const Favorites: React.FC<FavoritesProps> = ({ isAuthenticated, userId }) => {
         <IonPage className="page-container ion-padding">
             <IonContent>
                 <IonGrid>
-                    <IonRow>
-                        <div className="flex items-center gap-8" onClick={() => history.goBack()}>
-                            <IonIcon icon={arrowBack} ios={arrowBack} md={arrowBack} />
-                            <IonText>Back</IonText>
-                        </div>
-                    </IonRow>
                     <IonRow className="text-center full">
                         <h3 className="full">Favorite Havens</h3>
                     </IonRow>
                     <IonRow className="full">
                         {favorites.length > 0 ? (
-                            <ListView places={favorites} isAuthenticated={isAuthenticated} userId={userId}/>
+                            <ListView searchText="" places={favorites} isAuthenticated={isAuthenticated} userId={userId}/>
                         ) : (
-                            <IonContent className="ion-padding flex flex-column items-center justify-center full">
-                                <IonText>No Favorites saved yet! Return <a href="/home">home</a> to search for green spaces.</IonText>
-                            </IonContent>
+                            <div className="ion-padding flex text-center flex-column justify-center full">
+                                <IonText style={{margin:"0.5rem 0"}}>No Favorites saved yet! Return <a href="/home">home</a> to search for green spaces.</IonText>
+                                <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree" />
+                            </div>
                         )} 
                     </IonRow>
                 </IonGrid>

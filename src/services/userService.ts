@@ -39,38 +39,23 @@ export const removeFromFavorites = async (userId: string, placeId: string) => {
 };
 
 
-export const getRecentSearches = async (userId: string): Promise<string[]> => {
+export const getRecentViews = async (userId: string): Promise<string[]> => {
     try {
-        const response = await axios.get(`${BASE_URL}/recent-searches`, { params: { userId } });
-        return response.data.recentSearches || [];
+        const response = await axios.get(`${BASE_URL}/get-recent-views`, { params: { userId } });
+        return response.data.recentlyViewed || [];
     } catch (error) {
         throw new Error('Error fetching recent searches');
     }
 };
 
-export const addRecentSearch = async (userId: string, placeId: string) => {
-    try{
-        const userRef = doc(db, 'users', userId);
-        const userDoc = await getDoc(userRef);
-
-        if (userDoc.exists()){
-            const userData = userDoc.data();
-            const recentSearches = userData.lastPlacesLookedAt || [];
-
-            if(recentSearches >= 5) {
-                const oldestSearch = recentSearches[0];
-                await updateDoc(userRef, {
-                    lastPlacesLookedAt: arrayUnion(oldestSearch)
-                });
-            }
-
-            await updateDoc(userRef, {
-                lastPlacesLookedAt: arrayUnion(placeId)
-            });
-        } else {
-            throw new Error('User not found');
-        }
-    } catch (error) {
-        throw error;
-    }
-}
+export const updateRecentViews = async (userId: string, placeId: string) => {
+  try {
+      const response = await axios.post(`${BASE_URL}/update-recent-views`, { userId, placeId });
+      if (response.status !== 200) {
+          throw new Error(`Failed to update recent searches: ${response.status} ${response.statusText}`);
+      }
+  } catch (error) {
+      console.error('Error updating recent searches:', error);
+      throw error;
+  }
+};

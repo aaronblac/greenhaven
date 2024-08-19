@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { auth, db } from '../../utility/firebaseConfig';
 import { IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonText, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import {logoutUser} from "../../services/authService";
 import { getDocument } from "../../services/firestoreService";
 import { doc, getDoc } from "firebase/firestore";
 import { personCircleOutline } from "ionicons/icons";
+import { SearchState } from "../../pages/Home";
 
 const TopMenu: React.FC = () => {
     
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [currUser, setCurrUser] = useState("");
     const history = useHistory();
-    const router = useIonRouter();
+    const location = useLocation<SearchState>();
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -39,16 +40,27 @@ const TopMenu: React.FC = () => {
         try{
             await logoutUser();
             setIsAuthenticated(false);
-            closeMenu();
-            history.push("/");
+            history.replace({
+                pathname: "/home",
+                state: {} // Clear the state by passing an empty object
+            });
+            document.querySelector('ion-menu')?.close();
         } catch (error) {
             console.error("Error logging out: ", error);
         }
       }
 
-    const closeMenu = () => {
-        router.goBack();
+    const closeMenuAndNavigate = (path:string) => {
         document.querySelector('ion-menu')?.close();
+        history.push({
+            pathname:path,
+            state: {
+                from: location.pathname,
+                searchText: location.state?.searchText,
+                results: location.state?.results,
+                view: location.state?.view,
+            }
+        })
     };
 
     return(
@@ -71,15 +83,11 @@ const TopMenu: React.FC = () => {
                         {/* <IonItem> */}
                             {/* <a>Profile</a> */}
                         {/* </IonItem> */}
-                        <IonItem button onClick={(closeMenu)}>
-                            <Link to="/favorites">
+                        <IonItem button onClick={() => closeMenuAndNavigate("/favorites")}>
                                 <IonLabel color="tertiary">Favorites</IonLabel>
-                            </Link>
                         </IonItem>
-                        <IonItem button onClick={(closeMenu)}>
-                            <Link to="/home">
+                        <IonItem button onClick={() => closeMenuAndNavigate("/home")}>
                                 <IonLabel color="tertiary">Home</IonLabel>
-                            </Link>
                         </IonItem>
                         <IonItem button onClick={handleLogout}>
                             <IonLabel color="tertiary">Logout</IonLabel>
@@ -87,14 +95,14 @@ const TopMenu: React.FC = () => {
                     </IonList>
                 </>) : (<>
                     <IonList>
-                        <IonItem button onClick={(closeMenu)}>
-                            <Link color="primary" to="/home">Home</Link>
+                        <IonItem button onClick={() => closeMenuAndNavigate("/home")}>
+                            <IonLabel color="primary">Home</IonLabel>
                         </IonItem>
-                        <IonItem button onClick={(closeMenu)}>
-                            <Link color="primary" to="/login">Login</Link>
+                        <IonItem button onClick={() => closeMenuAndNavigate("/login")}>
+                            <IonLabel color="primary">Login</IonLabel>
                         </IonItem>
-                        <IonItem button onClick={(closeMenu)}>
-                            <Link color="primary" to="/register">Create Account</Link>
+                        <IonItem button onClick={() => closeMenuAndNavigate("/register")}>
+                            <IonLabel color="primary">Create Account</IonLabel>
                         </IonItem>
                     </IonList>
                 </>) }

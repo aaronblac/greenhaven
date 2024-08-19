@@ -109,6 +109,9 @@ IonButton,
     .button-inner{
         padding: 0rem;
     }
+    &.small{
+        min-height:1.5rem;
+    }
     &.primary{
         background-color: $primary;
         --background: $primary;

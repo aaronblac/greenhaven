@@ -3,12 +3,13 @@ import { Place } from "../../functions/src/searchFunctions";
 import { useEffect, useRef, useState } from "react";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { getApiKey } from "../services/apiService";
-import { addToFavorites, getUserFavorites, removeFromFavorites } from "../services/userService";
+import { addToFavorites, getUserFavorites, removeFromFavorites, updateRecentViews } from "../services/userService";
 import { arrowBack, earthOutline, heart, heartOutline, navigateOutline, star } from "ionicons/icons";
 import ShareButton from "../components/Buttons/share-button";
 import { fetchPlaceDetails } from "../services/searchService";
 import { getReviewForPlace } from "../services/reviewService";
 import ReviewList from "../components/ReviewsList/reviews-list";
+import { SearchState } from "./Home";
 
 interface PlaceDetailProps {
     isAuthenticated: boolean;
@@ -22,7 +23,7 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
     const [place, setPlace] = useState<Place | null>(location.state?.place || null);
     const [apiKey, setApiKey] = useState<string | null>(null);
     const [favorites, setFavorites] = useState<string[]>([]);
-    const [activeTab, setActiveTab] = useState<string>('google');
+    const [activeTab, setActiveTab] = useState<string>('greenhaven');
     const [greenhavenReviews, setGreenhavenReviews] = useState<any[]>([]);
     const scrollPosition = useRef<number>(0);
 
@@ -94,6 +95,10 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
         fetchGreenhavenReviews();
         // Scroll restoration
         window.scrollTo(0, scrollPosition.current);
+
+        if (isAuthenticated && userId && placeId) {
+            updateRecentViews(userId, placeId);
+        }
 
     }, [isAuthenticated, userId, placeId, place, location.state?.place]);
 
@@ -209,12 +214,18 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
                             <IonSelectOption value="greenhaven">GreenHaven Reviews</IonSelectOption>
                         </IonSelect>
                         {isAuthenticated ? (
-                            <IonButton className="button tertiary" >
+                            <IonButton className="button tertiary small" >
                                 <Link to={{pathname: `/write-review/${place.place_id}`, state:{placeName: place.name}}}>Write Review</Link>
                             </IonButton>
                         ) : (
                             <div className="flex items-center gap-4" style={{fontSize: "0.75rem"}}>
-                                <Link to="/Login">Login</Link>
+                                <Link to={{
+                                    pathname:"/Login",
+                                    state: {
+                                        from: location.pathname,
+                                        placeId,
+                                        place,
+                                    }}}>Login</Link>
                                 <span>to write a review</span>
                             </div>
                         )}

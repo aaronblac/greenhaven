@@ -1,5 +1,5 @@
-import { Route } from 'react-router-dom';
-import { Redirect } from 'react-router';
+import { Link, Route } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router';
 import {
   IonApp,
   IonButtons,
@@ -76,6 +76,8 @@ const App: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [username, setUsername] = useState<string | null>(null);
 
+  const history = useHistory();
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -113,7 +115,9 @@ const App: React.FC = () => {
             </IonButtons>
             <IonGrid>
               <IonRow className="flex items-center gap-8">
-                <IonImg src='/images/forest-tree.png' alt='Tree' className="menu-tree" />
+                <Link to="/">
+                  <IonImg src='/images/forest-tree.png' alt='Tree' className="menu-tree" />
+                </Link>
                 <IonText className='ion-no-padding'>GreenHaven</IonText>
               </IonRow>
             </IonGrid>
@@ -146,13 +150,6 @@ const App: React.FC = () => {
               <Redirect to="/home" />
             </Route>
           </IonRouterOutlet>
-          {/* <IonTabBar slot="bottom">
-            <IonTabButton tab="home" href="/home">
-              <IonIcon aria-hidden="true" icon={home} />
-              <IonLabel>Home</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs> */}
       </IonReactRouter>
     </IonApp>
   );

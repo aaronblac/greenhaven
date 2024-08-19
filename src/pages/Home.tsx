@@ -1,26 +1,35 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonToolbar, IonLabel, IonImg, IonText, IonSelect, IonSelectOption, IonButton, IonSegment, IonSegmentButton } from '@ionic/react';
-import { auth } from '../utility/firebaseConfig';
-import { Link } from 'react-router-dom';
-import { searchByAddress, searchByLocation } from '../services/searchService';
+import { Link, useLocation } from 'react-router-dom';
+import { fetchPlaceDetails, searchByAddress, searchByLocation } from '../services/searchService';
 import MapView from '../components/SearchResults/map-view';
 import ListView from '../components/SearchResults/list-view';
 import CustomSearchbar from '../components/SearchBar/search-bar';
 import { Place } from '../../functions/src/searchFunctions';
 import { getApiKey } from '../services/apiService';
+import { getRecentViews } from '../services/userService';
 
 interface HomeProps {
   isAuthenticated: boolean;
   userId?: string;
 }
 
+export interface SearchState {
+  searchText: string;
+  results: Place[];
+  view: string;
+  from?:string;
+}
+
 const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
-  const [searchText, setSearchText] = useState('');
+  const location = useLocation<SearchState>();
+  const [searchText, setSearchText] = useState<string>(location.state?.searchText || '');
   const [radius, setRadius] = useState(8046.72);//default meters (5mi)
-  const [results, setResults] = useState<Place[]>([]);
-  const [hasSearched, setHasSearched] = useState(false);
-  const [view, setView] = useState<string>('map');
+  const [results, setResults] = useState<Place[]>(location.state?.results || []);
+  const [hasSearched, setHasSearched] = useState(!!location.state?.results);
+  const [view, setView] = useState<string>(location.state?.view || 'map');
   const [selectedType, setSelectedType] = useState<string>('');
+  const [recentlyViewed, setRecentlyViewed] = useState<Place[]>([]);
   const [apiKey, setApiKey] = useState<string | null>(null);
 
   useEffect(() => {
@@ -32,9 +41,47 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
         console.error('Error fetching API key:', error);
       }
     };
-
+  
+    const fetchRecentlyViewed = async () => {
+      if (isAuthenticated && userId) {
+        try {
+          const userRecentViews = await getRecentViews(userId);
+          console.log("user Favorites id", userRecentViews);
+  
+          // Fetch full Place details for each recently viewed item
+          const recentViewed = await Promise.all(
+            userRecentViews.map(async (placeId: string) => {
+              const placeDetails = await fetchPlaceDetails(placeId);
+              return placeDetails;
+            })
+          );
+  
+          setRecentlyViewed(recentViewed);
+          console.log("recently viewed: ", recentViewed);
+        } catch (error) {
+          console.error("Error fetching user recently viewed places: ", error);
+          setRecentlyViewed([]);
+        }
+      }
+    };
+  
     fetchApiKey();
-  }, []);
+    fetchRecentlyViewed();
+  
+    // Restore previous state if it exists
+    if (location.state?.results && location.state?.searchText) {
+      setResults(location.state.results);
+      setSearchText(location.state.searchText);
+      setView(location.state.view || 'map');
+      setHasSearched(true);
+    } else if (!location.state) {
+      // Clear state if location.state is not present
+      setSearchText('');
+      setResults([]);
+      setHasSearched(false);
+      setView('map');
+    }
+  }, [isAuthenticated, userId]); 
 
   const debounce = (func: Function, wait: number) => {
     let timeout: NodeJS.Timeout;
@@ -45,6 +92,9 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
   };
 
   const handleSearch = async () => {
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
     if (!searchText) {
       console.error("Address is required");
       return;
@@ -115,7 +165,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
         <div className='page-container'>
           <IonText style={{ fontSize: "0.85rem", display: "block", textAlign: "center" }} >Search by Address, Zip Code, City/State, or GeoLocation</IonText>
           <CustomSearchbar value={searchText} onIonChange={handleSearchInputChange} onGeoClick={handleGeoSearch} />
-          <div className='flex ion-justify-content-between ion-padding-horizontal'>
+          <div className='flex ion-justify-content-between items-center ion-padding-horizontal'>
             <IonSelect aria-label="radius" interface='popover' placeholder='Select Radius' value={(radius / 1609.34)} onIonChange={e => handleRadiusChange(e.detail.value)}>
               <IonSelectOption value={1}>1mi</IonSelectOption>
               <IonSelectOption value={5}>5mi</IonSelectOption>
@@ -136,7 +186,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
               <IonSelectOption value="campground">Camping</IonSelectOption>
               <IonSelectOption value="natural_feature">Natural Area</IonSelectOption>
             </IonSelect>
-            <IonButton className='button primary' onClick={handleSearch}>Search</IonButton>
+            <IonButton className='button primary small' onClick={handleSearch}>Search</IonButton>
           </div>
           {hasSearched ? (
             <>
@@ -149,17 +199,17 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
                 </IonSegmentButton>
               </IonSegment>
               {view === 'map' ? (
-                <MapView places={results} />
+                <MapView searchText={searchText} places={results} />
               ) : (
-                <ListView places={results} isAuthenticated={isAuthenticated} userId={userId} />
+                <ListView searchText={searchText} places={results} isAuthenticated={isAuthenticated} userId={userId} />
               )}
             </>
           ) : (
             <>
-              <img src="/images/GHTextLogoGreen.png" alt="GreenHavenText" style={{marginTop:"2rem"}}/>
+              <IonImg src="/images/GHTextLogoGreen.png" alt="GreenHavenText" style={{marginTop:"2rem"}}/>
               <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree" />
               {isAuthenticated ? (
-                <ListView places={[]} isAuthenticated={isAuthenticated}/>
+                <ListView searchText={searchText} places={recentlyViewed} isAuthenticated={isAuthenticated}/>
               ) : (
                 <>
                   <IonText className='my-24'>

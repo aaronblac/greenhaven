@@ -14,8 +14,9 @@ import {
 import {
   getUserFavorites,
   addUserFavorite,
-  getUserRecentSearches,
+  updateUserRecentViewed,
   removeUserFavorite,
+  getUserRecentViewed,
 } from "./userFunctions";
 import {
   searchByAddress,
@@ -36,7 +37,8 @@ app.get("/user-reviews", getUserReviews);
 app.get("/get-favorites", getUserFavorites);
 app.post("/add-favorites", addUserFavorite);
 app.post("/remove-favorite", removeUserFavorite);
-app.get("/recent-searches", getUserRecentSearches);
+app.post("/update-recent-views", updateUserRecentViewed);
+app.get("/get-recent-views", getUserRecentViewed);
 app.get("/search-address", searchByAddress);
 app.get("/search-location", searchByLocation);
 app.get("/place-details", getPlaceDetails);

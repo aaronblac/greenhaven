@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 
 interface MapViewProps {
   places: any[];
+  searchText: string;
 }
 
 const loadGoogleMapsScript = (apiKey: string): Promise<void> => {
@@ -38,7 +39,7 @@ const loadGoogleMapsScript = (apiKey: string): Promise<void> => {
   });
 };
 
-const MapView: React.FC<MapViewProps> = ({ places }) => {
+const MapView: React.FC<MapViewProps> = ({ places, searchText }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const history = useHistory();
     
@@ -75,7 +76,12 @@ const MapView: React.FC<MapViewProps> = ({ places }) => {
             marker.addListener('click', () => {
                 history.push({
                   pathname: `/place/${place.place_id}`,
-                  state: { place } 
+                  state: { 
+                    place,
+                    searchText,
+                    results: places,
+                    view: 'map' 
+                  } 
                 });
               });
             });

@@ -11,9 +11,10 @@ interface ListViewProps {
   places: Place[];
   isAuthenticated: boolean;
   userId?:string;
+  searchText:string;
 }
 
-const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId }) => {
+const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId, searchText }) => {
     
     const [favorites, setFavorites] = useState<string[]>([]);
     const [apiKey, setApiKey] = useState<string | null>(null);
@@ -70,7 +71,12 @@ const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId }) 
   const handleCardClick = (place: Place) => {
     history.push({
       pathname: `/place/${place.place_id}`,
-      state: { place } 
+      state: { 
+        place, 
+        searchText,
+        results : places,
+        view:'list' 
+      } 
     });
   };
 
