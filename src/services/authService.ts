@@ -49,7 +49,9 @@ export const registerUser = async (email: string, password: string, username: st
 
 // Login User
 export const loginUser = async (email: string, password: string) => {
+  console.log('before try loginUser');
   try {
+    console.log('inside try loginUser');
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     console.log("User logged in:", userCredential.user);
     return userCredential.user;
@@ -61,14 +63,16 @@ export const loginUser = async (email: string, password: string) => {
 
 export const logoutUser = async () => {
   try {
+    // Remove the token from localStorage
+    localStorage.removeItem('token');
+    
+    await auth.signOut();
+    console.log("User signed out from Firebase.");
+    
     const response = await api.post('/logout');
     console.log("User logged out:", response.data);
 
-    // Remove the token from localStorage
-    localStorage.removeItem('token');
 
-    await auth.signOut();
-    console.log("User signed out from Firebase.");
 
     return response.data;
   } catch (error) {
