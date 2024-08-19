@@ -56,10 +56,6 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: CustomEvent) => {
-    setter(e.detail.value!);
-  };
-
   const handleSubmit = (e: React.FormEvent)=> {
     e.preventDefault();
     handleLogin();
@@ -79,7 +75,7 @@ const Login: React.FC = () => {
               <IonInput
                 placeholder="Email"
                 value={email}
-                onIonChange={(e) => handleInputChange(setEmail)}
+                onIonChange={(e) => setEmail(e.detail.value!)}
                 type="email"
               />
             </IonRow>
@@ -87,7 +83,7 @@ const Login: React.FC = () => {
               <IonInput
                 placeholder="Password"
                 value={password}
-                onIonChange={(e) => handleInputChange(setPassword)}
+                onIonChange={(e) => setPassword(e.detail.value!)}
                 type="password"
               >
                 <IonInputPasswordToggle color={'medium'} slot='end' />
