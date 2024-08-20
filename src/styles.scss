@@ -386,3 +386,18 @@ ion-select-popover{
 .mt-16{
     margin-top:1rem;
 }
+
+.inner-scroll.scorll-y{
+    scrollbar-width: thin;
+    &::webkit-scrollbar{
+        width:4px;
+        border-radius:0.75rem;
+    }
+    &::-webkit-scrollbar-track{
+        width:6px;
+        border-radius:0.75rem;
+    }
+    &::-webkit-scrollbar-thumb{
+        border-radius: 0.75rem;
+    }
+}
