@@ -174,7 +174,8 @@ input {
 
 }
 .label-floating.sc-ion-input-md-h .label-text-wrapper.sc-ion-input-md {
-    transform:translateY(25%) scale(0.75)
+    transform:translateY(25%) scale(0.75);
+    margin-left: 0.125rem;
 }
 
 .has-focus.sc-ion-input-md-h .input-highlight.sc-ion-input-md{
@@ -185,7 +186,7 @@ input {
 
 ion-input-password-toggle{
     position:absolute;
-    right: -1rem;
+    right: 0;
     bottom:-.35rem;
 }
 
