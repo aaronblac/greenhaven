@@ -11,7 +11,7 @@ interface CustomSearchbarProps {
 
 const CustomSearchbar: React.FC<CustomSearchbarProps> = ({ value, onIonChange, onGeoClick }) => {
   return (
-    <div style={{ position: 'relative' }}>
+    <div className='full' style={{ position: 'relative' }}>
       <IonSearchbar value={value} onIonChange={onIonChange} className='ion-searchbar-clear-button input-field'/>
       <IonButton
         fill="clear"

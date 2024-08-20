@@ -73,7 +73,7 @@ const TopMenu: React.FC = () => {
                             <IonText>{currUser}</IonText>
                         </div>
                     ) : (
-                        <IonText>Menu</IonText>
+                        <IonText className="ion-padding-horizontal">Menu</IonText>
                     )}
                 </IonToolbar>
             </IonHeader>

@@ -63,7 +63,7 @@ const Favorites: React.FC<FavoritesProps> = ({ isAuthenticated, userId }) => {
                     <IonRow className="text-center full">
                         <h3 className="full">Favorite Havens</h3>
                     </IonRow>
-                    <IonRow className="full">
+                    <IonRow className="full favorites">
                         {favorites.length > 0 ? (
                             <ListView searchText="" places={favorites} isAuthenticated={isAuthenticated} userId={userId}/>
                         ) : (

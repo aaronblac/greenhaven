@@ -70,10 +70,11 @@ const Login: React.FC = () => {
               <h3>Login</h3>
             </IonText>
           </IonRow>
-          <form onSubmit={handleSubmit}>
+          <form className="flex flex-column gap-16" onSubmit={handleSubmit}>
             <IonRow>
               <IonInput
-                placeholder="Email"
+                label="Email"
+                labelPlacement="stacked"
                 value={email}
                 onIonChange={(e) => setEmail(e.detail.value!)}
                 type="email"
@@ -81,7 +82,8 @@ const Login: React.FC = () => {
             </IonRow>
             <IonRow>
               <IonInput
-                placeholder="Password"
+                label="Password"
+                labelPlacement="stacked"
                 value={password}
                 onIonChange={(e) => setPassword(e.detail.value!)}
                 type="password"
@@ -89,7 +91,7 @@ const Login: React.FC = () => {
                 <IonInputPasswordToggle color={'medium'} slot='end' />
               </IonInput>
             </IonRow>
-            <IonRow className='ion-padding'>
+            <IonRow>
               <IonButton expand='block' className='button primary' type='submit'>Login</IonButton>
             </IonRow>
           </form>

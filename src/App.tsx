@@ -3,26 +3,18 @@ import { Redirect, useHistory } from 'react-router';
 import {
   IonApp,
   IonButtons,
-  IonCol,
   IonGrid,
   IonHeader,
-  IonIcon,
   IonImg,
-  IonLabel,
   IonMenu,
   IonMenuButton,
   IonRouterOutlet,
   IonRow,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
   IonText,
-  IonTitle,
   IonToolbar,
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { home } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { auth } from './utility/firebaseConfig';
 import { getDocument } from './services/firestoreService';
@@ -123,7 +115,6 @@ const App: React.FC = () => {
             </IonGrid>
           </IonToolbar>
         </IonHeader>
-        {/* <IonTabs className='ion-padding'> */}
           <IonRouterOutlet id="main-content">
             <Route exact path="/home" >
               <Home isAuthenticated={isAuthenticated} userId={user?.uid} />

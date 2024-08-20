@@ -69,7 +69,7 @@ const WriteReview: React.FC<WriteReviewProps> = ({ isAuthenticated, userId, user
                             placeholder="Write your review here..."
                         />
                     </IonRow>
-                    <IonRow className="ion-padding">
+                    <IonRow className="my-16">
                         <IonButton expand="block" color="primary" onClick={handleReviewSubmit} disabled={!isFormValid}>
                             Submit Review
                         </IonButton>

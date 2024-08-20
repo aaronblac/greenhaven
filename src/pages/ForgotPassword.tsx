@@ -11,7 +11,6 @@ import {
   IonPage,
 } from '@ionic/react';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import { arrowBack } from 'ionicons/icons';
 
 const ForgotPasswordPage: React.FC = () => {
   const [emailVerification, setEmailVerification] = useState('');
@@ -65,7 +64,8 @@ const ForgotPasswordPage: React.FC = () => {
               <IonInput
                 type='email'
                 className='input-field'
-                placeholder='Enter Email Address'
+                label='Enter Email Address'
+                labelPlacement='stacked'
                 value={emailVerification}
                 onIonChange={e => setEmailVerification(e.detail.value!)}
               />

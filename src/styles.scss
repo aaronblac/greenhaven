@@ -157,22 +157,41 @@ input {
     margin-bottom: .25rem;
 }
 
-.sc-ion-input-md-h {
-    --padding-top: .425rem;
-    --padding-bottom: .425rem;
+.sc-ion-input-md-h,
+ion-input,
+input {
+    --padding-top: .25rem;
+    --padding-bottom: .25rem;
     --padding-end: 2rem;
     --padding-start: 2rem;
-    border-bottom: 1px solid $secondary;
+    border-radius:0.5rem;
+    border: 2px solid $primary;
+}
+
+.input-label-placement-stacked.sc-ion-input-md-h{
+    min-height:2.25rem;
+
+}
+.label-floating.sc-ion-input-md-h .label-text-wrapper.sc-ion-input-md {
+    transform:translateY(25%) scale(0.75)
+}
+
+.has-focus.sc-ion-input-md-h .input-highlight.sc-ion-input-md{
+    transform:none;
+    height:0rem;
+    width:0rem;
 }
 
 ion-input-password-toggle{
     position:absolute;
-    right: -2rem;
+    right: -1rem;
+    bottom:-.35rem;
 }
 
 // Search 
-.searchbar-input.sc-ion-searchbar-md {
-    padding: .425rem 2rem;
+.searchbar-input.sc-ion-searchbar-md,
+input {
+    padding: .425rem 3rem .425rem 2rem;
     border: 2px solid $primary;
     border-radius:0.5rem;
     
@@ -191,8 +210,15 @@ input[type=checkbox]{
 }
 
 // Text Area 
-.textarea-fill-outline.sc-ion-textarea-md-h{
-    --border-radius: 0.5rem;
+.textarea-fill-outline.sc-ion-textarea-md-h,
+textarea{
+    border:2px solid $primary;
+    border-radius:0.5rem;
+    min-height: 5rem;
+}
+.textarea-fill-outline.sc-ion-textarea-md-h .textarea-outline-end.sc-ion-textarea-md,
+.textarea-fill-outline.sc-ion-textarea-md-h .textarea-outline-start.sc-ion-textarea-md  {
+    border:none;
 }
 
 //Toast 
@@ -291,7 +317,10 @@ ion-card{
 }
 .scrolling-list{
     overflow-y:auto;
-    max-height: calc(100% - 14rem);
+    max-height: calc(100dvh - 18rem);
+    .favorites &{
+        max-height: calc(100dvh - 12rem);
+    }
 }
 ion-ripple-effect {
     color: transparent;
@@ -307,7 +336,7 @@ ion-ripple-effect {
 .page-container{
     max-width: 40rem;
     margin:4rem auto 0rem;
-    height: calc(100dvh - 3rem)
+    height: calc(100dvh - 6rem)
 }
 
 .favorite-review{
@@ -345,4 +374,8 @@ ion-select-popover{
     ion-list{
         border-radius:0.5rem;
     }
+}
+
+.mt-16{
+    margin-top:1rem;
 }

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonToolbar, IonLabel, IonImg, IonText, IonSelect, IonSelectOption, IonButton, IonSegment, IonSegmentButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonToolbar, IonLabel, IonImg, IonText, IonSelect, IonSelectOption, IonButton, IonSegment, IonSegmentButton, IonGrid, IonRow } from '@ionic/react';
 import { Link, useLocation } from 'react-router-dom';
 import { fetchPlaceDetails, searchByAddress, searchByLocation } from '../services/searchService';
 import MapView from '../components/SearchResults/map-view';
@@ -8,6 +8,7 @@ import CustomSearchbar from '../components/SearchBar/search-bar';
 import { Place } from '../../functions/src/searchFunctions';
 import { getApiKey } from '../services/apiService';
 import { getRecentViews } from '../services/userService';
+import { Geolocation } from '@capacitor/geolocation';
 
 interface HomeProps {
   isAuthenticated: boolean;
@@ -24,6 +25,8 @@ export interface SearchState {
 const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
   const location = useLocation<SearchState>();
   const [searchText, setSearchText] = useState<string>(location.state?.searchText || '');
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
   const [radius, setRadius] = useState(8046.72);//default meters (5mi)
   const [results, setResults] = useState<Place[]>(location.state?.results || []);
   const [hasSearched, setHasSearched] = useState(!!location.state?.results);
@@ -92,26 +95,53 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
   };
 
   const handleSearch = async () => {
-
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    if (!searchText) {
-      console.error("Address is required");
-      return;
-    }
-
-    try {
-      const userIdParam = userId || '';
-      console.log("Searching with address:", searchText, "radius:", radius, "userId:", userIdParam);
-      const response = await searchByAddress(searchText, radius, userIdParam, selectedType);
-      if (response) {
-        setResults(response);
-        setHasSearched(true);
-      } else {
-        console.error("Unexpected response structure:", response);
+    if (latitude !== null && longitude !== null) {
+      // Perform search by location
+      try {
+        const userIdParam = userId || '';
+        console.log("Searching with geolocation (Capacitor):", latitude, longitude, "radius:", radius, "userId:", userIdParam, "type:", selectedType);
+        const response = await searchByLocation(latitude, longitude, radius, userIdParam, selectedType);
+        if (response) {
+          setResults(response);
+          setHasSearched(true);
+        } else {
+          console.error("Unexpected response structure:", response);
+        }
+      } catch (error) {
+        console.error('Error searching:', error);
       }
+    } else if (searchText) {
+      // Perform search by address
+      try {
+        const userIdParam = userId || '';
+        console.log("Searching with address:", searchText, "radius:", radius, "userId:", userIdParam);
+        const response = await searchByAddress(searchText, radius, userIdParam, selectedType);
+        if (response) {
+          setResults(response);
+          setHasSearched(true);
+        } else {
+          console.error("Unexpected response structure:", response);
+        }
+      } catch (error) {
+        console.error("Error Searching:", error);
+      }
+    } else {
+      console.error("Please enter an address or use geolocation.");
+    }
+  };
+
+  const handleGeoSearch = async () => {
+    try {
+      const position = await Geolocation.getCurrentPosition();
+      const { latitude, longitude } = position.coords;
+      setLatitude(latitude);
+      setLongitude(longitude);
+      setSearchText(`${latitude}, ${longitude}`);
+      console.log("Geolocation set:", latitude, longitude);
     } catch (error) {
-      console.error("Error Searching: ", error);
+      console.error("Error getting geolocation using Capacitor:", error);
     }
   };
 
@@ -121,37 +151,6 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
     setSearchText(e.detail.value!);
     debouncedHandleSearch();
   };
-
-  const handleGeoSearch = async () => {
-    if (!navigator.geolocation) {
-      console.error("Geolocation is not supported by your browser");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-        setSearchText(`${latitude},${longitude}`);
-        try {
-          const userIdParam = userId || '';
-          console.log("Searching with geolocation:", latitude, longitude, "radius:", radius, "userId:", userIdParam, "type:", selectedType);
-          const response = await searchByLocation(latitude, longitude, radius, userIdParam, selectedType);
-          if (response) {
-            setResults(response);
-            setHasSearched(true);
-          } else {
-            console.error("Unexpected response structure:", response);
-          }
-        } catch (error) {
-          console.error('Error searching:', error);
-        }
-      },
-      (error) => {
-        console.error("Error getting geolocation:", error);
-      }
-    );
-  };
-
 
   const handleRadiusChange = (value: number) => {
     const miles = value;
@@ -163,70 +162,87 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
     <IonPage>
       <IonContent className='ion-padding'>
         <div className='page-container'>
-          <IonText style={{ fontSize: "0.85rem", display: "block", textAlign: "center" }} >Search by Address, Zip Code, City/State, or GeoLocation</IonText>
-          <CustomSearchbar value={searchText} onIonChange={handleSearchInputChange} onGeoClick={handleGeoSearch} />
-          <div className='flex ion-justify-content-between items-center ion-padding-horizontal'>
-            <IonSelect aria-label="radius" interface='popover' placeholder='Select Radius' value={(radius / 1609.34)} onIonChange={e => handleRadiusChange(e.detail.value)}>
-              <IonSelectOption value={1}>1mi</IonSelectOption>
-              <IonSelectOption value={5}>5mi</IonSelectOption>
-              <IonSelectOption value={10}>10mi</IonSelectOption>
-              <IonSelectOption value={15}>15mi</IonSelectOption>
-              <IonSelectOption value={20}>20mi</IonSelectOption>
-              <IonSelectOption value={25}>25mi</IonSelectOption>
-              <IonSelectOption value={30}>30mi</IonSelectOption>
-            </IonSelect>
-            <IonSelect
-              aria-label="type"
-              placeholder="Select Type"
-              interface='popover'
-              value={selectedType}
-              onIonChange={(e) => setSelectedType(e.detail.value)}
-            >
-              <IonSelectOption value="park">Park</IonSelectOption>
-              <IonSelectOption value="campground">Camping</IonSelectOption>
-              <IonSelectOption value="natural_feature">Natural Area</IonSelectOption>
-            </IonSelect>
-            <IonButton className='button primary small' onClick={handleSearch}>Search</IonButton>
-          </div>
-          {hasSearched ? (
-            <>
-              <IonSegment value={view} onIonChange={e => setView(String(e.detail.value))}>
-                <IonSegmentButton value="map">
-                  <IonLabel>Map</IonLabel>
-                </IonSegmentButton>
-                <IonSegmentButton value="list">
-                  <IonLabel>List</IonLabel>
-                </IonSegmentButton>
-              </IonSegment>
-              {view === 'map' ? (
-                <MapView searchText={searchText} places={results} />
-              ) : (
-                <ListView searchText={searchText} places={results} isAuthenticated={isAuthenticated} userId={userId} />
-              )}
-            </>
-          ) : (
-            <>
-              <IonImg src="/images/GHTextLogoGreen.png" alt="GreenHavenText" style={{marginTop:"2rem"}}/>
-              <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree" />
-              {isAuthenticated ? (
-                <ListView searchText={searchText} places={recentlyViewed} isAuthenticated={isAuthenticated}/>
+          <IonGrid>
+            <IonRow>
+              <IonText className="full" style={{ fontSize: "0.85rem", display: "block", textAlign: "center" }} >Search by Address, Zip Code, City/State, or GeoLocation</IonText>
+            </IonRow>
+            <IonRow>
+              <CustomSearchbar value={searchText} onIonChange={handleSearchInputChange} onGeoClick={handleGeoSearch} />
+            </IonRow>
+            <IonRow className='flex ion-justify-content-between items-center ion-padding-horizontal full'>
+                <IonSelect aria-label="radius" interface='popover' placeholder='Select Radius' value={(radius / 1609.34)} onIonChange={e => handleRadiusChange(e.detail.value)}>
+                  <IonSelectOption value={1}>1mi</IonSelectOption>
+                  <IonSelectOption value={5}>5mi</IonSelectOption>
+                  <IonSelectOption value={10}>10mi</IonSelectOption>
+                  <IonSelectOption value={15}>15mi</IonSelectOption>
+                  <IonSelectOption value={20}>20mi</IonSelectOption>
+                  <IonSelectOption value={25}>25mi</IonSelectOption>
+                  <IonSelectOption value={30}>30mi</IonSelectOption>
+                </IonSelect>
+                <IonSelect
+                  aria-label="type"
+                  placeholder="Select Type"
+                  interface='popover'
+                  value={selectedType}
+                  onIonChange={(e) => setSelectedType(e.detail.value)}
+                >
+                  <IonSelectOption value="park">Park</IonSelectOption>
+                  <IonSelectOption value="campground">Camping</IonSelectOption>
+                  <IonSelectOption value="natural_feature">Natural Area</IonSelectOption>
+                </IonSelect>
+                <IonButton className='button primary small' onClick={handleSearch}>Search</IonButton>
+            </IonRow>
+              {hasSearched ? (
+                <IonRow className='mt-16'>
+                  <IonSegment value={view} onIonChange={e => setView(String(e.detail.value))}>
+                    <IonSegmentButton value="map">
+                      <IonLabel>Map</IonLabel>
+                    </IonSegmentButton>
+                    <IonSegmentButton value="list">
+                      <IonLabel>List</IonLabel>
+                    </IonSegmentButton>
+                  </IonSegment>
+                  {view === 'map' ? (
+                    <MapView searchText={searchText} places={results} />
+                  ) : (
+                    <ListView searchText={searchText} places={results} isAuthenticated={isAuthenticated} userId={userId} />
+                  )}
+                </IonRow>
               ) : (
                 <>
-                  <IonText className='my-24'>
-                    <h3 className="text-center">What is GreenHaven?</h3>
-                    <p className='text-center'>Welcome to GreenHaven! Your gateway to discovering the best green spaces around you. Whether you're seeking tranquility in a serene park, the vibrant colors of a blooming garden, or the adventure of a scenic hiking trail, GreenHaven connects you to nature's finest spots.</p>
-                  </IonText>
-                  <Link to="/login">
-                    <IonButton expand="block" className='button primary'>Login</IonButton>
-                  </Link>
-
-                  <Link to="/register">
-                    <IonButton expand="block" className='button secondary'>Create Account</IonButton>
-                  </Link>
+                  <IonRow>
+                    <IonImg src="/images/GHTextLogoGreen.png" alt="GreenHavenText" style={{marginTop:"2rem"}}/>
+                  </IonRow>
+                  <IonRow>
+                    <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree" />
+                  </IonRow>    
+                  {isAuthenticated ? (
+                    <IonRow>
+                      <ListView searchText={searchText} places={recentlyViewed} isAuthenticated={isAuthenticated}/>
+                    </IonRow>
+                  ) : (
+                    <>
+                      <IonRow>
+                        <IonText className='my-24 full'>
+                          <h3 className="text-center">Welcome to GreenHaven!</h3>
+                          <p className='text-center'>Your gateway to discovering the best green spaces around you.</p>
+                        </IonText>
+                      </IonRow>           
+                      <IonRow>
+                        <Link className='full' to="/login">
+                          <IonButton expand="block" className='button primary'>Login</IonButton>
+                        </Link>
+                      </IonRow>
+                      <IonRow>
+                        <Link className='full' to="/register">
+                          <IonButton expand="block" className='button secondary'>Create Account</IonButton>
+                        </Link>                  
+                      </IonRow>
+                    </>
+                  )}
                 </>
               )}
-            </>
-          )}
+          </IonGrid>
         </div>
       </IonContent>
     </IonPage>
