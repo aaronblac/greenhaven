@@ -164,6 +164,7 @@ input {
     --padding-bottom: .25rem;
     --padding-end: 2rem;
     --padding-start: 2rem;
+    padding:.25rem 2rem;
     border-radius:0.5rem;
     border: 2px solid $primary;
 }
@@ -210,7 +211,7 @@ input[type=checkbox]{
 }
 
 // Text Area 
-.textarea-fill-outline.sc-ion-textarea-md-h,
+.textarea-outline-container.sc-ion-textarea-md,
 textarea{
     border:2px solid $primary;
     border-radius:0.5rem;

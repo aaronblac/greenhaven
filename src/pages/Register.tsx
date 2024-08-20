@@ -17,12 +17,6 @@ const Register: React.FC = () => {
   const history = useHistory();
   const location = useLocation<{ from?: string; placeId?: string; place?: Place; searchText?: string; results?: Place[]; view?: string }>();
 
-  useEffect(() => {
-    if (isRegisterAttempted) {
-      handleRegister();
-    }
-  }, [email, password, username, confirmPassword]);
-
   const handleRegister = async () => {
 
     if (!username || !email || !password || !confirmPassword) {
@@ -39,7 +33,6 @@ const Register: React.FC = () => {
   
     try {
       const user = await registerUser(email, password, username); 
-      console.log("Registered user:", user);
       
     // Redirect back to the previous page
     if (location.state?.from) {
@@ -72,7 +65,7 @@ const Register: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsRegisterAttempted(true);
+    handleRegister();
   }
 
   return (
@@ -90,7 +83,7 @@ const Register: React.FC = () => {
                 label="Username"
                 labelPlacement="stacked"
                 value={username}
-                onIonChange={(e) => setUsername(e.detail.value!)}
+                onInput={(e: any) => setUsername(e.target.value)}
                 type="text"
               />
             </IonRow>
@@ -99,7 +92,7 @@ const Register: React.FC = () => {
                 label="Email"
                 labelPlacement="stacked"
                 value={email}
-                onIonChange={(e) => setEmail(e.detail.value!)}
+                onInput={(e: any) => setEmail(e.target.value)}
                 type="email"
               />
             </IonRow>
@@ -108,7 +101,7 @@ const Register: React.FC = () => {
                 label="Password"
                 labelPlacement="stacked"
                 value={password}
-                onIonChange={(e) => setPassword(e.detail.value!)}
+                onInput={(e: any) => setPassword(e.target.value)}
                 type="password"
               >
                 <IonInputPasswordToggle color={'medium'} slot='end'/>
@@ -119,7 +112,7 @@ const Register: React.FC = () => {
                 label="Confirm Password"
                 labelPlacement="stacked"
                 value={confirmPassword}
-                onIonChange={(e) => setConfirmPassword(e.detail.value!)}
+                onInput={(e: any) => setConfirmPassword(e.target.value)}
                 type="password"
               >
                 <IonInputPasswordToggle color={'medium'} slot='end'/>

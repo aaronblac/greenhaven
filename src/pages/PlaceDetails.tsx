@@ -32,7 +32,6 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
 
     useEffect(() => {
 
-        console.log('Place from location.state:', location.state?.place);
         if (!place) {
             console.error('No place data available');
             return;
@@ -53,10 +52,8 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
                     const userFavorites = await getUserFavorites(userId);
                     if(userFavorites){
                         setFavorites(userFavorites);
-                        console.log("userFavorites/PlaceDetails: ", userFavorites)
                     } else {
-                        console.log("User Favorites are empty")
-
+                        console.error("User Favorites are empty")
                     }
                 } catch (error) {
                     console.error("Error fetching user favorites: ", error)
@@ -68,11 +65,9 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
         const fetchDetails = async () => {
             if (placeId && !hasFetchedDetails.current) {
                 hasFetchedDetails.current = true;
-                console.log('enter fetchDetails');
                 try {
                     const details = await fetchPlaceDetails(placeId);
                     setPlace(prevPlace => ({ ...prevPlace, ...details }));
-                    console.log('Fetched place details:', details);
                 } catch (error) {
                     console.error("Error fetching place details: ", error);
                 }
@@ -83,7 +78,6 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
             try {
                 const reviews = await getReviewForPlace(placeId);
                 setGreenhavenReviews(reviews);
-                console.log("gh reviews: ", reviews)
             } catch (error) {
                 console.error("Error fetching GreenHaven reviews: ", error);
             }

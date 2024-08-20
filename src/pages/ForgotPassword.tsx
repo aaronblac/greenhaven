@@ -29,7 +29,6 @@ const ForgotPasswordPage: React.FC = () => {
 
     sendPasswordResetEmail(auth, emailVerification)
       .then(() => {
-        console.log('Password reset email sent');
         setSuccess(true);
       })
       .catch((error) => {

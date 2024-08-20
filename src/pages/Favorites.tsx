@@ -30,7 +30,6 @@ const Favorites: React.FC<FavoritesProps> = ({ isAuthenticated, userId }) => {
             if (isAuthenticated && userId) {
                 try {
                     const userFavoritesIds = await getUserFavorites(userId);
-                    console.log("user Favorites id", userFavoritesIds )
                     // Fetch full Place details for each favorite
                     const favoritePlaces = await Promise.all(
                         userFavoritesIds.map(async (placeId: string) => {
@@ -40,7 +39,6 @@ const Favorites: React.FC<FavoritesProps> = ({ isAuthenticated, userId }) => {
                     );
 
                     setFavorites(favoritePlaces);
-                    console.log("userFavorites/Favorites: ", favoritePlaces);
                 } catch (error) {
                     console.error("Error fetching user favorites: ", error);
                     setFavorites([]);
@@ -52,7 +50,6 @@ const Favorites: React.FC<FavoritesProps> = ({ isAuthenticated, userId }) => {
         if (apiKey) {
             fetchFavorites();
         }
-        console.log("favorites: ", favorites);
     }, [isAuthenticated, userId, apiKey]);
 
     return (

@@ -28,8 +28,6 @@ export const registerUser = async (email: string, password: string, username: st
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    console.log("User registered:", user);
-
     // Create a Firestore document for the user
     await setDoc(doc(db, "users", user.uid), {
       email,
@@ -49,11 +47,8 @@ export const registerUser = async (email: string, password: string, username: st
 
 // Login User
 export const loginUser = async (email: string, password: string) => {
-  console.log('before try loginUser');
   try {
-    console.log('inside try loginUser');
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    console.log("User logged in:", userCredential.user);
     return userCredential.user;
   } catch (error) {
     console.error("Error logging in user:", error);
@@ -67,12 +62,8 @@ export const logoutUser = async () => {
     localStorage.removeItem('token');
     
     await auth.signOut();
-    console.log("User signed out from Firebase.");
     
     const response = await api.post('/logout');
-    console.log("User logged out:", response.data);
-
-
 
     return response.data;
   } catch (error) {

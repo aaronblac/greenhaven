@@ -12,11 +12,9 @@ export const submitReview = async (userId: string,  placeId: string, rating: num
             username,
             createdAt: new Date().toISOString(),
         });
-        console.log("review sumbitted: ", response.data);
         return response.data;
     } catch (error) {
         console.error('Error submitting review:', error);
-        console.log("userID error catch: ", userId);
         throw error;
     }
 };

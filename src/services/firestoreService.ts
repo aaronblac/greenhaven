@@ -27,7 +27,6 @@ export const getDocument = async (id: string) => {
   const docRef = doc(db, collectionName, id);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    console.log("get doc data: ", docSnap.data())
     return { id: docSnap.id, ...docSnap.data() } as UserDocument;
   } else {
     throw new Error('Document not found');

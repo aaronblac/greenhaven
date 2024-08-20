@@ -22,7 +22,6 @@ const Login: React.FC = () => {
 
     try {
       const user = await loginUser(email, password);
-      console.log('Logged in user:', user);
       if (location.state?.from) {
         history.push({
           pathname: location.state.from,
@@ -76,7 +75,7 @@ const Login: React.FC = () => {
                 label="Email"
                 labelPlacement="stacked"
                 value={email}
-                onIonChange={(e) => setEmail(e.detail.value!)}
+                onInput={(e: any) => setEmail(e.target.value)}
                 type="email"
               />
             </IonRow>
@@ -85,7 +84,7 @@ const Login: React.FC = () => {
                 label="Password"
                 labelPlacement="stacked"
                 value={password}
-                onIonChange={(e) => setPassword(e.detail.value!)}
+                onInput={(e: any) => setPassword(e.target.value)}
                 type="password"
               >
                 <IonInputPasswordToggle color={'medium'} slot='end' />
