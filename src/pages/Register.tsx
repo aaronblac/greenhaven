@@ -80,6 +80,7 @@ const Register: React.FC = () => {
           <form className='flex flex-column gap-16' onSubmit={handleSubmit}>
             <IonRow>
               <IonInput
+                className='ion-padding-horizontal'
                 label="Username"
                 labelPlacement="stacked"
                 value={username}
@@ -89,26 +90,29 @@ const Register: React.FC = () => {
             </IonRow>
             <IonRow>
               <IonInput
+                className='ion-padding-horizontal'
                 label="Email"
                 labelPlacement="stacked"
                 value={email}
                 onInput={(e: any) => setEmail(e.target.value)}
                 type="email"
-              />
+                />
             </IonRow>
             <IonRow>
               <IonInput
+                className='ion-padding-horizontal'
                 label="Password"
                 labelPlacement="stacked"
                 value={password}
                 onInput={(e: any) => setPassword(e.target.value)}
                 type="password"
-              >
+                >
                 <IonInputPasswordToggle color={'medium'} slot='end'/>
               </IonInput>
             </IonRow>
             <IonRow>
               <IonInput
+                className='ion-padding-horizontal'
                 label="Confirm Password"
                 labelPlacement="stacked"
                 value={confirmPassword}
