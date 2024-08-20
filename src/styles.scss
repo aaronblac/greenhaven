@@ -192,11 +192,12 @@ ion-input-password-toggle{
 
 // Search 
 .searchbar-input.sc-ion-searchbar-md {
-    padding: .425rem 3rem .425rem 2rem;
     border-radius:0.5rem;
+    padding: .425rem 3rem .425rem 2rem;
 }
 
-.searchbar-input-container.sc-ion-searchbar-md{
+.searchbar-input-container.sc-ion-searchbar-md,
+.searchbar-input.sc-ion-searchbar-ios{
     border: 2px solid $primary;
     border-radius:0.5rem;
 
