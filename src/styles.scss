@@ -191,12 +191,15 @@ ion-input-password-toggle{
 }
 
 // Search 
-.searchbar-input.sc-ion-searchbar-md,
-input {
+.searchbar-input.sc-ion-searchbar-md {
     padding: .425rem 3rem .425rem 2rem;
+    border-radius:0.5rem;
+}
+
+.searchbar-input-container.sc-ion-searchbar-md{
     border: 2px solid $primary;
     border-radius:0.5rem;
-    
+
 }
 
 .searchbar-search-icon.sc-ion-searchbar-md{
@@ -218,6 +221,7 @@ textarea{
     border-radius:0.5rem;
     min-height: 5rem;
 }
+
 .textarea-fill-outline.sc-ion-textarea-md-h .textarea-outline-end.sc-ion-textarea-md,
 .textarea-fill-outline.sc-ion-textarea-md-h .textarea-outline-start.sc-ion-textarea-md  {
     border:none;

@@ -36,7 +36,6 @@ const ListView: React.FC<ListViewProps> = ({ places, isAuthenticated, userId, se
           try {
             const userFavorites = await getUserFavorites(userId);
             setFavorites(userFavorites);
-            console.log(userFavorites);
           } catch (error) {
             console.error('Error fetching user favorites:', error);
           }

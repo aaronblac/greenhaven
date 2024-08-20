@@ -49,7 +49,6 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
       if (isAuthenticated && userId) {
         try {
           const userRecentViews = await getRecentViews(userId);
-          console.log("user Favorites id", userRecentViews);
   
           // Fetch full Place details for each recently viewed item
           const recentViewed = await Promise.all(
@@ -60,7 +59,6 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
           );
   
           setRecentlyViewed(recentViewed);
-          console.log("recently viewed: ", recentViewed);
         } catch (error) {
           console.error("Error fetching user recently viewed places: ", error);
           setRecentlyViewed([]);
@@ -101,7 +99,6 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
       // Perform search by location
       try {
         const userIdParam = userId || '';
-        console.log("Searching with geolocation (Capacitor):", latitude, longitude, "radius:", radius, "userId:", userIdParam, "type:", selectedType);
         const response = await searchByLocation(latitude, longitude, radius, userIdParam, selectedType);
         if (response) {
           setResults(response);
@@ -116,7 +113,6 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
       // Perform search by address
       try {
         const userIdParam = userId || '';
-        console.log("Searching with address:", searchText, "radius:", radius, "userId:", userIdParam);
         const response = await searchByAddress(searchText, radius, userIdParam, selectedType);
         if (response) {
           setResults(response);
@@ -139,7 +135,6 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
       setLatitude(latitude);
       setLongitude(longitude);
       setSearchText(`${latitude}, ${longitude}`);
-      console.log("Geolocation set:", latitude, longitude);
     } catch (error) {
       console.error("Error getting geolocation using Capacitor:", error);
     }
@@ -223,7 +218,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
                   ) : (
                     <>
                       <IonRow>
-                        <IonText className='my-24 full'>
+                        <IonText className='full'>
                           <h3 className="text-center">Welcome to GreenHaven!</h3>
                           <p className='text-center'>Your gateway to discovering the best green spaces around you.</p>
                         </IonText>
