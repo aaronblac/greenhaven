@@ -1,7 +1,10 @@
-import axios from 'axios';
-import { auth, db } from '../utility/firebaseConfig';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { setDoc, doc } from 'firebase/firestore';
+import axios from "axios";
+import { auth, db } from "../utility/firebaseConfig";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
 
 const baseUrl = "https://us-central1-greenhaven-d11b5.cloudfunctions.net/api";
 
@@ -13,7 +16,7 @@ const api = axios.create({
 // Add a request interceptor to attach the token automatically
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token'); // Or retrieve from cookies
+    const token = localStorage.getItem("token"); // Or retrieve from cookies
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -22,10 +25,18 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export const registerUser = async (email: string, password: string, username: string) => {
+export const registerUser = async (
+  email: string,
+  password: string,
+  username: string
+) => {
   try {
     // Create user with Firebase Authentication
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     const user = userCredential.user;
 
     // Create a Firestore document for the user
@@ -48,7 +59,11 @@ export const registerUser = async (email: string, password: string, username: st
 // Login User
 export const loginUser = async (email: string, password: string) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     return userCredential.user;
   } catch (error) {
     console.error("Error logging in user:", error);
@@ -59,11 +74,11 @@ export const loginUser = async (email: string, password: string) => {
 export const logoutUser = async () => {
   try {
     // Remove the token from localStorage
-    localStorage.removeItem('token');
-    
+    localStorage.removeItem("token");
+
     await auth.signOut();
-    
-    const response = await api.post('/logout');
+
+    const response = await api.post("/logout");
 
     return response.data;
   } catch (error) {

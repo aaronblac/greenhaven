@@ -1,16 +1,24 @@
-import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { db } from '../utility/firebaseConfig';
+import {
+  collection,
+  addDoc,
+  getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../utility/firebaseConfig";
 
-const collectionName = 'users';
+const collectionName = "users";
 
 interface UserDocument {
   id: string;
   username: string;
-  email:string;
+  email: string;
   favorites: string[];
-  lastPlacesLookedAt:string[];
+  lastPlacesLookedAt: string[];
   recentSearches: string[];
-  reviews:string[];
+  reviews: string[];
 }
 
 export const addDocument = async (data: any) => {
@@ -20,7 +28,7 @@ export const addDocument = async (data: any) => {
 
 export const getDocuments = async () => {
   const querySnapshot = await getDocs(collection(db, collectionName));
-  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 export const getDocument = async (id: string) => {
@@ -29,7 +37,7 @@ export const getDocument = async (id: string) => {
   if (docSnap.exists()) {
     return { id: docSnap.id, ...docSnap.data() } as UserDocument;
   } else {
-    throw new Error('Document not found');
+    throw new Error("Document not found");
   }
 };
 

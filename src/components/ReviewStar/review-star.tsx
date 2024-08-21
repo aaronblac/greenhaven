@@ -1,5 +1,5 @@
-import { IonIcon } from '@ionic/react';
-import { star, starOutline } from 'ionicons/icons';
+import { IonIcon } from "@ionic/react";
+import { star, starOutline } from "ionicons/icons";
 
 interface StarProps {
   filled: boolean;
@@ -11,7 +11,7 @@ const Star: React.FC<StarProps> = ({ filled, onClick }) => {
     <IonIcon
       icon={filled ? star : starOutline}
       color="warning"
-      style={{ cursor: 'pointer', fontSize: '24px' }}
+      style={{ cursor: "pointer", fontSize: "24px" }}
       onClick={onClick}
     />
   );
