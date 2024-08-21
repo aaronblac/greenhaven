@@ -79,10 +79,20 @@ const MapView: React.FC<MapViewProps> = ({ places, searchText }) => {
             place.geometry.location.lat,
             place.geometry.location.lng
           );
+
+          const customMarkerElement = document.createElement('div');
+          customMarkerElement.style.backgroundImage = 'url(/images/forest-tree.png)'; // Replace with your image URL
+          customMarkerElement.style.backgroundSize = 'cover';
+          customMarkerElement.style.width = '30px'; // Set the width of the marker
+          customMarkerElement.style.height = '30px'; // Set the height of the marker
+          customMarkerElement.style.position = 'relative';
+          customMarkerElement.style.transform = 'translate(-50%, -100%)';
+
           const marker = new google.maps.marker.AdvancedMarkerElement({
             position,
             map,
             title: place.name,
+            content: customMarkerElement,
           });
 
           const infoWindow = new google.maps.InfoWindow();
