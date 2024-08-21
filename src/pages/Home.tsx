@@ -193,16 +193,18 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
 
   const handleGeoSearch = async () => {
     try {
-      const permission = await Geolocation.requestPermissions();
-      if (permission.location === 'granted') {
-        const position = await Geolocation.getCurrentPosition();
-        const { latitude, longitude } = position.coords;
-        setLatitude(latitude);
-        setLongitude(longitude);
-        setSearchText(`${latitude}, ${longitude}`);
-      } else {
-        console.error("Location permission denied");
+      const permissionStatus = await Geolocation.checkPermissions();
+
+      if (permissionStatus.location === 'denied' || permissionStatus.location === 'prompt') {
+        // If the permission is denied or hasn't been requested yet, request it now
+        await Geolocation.requestPermissions();
       }
+
+      const position = await Geolocation.getCurrentPosition();
+      const { latitude, longitude } = position.coords;
+      setLatitude(latitude);
+      setLongitude(longitude);
+      setSearchText(`${latitude}, ${longitude}`);
     } catch (error) {
       console.error("Error getting geolocation using Capacitor:", error);
     }
