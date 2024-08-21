@@ -9,7 +9,6 @@ import ShareButton from "../components/Buttons/share-button";
 import { fetchPlaceDetails } from "../services/searchService";
 import { getReviewForPlace } from "../services/reviewService";
 import ReviewList from "../components/ReviewsList/reviews-list";
-import { SearchState } from "./Home";
 
 interface PlaceDetailProps {
     isAuthenticated: boolean;
@@ -25,6 +24,8 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
     const [favorites, setFavorites] = useState<string[]>([]);
     const [activeTab, setActiveTab] = useState<string>('greenhaven');
     const [greenhavenReviews, setGreenhavenReviews] = useState<any[]>([]);
+    const [userHasReviewed, setUserHasReviewed] = useState<boolean>(false);
+    const [userReview, setUserReview] = useState<any>(null);
     const scrollPosition = useRef<number>(0);
 
     const history = useHistory();
@@ -78,6 +79,12 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
             try {
                 const reviews = await getReviewForPlace(placeId);
                 setGreenhavenReviews(reviews);
+
+                const existingReview = reviews.find((review: any) => review.userId === userId);
+                if (existingReview) {
+                    setUserHasReviewed(true);
+                    setUserReview(existingReview); 
+                }
             } catch (error) {
                 console.error("Error fetching GreenHaven reviews: ", error);
             }
@@ -183,11 +190,12 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
                         )}
                         <ShareButton place={place} />
                         {isAuthenticated && (
-                            <IonIcon
-                                color="primary"
-                                icon={favorites.includes(place.place_id) ? heart : heartOutline}
-                                onClick={() => toggleFavorite(place.place_id)}
-                            />
+                            <IonButton fill="clear" onClick={() => toggleFavorite(place.place_id)}>
+                                <IonIcon
+                                    color="primary"
+                                    icon={favorites.includes(place.place_id) ? heart : heartOutline}
+                                />
+                            </IonButton>
                         )}
                     </IonRow>
                     <IonRow className="flex flex-column items-center">
@@ -209,7 +217,7 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
                         </IonSelect>
                         {isAuthenticated ? (
                             <IonButton className="button tertiary small" >
-                                <Link to={{pathname: `/write-review/${place.place_id}`, state:{placeName: place.name}}}>Write Review</Link>
+                                <Link to={{pathname: `/write-review/${place.place_id}`, state:{placeName: place.name, userReview: userReview}}}>{userHasReviewed ? 'Update review' : 'Write Review'}</Link>
                             </IonButton>
                         ) : (
                             <div className="flex items-center gap-4" style={{fontSize: "0.75rem"}}>
@@ -220,6 +228,14 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({ isAuthenticated, userId }) =>
                                         placeId,
                                         place,
                                     }}}>Login</Link>
+                                    <span>or</span>
+                                <Link to={{
+                                    pathname:"/Register",
+                                    state: {
+                                        from: location.pathname,
+                                        placeId,
+                                        place,
+                                    }}}>Register</Link>
                                 <span>to write a review</span>
                             </div>
                         )}

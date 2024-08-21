@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonToolbar, IonLabel, IonImg, IonText, IonSelect, IonSelectOption, IonButton, IonSegment, IonSegmentButton, IonGrid, IonRow } from '@ionic/react';
 import { Link, useLocation } from 'react-router-dom';
-import { fetchPlaceDetails, searchByAddress, searchByLocation } from '../services/searchService';
+import { fetchPlaceDetails, getAutocompleteSuggestions, searchByAddress, searchByLocation } from '../services/searchService';
 import MapView from '../components/SearchResults/map-view';
 import ListView from '../components/SearchResults/list-view';
 import CustomSearchbar from '../components/SearchBar/search-bar';
@@ -9,6 +9,7 @@ import { Place } from '../../functions/src/searchFunctions';
 import { getApiKey } from '../services/apiService';
 import { getRecentViews } from '../services/userService';
 import { Geolocation } from '@capacitor/geolocation';
+import axios from 'axios';
 
 interface HomeProps {
   isAuthenticated: boolean;
@@ -34,6 +35,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
   const [selectedType, setSelectedType] = useState<string>('');
   const [recentlyViewed, setRecentlyViewed] = useState<Place[]>([]);
   const [apiKey, setApiKey] = useState<string | null>(null);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchApiKey = async () => {
@@ -92,8 +94,39 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
     };
   };
 
+  const handleSearchInputChange = (e: CustomEvent) => {
+    const input = e.detail.value!;
+    setSearchText(input);
+
+    if (input) {
+        // Reset latitude and longitude when typing an address
+        setLatitude(null);
+        setLongitude(null);
+        
+        // Fetch suggestions if necessary
+        getAutocompleteSuggestions(input).then(suggestions => {
+            setSuggestions(suggestions.map((pred: any) => pred.description));
+        }).catch(error => {
+            console.error('Error fetching autocomplete suggestions:', error);
+        });
+    } else {
+        setSuggestions([]);
+    }
+  };
+
+  const handleSuggestionSelect = (suggestion: string) => {
+    setSearchText(suggestion);
+    setSuggestions([]);
+    handleSearch();
+  };
+
   const handleSearch = async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
+
+    if (searchText && latitude !== null && longitude !== null) {
+      setLatitude(null);
+      setLongitude(null);
+    }
 
     if (latitude !== null && longitude !== null) {
       // Perform search by location
@@ -142,11 +175,6 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
 
   const debouncedHandleSearch = useCallback(debounce(handleSearch, 300), [searchText, radius, isAuthenticated, userId]);
 
-  const handleSearchInputChange = (e: CustomEvent) => {
-    setSearchText(e.detail.value!);
-    debouncedHandleSearch();
-  };
-
   const handleRadiusChange = (value: number) => {
     const miles = value;
     const meters = miles * 1609.34; // Convert miles to meters
@@ -162,7 +190,12 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
               <IonText className="full" style={{ fontSize: "0.85rem", display: "block", textAlign: "center" }} >Search by Address, Zip Code, City/State, or GeoLocation</IonText>
             </IonRow>
             <IonRow>
-              <CustomSearchbar value={searchText} onIonChange={handleSearchInputChange} onGeoClick={handleGeoSearch} />
+              <CustomSearchbar 
+                value={searchText} 
+                onIonChange={handleSearchInputChange} 
+                onGeoClick={handleGeoSearch}
+                suggestions={suggestions}
+                onSuggestionSelect={handleSuggestionSelect} />
             </IonRow>
             <IonRow className='flex ion-justify-content-between items-center ion-padding-horizontal full'>
                 <IonSelect aria-label="radius" interface='popover' placeholder='Select Radius' value={(radius / 1609.34)} onIonChange={e => handleRadiusChange(e.detail.value)}>
@@ -212,9 +245,17 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
                     <IonImg src='/images/forest-tree.png' alt='Tree' className="main-home-tree" />
                   </IonRow>    
                   {isAuthenticated ? (
-                    <IonRow>
-                      <ListView searchText={searchText} places={recentlyViewed} isAuthenticated={isAuthenticated}/>
-                    </IonRow>
+                    <>
+                      {recentlyViewed ? (
+                        <IonRow className='flex flex-column '>
+                          <IonText className='full text-center'>Recently Viewed</IonText>
+                          <ListView searchText={searchText} places={recentlyViewed} isAuthenticated={isAuthenticated}/>
+                        </IonRow>
+                        ) : (
+                          <>""</>
+                        )
+                      } 
+                    </>
                   ) : (
                     <>
                       <IonRow>

@@ -46,3 +46,17 @@ export const fetchPlaceDetails = async (placeId: string) => {
         throw error;
     }
 };
+
+export const getAutocompleteSuggestions = async (input: string) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/autocomplete`, {
+            params: {
+                input,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching autocomplete suggestions:', error);
+        throw error;
+    }
+};

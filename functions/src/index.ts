@@ -22,7 +22,8 @@ import {
   searchByAddress,
   getApiKey,
   searchByLocation,
-  getPlaceDetails} from "./searchFunctions";
+  getPlaceDetails,
+  getAutocompleteSuggestions} from "./searchFunctions";
 
 const app = express();
 app.use(cors({origin: true}));
@@ -41,6 +42,7 @@ app.post("/update-recent-views", updateUserRecentViewed);
 app.get("/get-recent-views", getUserRecentViewed);
 app.get("/search-address", searchByAddress);
 app.get("/search-location", searchByLocation);
+app.get("/autocomplete", getAutocompleteSuggestions);
 app.get("/place-details", getPlaceDetails);
 app.get("/api-key", getApiKey);
 

@@ -36,7 +36,7 @@ const Register: React.FC = () => {
       
     // Redirect back to the previous page
     if (location.state?.from) {
-      history.push({
+      history.replace({
         pathname: location.state.from,
         state: {
           placeId: location.state.placeId,
@@ -47,7 +47,7 @@ const Register: React.FC = () => {
         },
       });
     } else {
-      history.push('/home');
+      history.replace('/home');
     }
     } catch (error) {
       console.error("Error registering:", error);

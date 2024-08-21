@@ -23,7 +23,7 @@ const Login: React.FC = () => {
     try {
       const user = await loginUser(email, password);
       if (location.state?.from) {
-        history.push({
+        history.replace({
           pathname: location.state.from,
           state: {
             placeId: location.state.placeId,
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
           },
         });
       } else {
-        history.push('/home');
+        history.replace('/home');
       }
     } catch (error: any) {
       console.error('Error logging in:', error);

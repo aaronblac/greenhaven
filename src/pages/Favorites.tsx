@@ -16,19 +16,12 @@ const Favorites: React.FC<FavoritesProps> = ({ isAuthenticated, userId }) => {
     const [apiKey, setApiKey] = useState<string | null>(null);
 
     useEffect(() => {
-        
-        const fetchApiKey = async () => {
+        const fetchApiKeyAndFavorites = async () => {
             try {
                 const key = await getApiKey();
                 setApiKey(key);
-            } catch (error) {
-                console.error("Error fetching API key: ", error);
-            }
-        };
 
-        const fetchFavorites = async () => {
-            if (isAuthenticated && userId) {
-                try {
+                if (isAuthenticated && userId) {
                     const userFavoritesIds = await getUserFavorites(userId);
                     // Fetch full Place details for each favorite
                     const favoritePlaces = await Promise.all(
@@ -39,18 +32,15 @@ const Favorites: React.FC<FavoritesProps> = ({ isAuthenticated, userId }) => {
                     );
 
                     setFavorites(favoritePlaces);
-                } catch (error) {
-                    console.error("Error fetching user favorites: ", error);
-                    setFavorites([]);
                 }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                setFavorites([]);
             }
         };
 
-        fetchApiKey();
-        if (apiKey) {
-            fetchFavorites();
-        }
-    }, [isAuthenticated, userId, apiKey]);
+        fetchApiKeyAndFavorites();
+    }, [isAuthenticated, userId]);
 
     return (
         <>

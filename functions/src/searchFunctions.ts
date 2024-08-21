@@ -48,10 +48,33 @@ export const getApiKey = functions.https.onRequest((req: functions.https.Request
   res.status(200).send({apiKey: GOOGLE_API_KEY});
 });
 
+export const getAutocompleteSuggestions = functions.https.onRequest(async (req, res) => {
+  const input = req.query.input as string;
+
+  if (!input) {
+    res.status(400).send("Input is required");
+    return;
+  }
+
+  try {
+    const response = await axios.get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {
+      params: {
+        input,
+        key: GOOGLE_API_KEY,
+      },
+    });
+
+    res.status(200).send(response.data.predictions);
+  } catch (error) {
+    console.error("Error fetching autocomplete suggestions:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 export const searchByAddress = functions.https.onRequest(async (req: functions.https.Request, res: functions.Response) => {
   const address = req.query.address as string;
   const radius = parseFloat(req.query.radius as string);
-  const type = req.query.type as string;
+  const type = req.query.type as string || "park";
 
 
   if (!address || !radius) {
@@ -116,7 +139,7 @@ export const searchByLocation = functions.https.onRequest(async (req: functions.
   const latitude = parseFloat(req.query.latitude as string);
   const longitude = parseFloat(req.query.longitude as string);
   const radius = parseFloat(req.query.radius as string);
-  const type = req.query.type as string;
+  const type = req.query.type as string || "park";
 
 
   if (!latitude || !longitude || !radius) {

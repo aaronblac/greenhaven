@@ -3,9 +3,11 @@ import { Redirect, useHistory } from 'react-router';
 import {
   IonApp,
   IonButtons,
+  IonContent,
   IonGrid,
   IonHeader,
   IonImg,
+  IonLoading,
   IonMenu,
   IonMenuButton,
   IonRouterOutlet,
@@ -67,8 +69,7 @@ const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [username, setUsername] = useState<string | null>(null);
-
-  const history = useHistory();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -89,6 +90,7 @@ const App: React.FC = () => {
         setUser(null);
         setUsername(null);
       }
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -115,6 +117,12 @@ const App: React.FC = () => {
             </IonGrid>
           </IonToolbar>
         </IonHeader>
+        <IonLoading
+          isOpen={loading}
+          message={'Please wait...'}
+          spinner="crescent"
+        />
+        {!loading && (
           <IonRouterOutlet id="main-content">
             <Route exact path="/home" >
               <Home isAuthenticated={isAuthenticated} userId={user?.uid} />
@@ -141,6 +149,7 @@ const App: React.FC = () => {
               <Redirect to="/home" />
             </Route>
           </IonRouterOutlet>
+        )}
       </IonReactRouter>
     </IonApp>
   );

@@ -136,6 +136,7 @@ IonButton,
         &:hover{
             background-color: $primary;
             color:white;
+            border:1px solid $primary;
         }
     }
 }
@@ -400,4 +401,16 @@ ion-select-popover{
     &::-webkit-scrollbar-thumb{
         border-radius: 0.75rem;
     }
+}
+
+.favorite{
+    &:hover{
+        cursor: pointer;
+    }
+}
+.suggestions{
+    // padding:1rem;
+    border:2px solid $primary;
+    border-radius: 0.5rem;
+    background-color:$black;
 }

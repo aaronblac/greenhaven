@@ -66,6 +66,7 @@ const MapView: React.FC<MapViewProps> = ({ places, searchText }) => {
             return;
           }
   
+          
           places.forEach(place => {
             const position = new google.maps.LatLng(place.geometry.location.lat, place.geometry.location.lng);
             const marker = new google.maps.marker.AdvancedMarkerElement({
@@ -73,6 +74,22 @@ const MapView: React.FC<MapViewProps> = ({ places, searchText }) => {
               map,
               title: place.name,
             });
+
+            const infoWindow = new google.maps.InfoWindow();
+            
+            marker.addListener('gmp-mouseover', () => {
+              infoWindow.setContent(place.name);
+              infoWindow.open({
+                anchor: marker,
+                map,
+                shouldFocus: false, // Prevents the map from focusing on the marker
+              });
+            });
+  
+            marker.addListener('gmp-mouseout', () => {
+              infoWindow.close();
+            });
+
             marker.addListener('click', () => {
                 history.push({
                   pathname: `/place/${place.place_id}`,
