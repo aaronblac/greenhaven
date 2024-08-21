@@ -67,9 +67,9 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [username, setUsername] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -99,8 +99,17 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
+        <IonLoading
+          isOpen={loading}
+          message={'Please wait...'}
+          spinner="crescent"
+        />
+        {!loading && (
+          <>
         <IonMenu side="end" contentId="main-content">
-          <TopMenu />
+          <IonContent>
+            <TopMenu />
+          </IonContent>
         </IonMenu>
         <IonHeader>
           <IonToolbar>
@@ -117,12 +126,6 @@ const App: React.FC = () => {
             </IonGrid>
           </IonToolbar>
         </IonHeader>
-        <IonLoading
-          isOpen={loading}
-          message={'Please wait...'}
-          spinner="crescent"
-        />
-        {!loading && (
           <IonRouterOutlet id="main-content">
             <Route exact path="/home" >
               <Home isAuthenticated={isAuthenticated} userId={user?.uid} />
@@ -149,8 +152,9 @@ const App: React.FC = () => {
               <Redirect to="/home" />
             </Route>
           </IonRouterOutlet>
+          </>
         )}
-      </IonReactRouter>
+        </IonReactRouter>
     </IonApp>
   );
 };
