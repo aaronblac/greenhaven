@@ -390,8 +390,9 @@ ion-select-popover {
   margin-top: 1rem;
 }
 
-.inner-scroll.scorll-y {
+.inner-scroll.scroll-y {
   scrollbar-width: thin;
+  margin-left:0.5rem;
   &::webkit-scrollbar {
     width: 4px;
     border-radius: 0.75rem;
