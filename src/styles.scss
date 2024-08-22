@@ -218,7 +218,6 @@ input[type="checkbox"] {
 .textarea-outline-container.sc-ion-textarea-md,
 textarea,
 ion-textarea {
-  border: 2px solid $primary;
   --border-color:$primary;
   border-radius: 0.5rem;
   min-height: 5rem;
