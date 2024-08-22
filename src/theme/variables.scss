@@ -78,3 +78,10 @@ $font-family-base: "Montserrat", Arial, "sans-serif";
 @function color-to-rgb($color) {
   @return red($color), green($color), blue($color);
 }
+
+@media (prefers-color-scheme: light) {
+    :root {
+        $black:#ffffff;
+        $white:#191919;
+    }
+}
