@@ -215,15 +215,16 @@ input[type="checkbox"] {
 }
 
 // Text Area
-.textarea-outline-container.sc-ion-textarea-md,
-textarea,
+
 ion-textarea {
-  --border-color:$primary;
+  border:2px solid $primary;
   border-radius: 0.5rem;
   min-height: 5rem;
   padding:0.5rem;
 }
-
+textarea{
+    --padding-top:0.5rem;
+}
 .textarea-fill-outline.sc-ion-textarea-md-h
   .textarea-outline-end.sc-ion-textarea-md,
 .textarea-fill-outline.sc-ion-textarea-md-h
