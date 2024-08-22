@@ -216,8 +216,10 @@ input[type="checkbox"] {
 
 // Text Area
 .textarea-outline-container.sc-ion-textarea-md,
-textarea {
+textarea,
+ion-textarea {
   border: 2px solid $primary;
+  --border-color:$primary;
   border-radius: 0.5rem;
   min-height: 5rem;
 }
@@ -413,4 +415,13 @@ ion-select-popover {
   border: 2px solid $primary;
   border-radius: 0.5rem;
   background-color: $black;
+}
+
+@media (prefers-color-scheme: light) {
+    .suggestions{
+        background-color: #ffffff;
+    }
+    ion-menu-button.button{
+        color:#191919;
+    }
 }

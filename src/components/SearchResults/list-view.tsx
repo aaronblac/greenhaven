@@ -132,6 +132,7 @@ const ListView: React.FC<ListViewProps> = ({
               </div>
               {isAuthenticated && (
                 <IonIcon
+                  color="primary"
                   style={{ zIndex: 2 }}
                   icon={favorites.includes(place.place_id) ? heart : ""}
                   onClick={(e) => {
