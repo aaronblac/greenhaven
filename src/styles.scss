@@ -330,6 +330,7 @@ ion-card {
 .scrolling-list {
   overflow-y: auto;
   max-height: calc(100dvh - 18rem);
+  scrollbar-width: thin;
   .favorites & {
     max-height: calc(100dvh - 12rem);
   }
@@ -414,7 +415,6 @@ ion-select-popover {
   }
 }
 .suggestions {
-  // padding:1rem;
   border: 2px solid $primary;
   border-radius: 0.5rem;
   background-color: $black;
