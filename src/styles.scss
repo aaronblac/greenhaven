@@ -432,3 +432,8 @@ ion-select-popover {
 .pointer{
     cursor: pointer;
 }
+
+.native-input.sc-ion-input-md {
+    --padding-left:2px;
+    --padding-bottom:1px;
+}

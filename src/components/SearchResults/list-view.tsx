@@ -86,7 +86,8 @@ const ListView: React.FC<ListViewProps> = ({
   };
 
   const handleCardClick = (place: Place) => {
-    history.replace({
+   
+    history.push({
       pathname: `/place/${place.place_id}`,
       state: {
         place,

@@ -47,11 +47,11 @@ const TopMenu: React.FC = () => {
     try {
       await logoutUser();
       setIsAuthenticated(false);
+      document.querySelector("ion-menu")?.close();
       history.replace({
         pathname: "/home",
         state: {}, // Clear the state by passing an empty object
       });
-      document.querySelector("ion-menu")?.close();
     } catch (error) {
       console.error("Error logging out: ", error);
     }

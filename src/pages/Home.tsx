@@ -312,7 +312,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
                 </IonRow>
                 {isAuthenticated ? (
                   <>
-                    {recentlyViewed ? (
+                    {recentlyViewed.length > 0 ? (
                       <IonRow className="flex flex-column ">
                         <IonText className="full text-center">
                           Recently Viewed
@@ -324,7 +324,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
                         />
                       </IonRow>
                     ) : (
-                      <>""</>
+                      <></>
                     )}
                   </>
                 ) : (
