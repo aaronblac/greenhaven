@@ -12,6 +12,7 @@ import {
   IonSegmentButton,
   IonGrid,
   IonRow,
+  IonToast,
 } from "@ionic/react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -57,6 +58,8 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
   const [recentlyViewed, setRecentlyViewed] = useState<Place[]>([]);
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   useEffect(() => {
     const fetchApiKey = async () => {
@@ -106,6 +109,17 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
       setView("map");
     }
   }, [isAuthenticated, userId]);
+
+  const handleGeoError = (error:any) => {
+    if (error.message.includes("denied")) {
+      setToastMessage("Location services are disabled. Please enable them in your settings.");
+    } else if (error.message.includes("timeout")) {
+      setToastMessage("Could not retrieve location. Please try again.");
+    } else {
+      setToastMessage("An error occurred while retrieving your location.");
+    }
+    setShowToast(true);
+  };
 
   const handleSearchInputChange = (e: CustomEvent) => {
     const input = e.detail.value!;
@@ -189,15 +203,23 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
 
       if (permissionStatus.location === 'denied' || permissionStatus.location === 'prompt') {
         // If the permission is denied or hasn't been requested yet, request it now
-        await Geolocation.requestPermissions();
+        const permissionRequest = await Geolocation.requestPermissions();
+        if (permissionRequest.location === 'denied') {
+          throw new Error("Location permission denied");
+        }
       }
 
-      const position = await Geolocation.getCurrentPosition();
+      const position = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 10000,
+      });
+
       const { latitude, longitude } = position.coords;
       setLatitude(latitude);
       setLongitude(longitude);
       setSearchText(`${latitude}, ${longitude}`);
     } catch (error) {
+      handleGeoError(error);
       console.error("Error getting geolocation using Capacitor:", error);
     }
   };
@@ -358,6 +380,12 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
             )}
           </IonGrid>
         </div>
+        <IonToast
+        isOpen={showToast}
+        message={toastMessage}
+        duration={3000}
+        onDidDismiss={() => setShowToast(false)}
+      />
       </IonContent>
     </IonPage>
   );
