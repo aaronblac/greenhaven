@@ -107,14 +107,6 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
     }
   }, [isAuthenticated, userId]);
 
-  const debounce = (func: Function, wait: number) => {
-    let timeout: NodeJS.Timeout;
-    return (...args: any[]) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func(...args), wait);
-    };
-  };
-
   const handleSearchInputChange = (e: CustomEvent) => {
     const input = e.detail.value!;
     setSearchText(input);

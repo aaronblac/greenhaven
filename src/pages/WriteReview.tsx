@@ -30,6 +30,7 @@ const WriteReview: React.FC<WriteReviewProps> = ({
   const [reviewText, setReviewText] = useState<string>("");
   const [rating, setRating] = useState<number | null>(null);
   const placeName = location.state?.placeName;
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -39,6 +40,11 @@ const WriteReview: React.FC<WriteReviewProps> = ({
       setRating(location.state.userReview.userRating);
     }
   }, [location.state?.userReview]);
+
+  useEffect(() => {
+    // Update form validation whenever reviewText or rating changes
+    setIsFormValid(reviewText.trim() !== "" && rating !== null);
+  }, [reviewText, rating]);
 
   const handleStarClick = (index: number) => {
     setRating(index + 1);
@@ -57,15 +63,13 @@ const WriteReview: React.FC<WriteReviewProps> = ({
     }
   };
 
-  const isFormValid = reviewText.trim() !== "" && rating !== null;
-
   return (
     <IonPage className="page-container ion-padding">
       <IonContent>
         <IonGrid className="flex flex-column gap-8">
           <IonRow>
             <div
-              className="flex items-center gap-8"
+              className="flex items-center gap-8 pointer"
               onClick={() => history.goBack()}
             >
               <IonIcon icon={arrowBack} ios={arrowBack} md={arrowBack} />
@@ -93,7 +97,7 @@ const WriteReview: React.FC<WriteReviewProps> = ({
             <IonTextarea
               fill="outline"
               value={reviewText}
-              onIonChange={(e) => setReviewText(e.detail.value!)}
+              onIonInput={(e) => setReviewText(e.detail.value!)}
               placeholder="Write your review here..."
             />
           </IonRow>

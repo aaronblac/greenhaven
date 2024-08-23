@@ -24,6 +24,7 @@ const CustomSearchbar: React.FC<CustomSearchbarProps> = ({
   onGeoClick,
   onSuggestionSelect,
 }) => {
+  
   return (
     <div className="full" style={{ position: "relative" }}>
       <IonSearchbar

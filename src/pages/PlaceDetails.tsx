@@ -8,6 +8,7 @@ import {
   IonRow,
   IonSelect,
   IonSelectOption,
+  IonSpinner,
   IonText,
 } from "@ionic/react";
 import { Place } from "../../functions/src/searchFunctions";
@@ -53,6 +54,7 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({
   const [greenhavenReviews, setGreenhavenReviews] = useState<any[]>([]);
   const [userHasReviewed, setUserHasReviewed] = useState<boolean>(false);
   const [userReview, setUserReview] = useState<any>(null);
+  const [imageLoading, setImageLoading] = useState<boolean[]>([]);
   const scrollPosition = useRef<number>(0);
 
   const history = useHistory();
@@ -130,10 +132,6 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({
     }
   }, [isAuthenticated, userId, placeId, place, location.state?.place]);
 
-  useEffect(() => {
-    console.log("Favorites updated: ", favorites);
-  }, [favorites]);
-
   const toggleFavorite = async (placeId: string) => {
     if (!isAuthenticated || !userId) return;
 
@@ -170,6 +168,14 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({
     setActiveTab(value);
   };
 
+  const handleImageLoad = (index: number) => {
+    setImageLoading((prev) => {
+      const updatedLoading = [...prev];
+      updatedLoading[index] = false; // Mark the image as loaded
+      return updatedLoading;
+    });
+  };
+
   if (!place) {
     return (
       <IonPage className="page-container">
@@ -177,7 +183,7 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({
           <IonGrid>
             <IonRow>
               <div
-                className="flex items-center gap-8"
+                className="flex items-center gap-8 pointer"
                 onClick={() => history.goBack()}
               >
                 <IonIcon icon={arrowBack} ios={arrowBack} md={arrowBack} />
@@ -199,7 +205,7 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({
         <IonGrid>
           <IonRow>
             <div
-              className="flex items-center gap-8"
+              className="flex items-center gap-8 pointer"
               onClick={() => history.goBack()}
             >
               <IonIcon icon={arrowBack} ios={arrowBack} md={arrowBack} />
@@ -211,16 +217,40 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({
               <h3>{place.name}</h3>
             </IonText>
           </IonRow>
-          <IonRow className="place-images">
-            {place.photos
-              ?.slice(0, 4)
-              .map((photo) => (
-                <IonImg
-                  key={photo.photo_reference}
-                  src={getPhotoUrl(photo.photo_reference, 400, 300)}
-                />
-              ))}
-          </IonRow>
+          {place.photos && place.photos.length > 0 ? (
+              <IonRow className="place-images">
+              {place.photos?.slice(0, 4).map((photo, index) => (
+                  <div key={photo.photo_reference} style={{ position: "relative" }}>
+                    {imageLoading[index] && (
+                      <div
+                      style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor: "#f0f0f0",
+                        }}
+                        >
+                        <IonSpinner name="crescent" />
+                      </div>
+                    )}
+                    <IonImg
+                      src={getPhotoUrl(photo.photo_reference, 400, 300)}
+                      onIonImgDidLoad={() => handleImageLoad(index)}
+                      style={imageLoading[index] ? { opacity: 0 } : { opacity: 1 }}
+                    />
+                  </div>
+                ))}
+              </IonRow>
+          ) : (
+            <IonRow>
+                <IonImg className="main-home-tree" src="/images/forest-tree.png"/>
+            </IonRow>
+          )}
           <IonRow className="links flex items-center justify-between ion-padding">
             {place.website && (
               <IonButton fill="clear" href={place.website} target="_blank">

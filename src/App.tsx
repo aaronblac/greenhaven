@@ -130,6 +130,7 @@ const App: React.FC = () => {
               </IonToolbar>
             </IonHeader>
             <IonRouterOutlet id="main-content">
+              <Route exact path="/" render={() => <Redirect to="/home" />} />
               <Route exact path="/home">
                 <Home isAuthenticated={isAuthenticated} userId={user?.uid} />
               </Route>
@@ -160,9 +161,6 @@ const App: React.FC = () => {
                   isAuthenticated={isAuthenticated}
                   userId={user?.uid}
                 />
-              </Route>
-              <Route exact path="/">
-                <Redirect to="/home" />
               </Route>
             </IonRouterOutlet>
           </>
