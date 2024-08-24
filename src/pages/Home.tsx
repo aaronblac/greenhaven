@@ -116,7 +116,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
     } else if (error.message.includes("timeout")) {
       setToastMessage("Could not retrieve location. Please try again.");
     } else {
-      setToastMessage("An error occurred while retrieving your location.");
+      setToastMessage(`An error occurred while retrieving your location. error: ${error.message}`);
     }
     setShowToast(true);
   };
