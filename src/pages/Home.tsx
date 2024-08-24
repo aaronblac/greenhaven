@@ -199,30 +199,51 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
 
   const handleGeoSearch = async () => {
     try {
-      const permissionStatus = await Geolocation.checkPermissions();
-
-      if (permissionStatus.location === 'denied' || permissionStatus.location === 'prompt') {
-        // If the permission is denied or hasn't been requested yet, request it now
-        const permissionRequest = await Geolocation.requestPermissions();
-        if (permissionRequest.location === 'denied') {
-          throw new Error("Location permission denied");
+      let position: GeolocationPosition;
+  
+      // Try using Capacitor Geolocation
+      try {
+        const permissionStatus = await Geolocation.checkPermissions();
+  
+        if (permissionStatus.location === 'denied' || permissionStatus.location === 'prompt') {
+          // Request permissions if they are denied or have not been requested yet
+          const permissionRequest = await Geolocation.requestPermissions();
+          if (permissionRequest.location === 'denied') {
+            throw new Error("Location permission denied");
+          }
         }
+  
+        position = await Geolocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 10000,
+        }) as unknown as GeolocationPosition;
+      } catch (capacitorError) {
+        console.log("Capacitor Geolocation not available, falling back to web geolocation.");
+  
+        // Fall back to the web's built-in geolocation API
+        position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              enableHighAccuracy: true,
+              timeout: 10000,
+            });
+          } else {
+            reject(new Error("Geolocation is not supported by this browser."));
+          }
+        });
       }
-
-      const position = await Geolocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 10000,
-      });
-
+  
       const { latitude, longitude } = position.coords;
       setLatitude(latitude);
       setLongitude(longitude);
       setSearchText(`${latitude}, ${longitude}`);
     } catch (error) {
       handleGeoError(error);
-      console.error("Error getting geolocation using Capacitor:", error);
+      console.error("Error getting geolocation:", error);
     }
   };
+  
+  
 
   const handleRadiusChange = (value: number) => {
     const miles = value;
