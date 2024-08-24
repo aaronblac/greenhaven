@@ -42,6 +42,7 @@ const CustomSearchbar: React.FC<CustomSearchbarProps> = ({
           cursor: "pointer",
         }}
         onClick={onGeoClick}
+        onTouchStart={onGeoClick}
       >
         <IonIcon icon={locate} ios={locate} md={locate} color="secondary" />
       </IonButton>
