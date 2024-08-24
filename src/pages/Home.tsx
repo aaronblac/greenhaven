@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IonContent,
   IonPage,
@@ -218,8 +218,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
           timeout: 10000,
         }) as unknown as GeolocationPosition;
       } catch (capacitorError) {
-        console.log("Capacitor Geolocation not available, falling back to web geolocation.");
-  
+        
         // Fall back to the web's built-in geolocation API
         position = await new Promise<GeolocationPosition>((resolve, reject) => {
           if (navigator.geolocation) {

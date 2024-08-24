@@ -130,7 +130,7 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({
     if (isAuthenticated && userId && placeId) {
       updateRecentViews(userId, placeId);
     }
-    console.log("history: ", history, "location:L ", location.state)
+    
   }, [isAuthenticated, userId, placeId, place, location.state?.place]);
 
   const toggleFavorite = async (placeId: string) => {
