@@ -11,6 +11,10 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+
+ion-button::part(native) {
+  border-radius:0.5rem!important;
+}
 body {
   line-height: 1.42857143;
   background-color: $black;
@@ -109,6 +113,8 @@ IonButton,
   .button-native,
   .button-inner {
     padding: 0rem;
+    border-radius:0.5rem;
+    --border-radius:0.5rem;
   }
   &.small {
     min-height: 1.75rem;

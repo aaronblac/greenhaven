@@ -13,7 +13,7 @@ $font-family-base: "Montserrat", Arial, "sans-serif";
 
 // Ionic reset
 :root {
-    --border-radius:0.5rem;
+  --border-radius:0.5rem;
   --ion-color-primary: #{$primary};
   --ion-color-primary-rgb: #{color-to-rgb($primary)};
   --ion-color-primary-contrast: #{$white};
