@@ -312,7 +312,7 @@ const PlaceDetail: React.FC<PlaceDetailProps> = ({
               </IonSelectOption>
             </IonSelect>
             {isAuthenticated ? (
-              <IonButton className="button tertiary small">
+              <IonButton className="button tertiary">
                 <Link
                   to={{
                     pathname: `/write-review/${place.place_id}`,

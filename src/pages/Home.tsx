@@ -306,7 +306,7 @@ const Home: React.FC<HomeProps> = ({ isAuthenticated, userId }) => {
                 </IonSelectOption>
               </IonSelect>
               <IonButton
-                className="button primary small"
+                className="button primary"
                 onClick={handleSearch}
               >
                 Search
